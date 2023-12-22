@@ -1,4 +1,4 @@
-package com.example.tellingme
+package com.example.tellingme.presentation.ui.feature.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.tellingme.ui.theme.TellingMeTheme
+import com.example.tellingme.presentation.ui.theme.TellingMeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
