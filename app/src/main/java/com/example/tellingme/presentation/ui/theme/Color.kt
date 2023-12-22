@@ -1,4 +1,4 @@
-package com.example.tellingme.ui.theme
+package com.example.tellingme.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

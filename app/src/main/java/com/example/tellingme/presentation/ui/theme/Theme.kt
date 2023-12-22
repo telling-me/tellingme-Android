@@ -1,4 +1,4 @@
-package com.example.tellingme.ui.theme
+package com.example.tellingme.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
