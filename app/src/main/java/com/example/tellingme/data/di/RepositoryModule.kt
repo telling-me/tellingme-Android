@@ -3,6 +3,7 @@ package com.example.tellingme.data.di
 import com.example.tellingme.data.network.NetworkService
 import com.example.tellingme.data.repositoryimpl.LoginRepositoryImpl
 import com.example.tellingme.domain.repository.LoginRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
-    @Provides
+    @Binds
     @Singleton
     abstract fun provideLoginRepository(
         loginRepositoryImpl: LoginRepositoryImpl

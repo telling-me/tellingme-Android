@@ -4,10 +4,11 @@ import com.example.tellingme.data.model.DefaultResponse
 import com.example.tellingme.data.network.NetworkService
 import com.example.tellingme.domain.repository.LoginRepository
 import retrofit2.Response
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepositoryImpl(
+class LoginRepositoryImpl @Inject constructor(
     private val service: NetworkService
 ): LoginRepository {
     override suspend fun kakaoLogin(): Response<DefaultResponse> {
