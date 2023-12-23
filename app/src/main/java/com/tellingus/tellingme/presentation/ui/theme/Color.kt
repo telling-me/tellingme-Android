@@ -2,10 +2,41 @@ package com.tellingus.tellingme.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val Base100 = Color(0xFF000000)
+val Base0 = Color(0xFFFFFFFF)
+val Background100 = Color(0xFFF8F8F9)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val Primary50 = Color(0xFFD7F3F2)
+val Primary100 = Color(0xFF99E0DD)
+val Primary200 = Color(0xFF6ED1CD)
+val Primary300 = Color(0xFF3DCCC7)
+val Primary400 = Color(0xFF07BEB8)
+val Primary500 = Color(0xFF00A49B)
+val Primary600 = Color(0xFF009387)
+val Primary700 = Color(0xFF00867A)
+val Primary800 = Color(0xFF007669)
+
+val Gray50 = Color(0xFFF0F3F9)
+val Gray100 = Color(0xFFE9EFF6)
+val Gray200 = Color(0xFFD7DFE9)
+val Gray300 = Color(0xFFAFBACA)
+val Gray400 = Color(0xFF8897AE)
+val Gray500 = Color(0xFF5E718D)
+val Gray600 = Color(0xFF455468)
+val Gray700 = Color(0xFF3D4A5C)
+val Gray800 = Color(0xFF2D3643)
+val Gray900 = Color(0xFF1C222B)
+
+val Profile100 = Color(0xFF1EDCC5)
+val Sub100 = Color(0xFFFFE373)
+
+val Red50 = Color(0xFFFFF5F4)
+val Red100 = Color(0xFFFFDCDA)
+val Red200 = Color(0xFFFFC5C1)
+val Red300 = Color(0xFFFFA19B)
+val Red400 = Color(0xFFFF7A72)
+val Red500 = Color(0xFFFF574D)
+val Red600 = Color(0xFFFF3838)
+val Red700 = Color(0xFFE92215)
+
+val Shadow = Color(0x14000000)
