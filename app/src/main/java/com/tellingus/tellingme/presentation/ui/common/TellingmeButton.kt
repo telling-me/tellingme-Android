@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.tellingus.tellingme.presentation.ui.theme.Red50
+import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.presentation.ui.theme.Typography
 
 enum class BUTTON_STATE {
     DEFAULT, HOVER, DISABLED, SELECTED
@@ -43,7 +46,11 @@ fun PrimaryButton(
         }
     ) {
         Text(
-            text = text
+            text = text,
+//            style = Typography.h1Regular.copy(
+            style = TellingmeTheme.typography.h1Regular.copy(
+                color = Red50
+            )
         )
     }
 }
