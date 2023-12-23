@@ -13,7 +13,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Red50
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.presentation.ui.theme.Typography
 
-enum class BUTTON_STATE {
+enum class BUTTON_TYPE {
     DEFAULT, HOVER, DISABLED, SELECTED
 }
 
@@ -24,7 +24,7 @@ enum class BUTTON_SIZE {
 @Composable
 fun PrimaryButton(
     modifier: Modifier = Modifier,
-    state: BUTTON_STATE,
+    state: BUTTON_TYPE,
     size: BUTTON_SIZE,
     text: String,
     onClick: () -> Unit
@@ -34,10 +34,10 @@ fun PrimaryButton(
         shape = RoundedCornerShape(12.dp),
         onClick = { onClick() },
         colors = when(state) {
-            BUTTON_STATE.DEFAULT -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
-            BUTTON_STATE.HOVER -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
-            BUTTON_STATE.DISABLED -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
-            BUTTON_STATE.SELECTED -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
+            BUTTON_TYPE.DEFAULT -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
+            BUTTON_TYPE.HOVER -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
+            BUTTON_TYPE.DISABLED -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
+            BUTTON_TYPE.SELECTED -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
         },
         contentPadding = when(size) {
             BUTTON_SIZE.LARGE -> PaddingValues(vertical = 4.dp, horizontal = 8.dp)
