@@ -12,13 +12,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.presentation.ui.common.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.BUTTON_STATE
 import com.tellingus.tellingme.presentation.ui.common.PrimaryButton
-import com.tellingus.tellingme.presentation.ui.theme.TellingMeTheme
+import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TellingMeTheme {
+            TellingmeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting("Android")
@@ -35,14 +35,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         size = BUTTON_SIZE.LARGE,
         text = "버튼버튼"
     ) {
-        
+
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    TellingMeTheme {
+    TellingmeTheme {
         Greeting("Android")
     }
 }
