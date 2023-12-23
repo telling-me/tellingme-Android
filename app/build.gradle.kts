@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tellingme"
+    namespace = "com.tellingus.tellingme"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.tellingme"
+        applicationId = "com.tellingus.tellingme"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
