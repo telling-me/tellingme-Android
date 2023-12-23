@@ -1,34 +1,43 @@
 package com.tellingus.tellingme.presentation.ui.theme
 
-import androidx.compose.material3.Typography
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.tellingus.tellingme.R
+import javax.annotation.concurrent.Immutable
 
-// Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+private val nanumSquareRoundStyle = FontFamily(
+    Font(R.font.nanum_square_round_regular, weight = FontWeight.Normal),
+    Font(R.font.nanum_square_round_bold, weight = FontWeight.Bold)
+)
+
+internal val Typography = TellingmeTypography(
+    h1Regular = TextStyle(
+        fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        lineHeight = 24.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+    h1Bold = TextStyle(
+        fontFamily = nanumSquareRoundStyle,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        lineHeight = 24.sp
     )
-    */
 )
+
+@Immutable
+data class TellingmeTypography(
+    val h1Regular: TextStyle,
+    val h1Bold: TextStyle
+)
+
+val LocalTellingmeTypography = staticCompositionLocalOf {
+    TellingmeTypography(
+        h1Regular = TextStyle.Default,
+        h1Bold = TextStyle.Default
+    )
+}
