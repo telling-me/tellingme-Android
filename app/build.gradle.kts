@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.tellingus.tellingme"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.tellingus.tellingme"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -69,9 +69,9 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    implementation("androidx.core:core-ktx:1.8.1")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
