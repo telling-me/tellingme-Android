@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.presentation.ui.common.BUTTON_SIZE
-import com.tellingus.tellingme.presentation.ui.common.BUTTON_STATE
+import com.tellingus.tellingme.presentation.ui.common.BUTTON_TYPE
 import com.tellingus.tellingme.presentation.ui.common.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     PrimaryButton(
-        state = BUTTON_STATE.DEFAULT,
+        state = BUTTON_TYPE.DEFAULT,
         size = BUTTON_SIZE.LARGE,
         text = "버튼버튼"
     ) {
