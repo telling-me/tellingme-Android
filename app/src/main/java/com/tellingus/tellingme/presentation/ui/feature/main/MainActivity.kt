@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
+import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,18 +30,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting() {
-    Column {
-        Text(text = "텔링미", style = TellingmeTheme.typography.display1Bold)
-        Text(text = "텔링미", style = TellingmeTheme.typography.display2Bold)
-        Text(text = "텔링미", style = TellingmeTheme.typography.head1Bold)
-        Text(text = "텔링미", style = TellingmeTheme.typography.head1Regular)
-        Text(text = "텔링미", style = TellingmeTheme.typography.head3Bold)
-        Text(text = "텔링미", style = TellingmeTheme.typography.head3Regular)
-        Text(text = "텔링미", style = TellingmeTheme.typography.body1Bold)
-        Text(text = "텔링미", style = TellingmeTheme.typography.body2Regular)
-        Text(text = "텔링미", style = TellingmeTheme.typography.caption1Bold)
-        Text(text = "텔링미", style = TellingmeTheme.typography.caption2Regular)
-    }
+    PrimaryButton(
+        size = BUTTON_SIZE.LARGE,
+        text = "버튼버튼",
+        onClick = { }
+    )
 }
 
 @Preview(showBackground = true)
