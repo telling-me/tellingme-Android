@@ -16,10 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.R
@@ -30,7 +28,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
-fun SingleBlackIconButton(
+fun IconSingleBlackButton(
     modifier: Modifier = Modifier,
     size: BUTTON_SIZE,
     text: String,
@@ -38,7 +36,7 @@ fun SingleBlackIconButton(
     @DrawableRes iconResId: Int = R.drawable.icon_heart,
     enable: Boolean = true
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides SingleBlackIconButtonRippleTheme) {
+    CompositionLocalProvider(LocalRippleTheme provides IconSingleBlackButtonRippleTheme) {
         Button(
             modifier = modifier,
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
@@ -87,7 +85,7 @@ fun SingleBlackIconButton(
     }
 }
 
-private object SingleBlackIconButtonRippleTheme : RippleTheme {
+private object IconSingleBlackButtonRippleTheme : RippleTheme {
     @Composable
     override fun defaultColor() = Gray50
 
@@ -100,14 +98,14 @@ private object SingleBlackIconButtonRippleTheme : RippleTheme {
 
 @Preview
 @Composable
-fun SingleBlackIconButtonLargePreview() {
+fun IconSingleBlackButtonLargePreview() {
     Column {
-        SingleBlackIconButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
             onClick = { }
         )
-        SingleBlackIconButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
             onClick = { },
@@ -118,14 +116,14 @@ fun SingleBlackIconButtonLargePreview() {
 
 @Preview
 @Composable
-fun SingleBlackIconButtonMediumPreview() {
+fun IconSingleBlackButtonMediumPreview() {
     Column {
-        SingleBlackIconButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.MEDIUM,
             text = "Medium",
             onClick = { }
         )
-        SingleBlackIconButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.MEDIUM,
             text = "Medium",
             onClick = { },
@@ -136,14 +134,14 @@ fun SingleBlackIconButtonMediumPreview() {
 
 @Preview
 @Composable
-fun SingleBlackIconButtonSmallPreview() {
+fun IconSingleBlackButtonSmallPreview() {
     Column {
-        SingleBlackIconButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.SMALL,
             text = "Small",
             onClick = { }
         )
-        SingleBlackIconButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.SMALL,
             text = "Small",
             onClick = { },

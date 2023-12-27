@@ -45,16 +45,16 @@ fun SingleButton(
             ),
             contentPadding = when(size) {
                 BUTTON_SIZE.LARGE -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_large),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_large)
+                    vertical = dimensionResource(R.dimen.single_button_padding_vertical_large),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
                 BUTTON_SIZE.MEDIUM -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_medium),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_medium)
+                    vertical = dimensionResource(R.dimen.single_button_padding_vertical_medium),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
                 BUTTON_SIZE.SMALL -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_small),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_small)
+                    vertical = dimensionResource(R.dimen.single_button_padding_vertical_small),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
             },
             enabled = enable
