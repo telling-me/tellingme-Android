@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Button의 Size(Large, Medium, Small)에 따른 padding 지정-->
+    <dimen name="button_padding_vertical_large">16dp</dimen>
+    <dimen name="button_padding_horizontal_large">32dp</dimen>
+    <dimen name="button_padding_vertical_medium">12dp</dimen>
+    <dimen name="button_padding_horizontal_medium">16dp</dimen>
+    <dimen name="button_padding_vertical_small">8dp</dimen>
+    <dimen name="button_padding_horizontal_small">8dp</dimen>
+
+</resources>
