@@ -1,4 +1,4 @@
-package com.example.tellingme
+package com.tellingus.tellingme
 
 import org.junit.Test
 
