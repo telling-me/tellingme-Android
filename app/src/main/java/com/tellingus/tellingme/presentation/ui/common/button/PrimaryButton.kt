@@ -16,14 +16,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.Primary500
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
-enum class BUTTON_SIZE {
-    LARGE, MEDIUM, SMALL
-}
-
-enum class BUTTON_STATE {
-    DEFAULT, HOVER, DISABLED, SELECTED
-}
-
 @Composable
 fun PrimaryButton(
     modifier: Modifier = Modifier,
