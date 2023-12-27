@@ -30,11 +30,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting() {
-    PrimaryButton(
-        size = BUTTON_SIZE.LARGE,
-        text = "버튼버튼",
-        onClick = { }
-    )
+    Column {
+        PrimaryButton(
+            size = BUTTON_SIZE.LARGE,
+            text = "버튼버튼",
+            onClick = { }
+        )
+    }
 }
 
 @Preview(showBackground = true)

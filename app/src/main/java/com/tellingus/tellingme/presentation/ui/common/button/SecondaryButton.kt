@@ -62,9 +62,9 @@ fun SecondaryButton(
             Text(
                 text = text,
                 style = when(size) {
-                    BUTTON_SIZE.LARGE -> TellingmeTheme.typography.h1Regular
-                    BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.h1Regular
-                    BUTTON_SIZE.SMALL -> TellingmeTheme.typography.h1Regular
+                    BUTTON_SIZE.LARGE -> TellingmeTheme.typography.head1Regular
+                    BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.head1Regular
+                    BUTTON_SIZE.SMALL -> TellingmeTheme.typography.head1Regular
                 }
             )
         }
