@@ -62,8 +62,7 @@ fun PrimaryButton(
                     BUTTON_SIZE.LARGE -> TellingmeTheme.typography.h1Regular
                     BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.h1Regular
                     BUTTON_SIZE.SMALL -> TellingmeTheme.typography.h1Regular
-                },
-                color = Base0
+                }
             )
         }
     }
