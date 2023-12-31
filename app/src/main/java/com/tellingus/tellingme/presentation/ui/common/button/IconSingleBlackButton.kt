@@ -3,6 +3,7 @@ package com.tellingus.tellingme.presentation.ui.common.button
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -63,24 +65,26 @@ fun IconSingleBlackButton(
             },
             enabled = enable
         ) {
-            Icon(
-                painter = painterResource(iconResId),
-                contentDescription = ""
-            )
-            Spacer(modifier = modifier.size(8.dp))
-            Text(
-                text = text,
-                style = when(size) {
-                    BUTTON_SIZE.LARGE -> TellingmeTheme.typography.body1Bold
-                    BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.body2Bold
-                    BUTTON_SIZE.SMALL -> TellingmeTheme.typography.caption1Bold
-                }
-            )
-            Spacer(modifier = modifier.size(8.dp))
-            Icon(
-                painter = painterResource(iconResId),
-                contentDescription = ""
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(iconResId),
+                    contentDescription = ""
+                )
+                Spacer(modifier = modifier.size(8.dp))
+                Text(
+                    text = text,
+                    style = when(size) {
+                        BUTTON_SIZE.LARGE -> TellingmeTheme.typography.body1Bold
+                        BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.body2Bold
+                        BUTTON_SIZE.SMALL -> TellingmeTheme.typography.caption1Bold
+                    }
+                )
+                Spacer(modifier = modifier.size(8.dp))
+                Icon(
+                    painter = painterResource(iconResId),
+                    contentDescription = ""
+                )
+            }
         }
     }
 }
