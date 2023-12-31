@@ -7,6 +7,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.theme.Base0
@@ -16,11 +17,12 @@ import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 @Composable
 fun PercentChip(
     modifier: Modifier = Modifier,
-    percent: Int
+    percent: Int,
+    backgroundColor: Color = Profile100
 ) {
     Card(
         shape = RoundedCornerShape(100.dp),
-        colors = CardDefaults.cardColors(containerColor = Profile100),
+        colors = CardDefaults.cardColors(backgroundColor),
 
     ) {
         Text(
@@ -35,5 +37,5 @@ fun PercentChip(
 @Preview
 @Composable
 fun PercentChipPreview() {
-    com.tellingus.tellingme.presentation.ui.common.ProgressBar.PercentChip(percent = 12)
+    PercentChip(percent = 12)
 }
