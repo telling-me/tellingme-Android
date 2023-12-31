@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.common
+package com.tellingus.tellingme.presentation.ui.common.widget
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
