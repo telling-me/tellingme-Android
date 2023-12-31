@@ -22,8 +22,7 @@ fun PercentChip(
 ) {
     Card(
         shape = RoundedCornerShape(100.dp),
-        colors = CardDefaults.cardColors(backgroundColor),
-
+        colors = CardDefaults.cardColors(backgroundColor)
     ) {
         Text(
             modifier = modifier.padding(horizontal = 8.dp, vertical = 4.dp),

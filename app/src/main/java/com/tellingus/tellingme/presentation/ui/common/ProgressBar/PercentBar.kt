@@ -28,7 +28,6 @@ fun PercentBar(
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundColor)
             .height(8.dp)
-            .fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
