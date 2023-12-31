@@ -54,6 +54,8 @@ android {
 }
 
 dependencies {
+    // ConstraintLayout
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Retrofit, OkHttp
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
