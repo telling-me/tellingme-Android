@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.tabBar.TabBar
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TellingmeTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    TabBar()
                     Greeting()
                 }
             }
