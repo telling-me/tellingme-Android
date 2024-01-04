@@ -1,14 +1,18 @@
 package com.tellingus.tellingme.presentation.ui.common.widget
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -18,7 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +35,7 @@ import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray50
 import com.tellingus.tellingme.presentation.ui.theme.Profile100
+import com.tellingus.tellingme.presentation.ui.theme.Red500
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
@@ -38,6 +45,7 @@ fun ProfileCard(
     backgroundColor: Color = Profile100
 ) {
     Card(
+        modifier = modifier.fillMaxWidth().wrapContentSize(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(backgroundColor),
         border = BorderStroke(2.dp, Base0),
@@ -51,7 +59,36 @@ fun ProfileCard(
                 end = 22.dp
             )
         ) {
-            val (topBox, badge, nickname, levelBox, dayBox) = createRefs()
+            val (topBox, badge, nickname, levelBox, dayBox, shadow1, shadow2) = createRefs()
+
+            Canvas(
+                modifier = modifier.constrainAs(shadow1) {
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                }
+            ) {
+                drawLine(
+                    color = Color(0x1AFFFFFF),
+                    start = Offset(50.dp.toPx(), 200.dp.toPx()),
+                    end = Offset(400.dp.toPx(), 35.dp.toPx()),
+                    strokeWidth = 40.dp.toPx()
+                )
+            }
+            Canvas(
+                modifier = modifier.constrainAs(shadow2) {
+                    start.linkTo(shadow1.start)
+                    // top마진을 40.dp로 설정하면 dp <-> px 단위때문에 조금 겹치는데 확인 필요.
+                    // 일단 44로 하니까 딱 맞긴 함.
+                    top.linkTo(shadow1.top, margin = 44.dp)
+                }
+            ) {
+                drawLine(
+                    color = Color(0x33FFFFFF),
+                    start = Offset(50.dp.toPx(), 200.dp.toPx()),
+                    end = Offset(400.dp.toPx(), 35.dp.toPx()),
+                    strokeWidth = 40.dp.toPx()
+                )
+            }
 
             Row(
                 modifier = modifier.constrainAs(topBox) {
@@ -64,7 +101,7 @@ fun ProfileCard(
                     style = TellingmeTheme.typography.body1Bold,
                     color = Base0
                 )
-                Spacer(modifier = modifier.size(26.dp))
+                Spacer(modifier = modifier.weight(1f))
                 Image(
                     painter = painterResource(R.drawable.icon_level_sample),
                     contentDescription = "",
@@ -130,6 +167,8 @@ fun ProfileCard(
                     color = Base0
                 )
             }
+
+
         }
     }
 }
@@ -138,7 +177,7 @@ data class ProfileCardResponse(
     val nickname: String = ""
 )
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ProfileCardPreview() {
     ProfileCard()
