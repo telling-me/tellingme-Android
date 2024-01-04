@@ -167,13 +167,13 @@ fun ProfileCard(
                     color = Base0
                 )
             }
-
-
         }
     }
 }
 
+// ProfileCard를 구성하는 데이터는 아마 json으로 한 번에 내려받지 않을까 싶습니다.
 data class ProfileCardResponse(
+    // 닉네임, 레벨, 뱃지, 프로필 아이콘 등등 ...
     val nickname: String = ""
 )
 
