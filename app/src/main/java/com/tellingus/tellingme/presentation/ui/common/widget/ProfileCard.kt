@@ -69,24 +69,24 @@ fun ProfileCard(
             ) {
                 drawLine(
                     color = Color(0x1AFFFFFF),
-                    start = Offset(50.dp.toPx(), 200.dp.toPx()),
-                    end = Offset(400.dp.toPx(), 35.dp.toPx()),
-                    strokeWidth = 40.dp.toPx()
+                    start = Offset(30.dp.toPx(), 220.dp.toPx()),
+                    end = Offset(420.dp.toPx(), 40.dp.toPx()),
+                    strokeWidth = 55.dp.toPx()
                 )
             }
             Canvas(
                 modifier = modifier.constrainAs(shadow2) {
                     start.linkTo(shadow1.start)
-                    // top마진을 40.dp로 설정하면 dp <-> px 단위때문에 조금 겹치는데 확인 필요.
-                    // 일단 44로 하니까 딱 맞긴 함.
-                    top.linkTo(shadow1.top, margin = 44.dp)
+                    // top마진을 55.dp로 설정하면 dp <-> px 단위때문에 조금 겹치는데 확인 필요.
+                    // 일단 6.5로 하니까 딱 맞긴 함. (10% 만큼 차이인건지..?)
+                    top.linkTo(shadow1.top, margin = 60.5.dp)
                 }
             ) {
                 drawLine(
                     color = Color(0x33FFFFFF),
-                    start = Offset(50.dp.toPx(), 200.dp.toPx()),
-                    end = Offset(400.dp.toPx(), 35.dp.toPx()),
-                    strokeWidth = 40.dp.toPx()
+                    start = Offset(30.dp.toPx(), 220.dp.toPx()),
+                    end = Offset(420.dp.toPx(), 40.dp.toPx()),
+                    strokeWidth = 55.dp.toPx()
                 )
             }
 
