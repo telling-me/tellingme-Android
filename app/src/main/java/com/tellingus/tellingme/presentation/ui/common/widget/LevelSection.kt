@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.common.ProgressBar.PercentBar
@@ -19,6 +20,7 @@ import com.tellingus.tellingme.presentation.ui.common.chip.PercentChip
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
+import com.tellingus.tellingme.presentation.ui.theme.Profile100
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
@@ -26,7 +28,8 @@ fun LevelSection(
     modifier: Modifier = Modifier,
     level: Int,
     levelDescription: String = "연속 10일만 작성하면 LV.1 달성!",
-    percent: Int
+    percent: Int,
+    itemColor: Color = Profile100
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -56,10 +59,14 @@ fun LevelSection(
             ) {
                 PercentBar(
                     modifier = modifier.weight(1f),
-                    progress = percent/100f
+                    progress = percent/100f,
+                    progressColor = itemColor
                 )
                 Spacer(modifier = modifier.size(11.dp))
-                PercentChip(percent = percent)
+                PercentChip(
+                    percent = percent,
+                    backgroundColor = itemColor
+                )
             }
         }
     }
