@@ -27,9 +27,7 @@ fun FloatingButton(
     CompositionLocalProvider(LocalRippleTheme provides FloatingButtonRippleTheme) {
         FloatingActionButton(
             modifier = modifier.size(48.dp),
-            onClick = {
-
-            },
+            onClick = onClick,
             containerColor = Primary400,
             shape = CircleShape,
             elevation = FloatingActionButtonDefaults.elevation(4.dp)
