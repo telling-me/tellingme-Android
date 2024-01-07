@@ -101,7 +101,7 @@ fun TellingMeScreen(
                 composable(route = TellingMeScreenRoute.HOME.route) {
                     HomeScreen(
                         navigateToOtherSpace = { id ->
-                            navController.navigate("other-space/$id")
+                            navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
                         })
                 }
                 composable(route = TellingMeScreenRoute.RECORD.route) {
