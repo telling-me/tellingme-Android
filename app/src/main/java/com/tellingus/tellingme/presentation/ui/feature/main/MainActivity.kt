@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting()
 //                    안녕하세요!!!!@#!@#!@#!@
+//                    테스트-1 작업중이에요
                 }
             }
         }
