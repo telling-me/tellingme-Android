@@ -1,10 +1,12 @@
 package com.tellingus.tellingme.presentation.ui.feature.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,9 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.tabBar.TabBar
+import com.tellingus.tellingme.presentation.ui.main.TellingMeScreen
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,12 +29,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TabBar()
-                    Greeting()
+                    TellingMeScreen()
+//                    Greeting()
                 }
             }
         }
     }
+
 }
 
 @Composable

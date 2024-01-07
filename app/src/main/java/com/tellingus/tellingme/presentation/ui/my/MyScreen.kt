@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.screen.my
+package com.tellingus.tellingme.presentation.ui.my
 
 import androidx.compose.material.Button
 import androidx.compose.material.Text

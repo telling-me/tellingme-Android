@@ -23,10 +23,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.provider.NavigationProvider
-import com.tellingus.tellingme.presentation.ui.screen.everyspace.EverySpaceScreen
-import com.tellingus.tellingme.presentation.ui.screen.home.HomeScreen
-import com.tellingus.tellingme.presentation.ui.screen.my.MyScreen
-import com.tellingus.tellingme.presentation.ui.screen.myspace.MySpaceScreen
+import com.tellingus.tellingme.presentation.ui.everyspace.EverySpaceScreen
+import com.tellingus.tellingme.presentation.ui.main.home.HomeScreen
+import com.tellingus.tellingme.presentation.ui.my.MyScreen
+import com.tellingus.tellingme.presentation.ui.myspace.MySpaceScreen
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
@@ -51,7 +51,8 @@ fun TabBar() {
             items.forEach { screen ->
                 val isSelect = currentDestination === screen.route
 
-                BottomNavigationItem(icon = {
+                BottomNavigationItem(
+                    icon = {
                     Icon(
                         painter = painterResource(id = screen.icon),
                         contentDescription = screen.title,
@@ -72,16 +73,10 @@ fun TabBar() {
                     selectedContentColor = Primary400,
                     onClick = {
                         navController.navigate(screen.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
                             launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
                     })

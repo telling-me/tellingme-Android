@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.screen.myspace
+package com.tellingus.tellingme.presentation.ui.myspace
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
