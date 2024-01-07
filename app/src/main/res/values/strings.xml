@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TellingMe</string>
+
+    <string name="navigation_home_text">홈</string>
+    <string name="navigation_my_space_text">나의 공간</string>
+    <string name="navigation_other_space_text">모두의 공간</string>
+    <string name="navigation_my_page_text">MY</string>
 </resources>
