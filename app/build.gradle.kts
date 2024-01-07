@@ -54,12 +54,21 @@ android {
 }
 
 dependencies {
+    // ConstraintLayout
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    // BottomNavigation 및 BottomNavigationItem
+    implementation("androidx.compose.material:material:1.3.1")
+    implementation("androidx.webkit:webkit:1.9.0")
+    // Navigation Compose
+    val nav_version = "2.5.3"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
     // Retrofit, OkHttp
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.8.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
+    implementation("com.squareup.okhttp3:okhttp:4.8.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.8.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
