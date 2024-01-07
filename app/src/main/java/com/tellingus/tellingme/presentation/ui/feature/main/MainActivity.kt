@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
             TellingmeTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting()
+//                    안녕하세요!!!!@#!@#!@#!@
                 }
             }
         }
