@@ -19,6 +19,7 @@ import com.tellingus.tellingme.presentation.ui.common.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.button.SecondaryButton
 import com.tellingus.tellingme.presentation.ui.common.button.SingleBlackButton
 import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
+import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 class MainActivity : ComponentActivity() {
@@ -69,6 +70,9 @@ fun Greeting() {
             onClick = { }
         )
         FloatingButton {
+
+        }
+        TellingmeIconButton {
 
         }
     }
