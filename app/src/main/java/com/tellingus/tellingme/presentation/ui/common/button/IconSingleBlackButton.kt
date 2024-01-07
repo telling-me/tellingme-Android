@@ -1,74 +1,95 @@
 package com.tellingus.tellingme.presentation.ui.common.button
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray50
-import com.tellingus.tellingme.presentation.ui.theme.Primary400
+import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
-fun PrimaryLightButton(
+fun IconSingleBlackButton(
     modifier: Modifier = Modifier,
     size: BUTTON_SIZE,
     text: String,
     onClick: () -> Unit,
+    @DrawableRes iconResId: Int = R.drawable.icon_heart,
     enable: Boolean = true
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides PrimaryLightButtonRippleTheme) {
+    CompositionLocalProvider(LocalRippleTheme provides IconSingleBlackButtonRippleTheme) {
         Button(
             modifier = modifier,
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Gray50,
-                contentColor = Primary400,
-                disabledContainerColor = Gray50,
+                containerColor = Base0,
+                contentColor = Gray600,
+                disabledContainerColor = Base0,
                 disabledContentColor = Gray300
             ),
             contentPadding = when(size) {
                 BUTTON_SIZE.LARGE -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_large),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_large)
+                    vertical = dimensionResource(R.dimen.icon_single_button_padding_vertical_large),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
                 BUTTON_SIZE.MEDIUM -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_medium),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_medium)
+                    vertical = dimensionResource(R.dimen.icon_single_button_padding_vertical_medium),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
                 BUTTON_SIZE.SMALL -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_small),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_small)
+                    vertical = dimensionResource(R.dimen.icon_single_button_padding_vertical_small),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
             },
             enabled = enable
         ) {
-            Text(
-                text = text,
-                style = when(size) {
-                    BUTTON_SIZE.LARGE -> TellingmeTheme.typography.body1Bold
-                    BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.body2Bold
-                    BUTTON_SIZE.SMALL -> TellingmeTheme.typography.caption1Bold
-                }
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(iconResId),
+                    contentDescription = ""
+                )
+                Spacer(modifier = modifier.size(8.dp))
+                Text(
+                    text = text,
+                    style = when(size) {
+                        BUTTON_SIZE.LARGE -> TellingmeTheme.typography.body1Bold
+                        BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.body2Bold
+                        BUTTON_SIZE.SMALL -> TellingmeTheme.typography.caption1Bold
+                    }
+                )
+                Spacer(modifier = modifier.size(8.dp))
+                Icon(
+                    painter = painterResource(iconResId),
+                    contentDescription = ""
+                )
+            }
         }
     }
 }
 
-private object PrimaryLightButtonRippleTheme : RippleTheme {
+private object IconSingleBlackButtonRippleTheme : RippleTheme {
     @Composable
     override fun defaultColor() = Gray50
 
@@ -81,14 +102,14 @@ private object PrimaryLightButtonRippleTheme : RippleTheme {
 
 @Preview
 @Composable
-fun PrimaryLightButtonLargePreview() {
+fun IconSingleBlackButtonLargePreview() {
     Column {
-        PrimaryLightButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
             onClick = { }
         )
-        PrimaryLightButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
             onClick = { },
@@ -99,14 +120,14 @@ fun PrimaryLightButtonLargePreview() {
 
 @Preview
 @Composable
-fun PrimaryLightButtonMediumPreview() {
+fun IconSingleBlackButtonMediumPreview() {
     Column {
-        PrimaryLightButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.MEDIUM,
             text = "Medium",
             onClick = { }
         )
-        PrimaryLightButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.MEDIUM,
             text = "Medium",
             onClick = { },
@@ -117,14 +138,14 @@ fun PrimaryLightButtonMediumPreview() {
 
 @Preview
 @Composable
-fun PrimaryLightButtonSmallPreview() {
+fun IconSingleBlackButtonSmallPreview() {
     Column {
-        PrimaryLightButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.SMALL,
             text = "Small",
             onClick = { }
         )
-        PrimaryLightButton(
+        IconSingleBlackButton(
             size = BUTTON_SIZE.SMALL,
             text = "Small",
             onClick = { },
