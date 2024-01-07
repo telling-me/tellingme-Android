@@ -1,12 +1,20 @@
 package com.tellingus.tellingme.presentation.ui.feature.main.myspace
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
 fun MySpaceScreen(
-    navHostController: NavHostController
+    navigateToRecordScreen: () -> Unit,
 ) {
-    Text(text = "나의 공간")
+    Column {
+        Text(text = "나의 공간")
+
+        Button(onClick = { navigateToRecordScreen() }) {
+            Text(text = "기록하기")
+        }
+    }
 }

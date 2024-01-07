@@ -2,6 +2,7 @@ package com.tellingus.tellingme.presentation.ui.feature.main
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -34,15 +35,19 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.feature.main.home.HomeScreen
+import com.tellingus.tellingme.presentation.ui.feature.main.home.record.RecordScreen
 import com.tellingus.tellingme.presentation.ui.feature.main.myPage.MyPageScreen
 import com.tellingus.tellingme.presentation.ui.feature.main.myspace.MySpaceScreen
 import com.tellingus.tellingme.presentation.ui.feature.main.otherSpace.OtherSpaceScreen
+import com.tellingus.tellingme.presentation.ui.feature.main.otherSpace.detail.OtherSpaceDetailScreen
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
@@ -54,10 +59,10 @@ import com.tellingus.tellingme.presentation.ui.theme.Primary400
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TellingMeScreen(
-    navController: NavHostController = rememberNavController(),
+//    navController: NavHostController = rememberNavController(),
     uri: Uri? = null,
 ) {
-
+    val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -76,28 +81,58 @@ fun TellingMeScreen(
         sheetState = sheetState,
         scrimColor = ModalBottomSheetDefaults.scrimColor,
     ) {
-        Scaffold(bottomBar = {
-            TellingMeTabBar(
-                currentDestination = currentDestination,
-                navigateToScreen = { navigationItem ->
-                    navigateBottomNavigationScreen(
-                        navController = navController,
-                        navigationItem = navigationItem
-                    )
-                })
-        }) {
+        Scaffold(
+            bottomBar = {
+                if (currentDestination?.route != TellingMeScreenRoute.RECORD.route) {
+                    TellingMeTabBar(
+                        currentDestination = currentDestination,
+                        navigateToScreen = { navigationItem ->
+                            navigateBottomNavigationScreen(
+                                navController = navController,
+                                navigationItem = navigationItem
+                            )
+                        })
+                }
+            }) {
             NavHost(
                 navController = navController,
                 startDestination = TellingMeScreenRoute.HOME.route
             ) {
                 composable(route = TellingMeScreenRoute.HOME.route) {
-                    HomeScreen()
+                    HomeScreen(
+                        navigateToOtherSpace = { id ->
+                            navController.navigate("other-space/$id")
+                        })
+                }
+                composable(route = TellingMeScreenRoute.RECORD.route) {
+                    RecordScreen(
+                        navigateToPreviousScreen = {
+                            navController.popBackStack()
+                        })
                 }
                 composable(route = TellingMeScreenRoute.MY_SPACE.route) {
-                    MySpaceScreen(navController)
+                    MySpaceScreen(
+                        navigateToRecordScreen = {
+                            navController.navigate(
+                                TellingMeScreenRoute.RECORD.route
+                            )
+                        },
+                    )
                 }
                 composable(route = TellingMeScreenRoute.OTHER_SPACE.route) {
                     OtherSpaceScreen()
+                }
+                composable(
+                    route = "${TellingMeScreenRoute.OTHER_SPACE.route}/{${KEY_ID}}",
+                    arguments = listOf(
+                        navArgument(KEY_ID) {
+                            type = NavType.StringType
+                        }
+                    )) {
+                    OtherSpaceDetailScreen(
+                        navigateToOtherSpaceScreen = {
+                            navController.navigate(TellingMeScreenRoute.OTHER_SPACE.route)
+                        })
                 }
                 composable(route = TellingMeScreenRoute.MY_PAGE.route) {
                     MyPageScreen()
@@ -118,7 +153,7 @@ fun navigateBottomNavigationScreen(
             saveState = true
         }
         launchSingleTop = true
-        restoreState = true
+//        restoreState = true
     }
 }
 
@@ -158,6 +193,7 @@ fun TellingMeTabBar(
             )
         }
     }
+
 }
 
 @Composable
@@ -191,5 +227,11 @@ enum class TellingMeBottomNavigationItem(
 }
 
 enum class TellingMeScreenRoute(val route: String) {
-    HOME("home"), MY_SPACE("my-space"), OTHER_SPACE("other-space"), MY_PAGE("my-page")
+    HOME("home"),
+    MY_SPACE("my-space"),
+    OTHER_SPACE("other-space"),
+    MY_PAGE("my-page"),
+    RECORD("record")
 }
+
+const val KEY_ID = "key-id"
