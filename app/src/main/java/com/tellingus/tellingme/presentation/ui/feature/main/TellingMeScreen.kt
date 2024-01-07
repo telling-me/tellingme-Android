@@ -1,8 +1,7 @@
-package com.tellingus.tellingme.presentation.ui.main
+package com.tellingus.tellingme.presentation.ui.feature.main
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -40,10 +39,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
-import com.tellingus.tellingme.presentation.ui.main.home.HomeScreen
-import com.tellingus.tellingme.presentation.ui.myPage.MyPageScreen
-import com.tellingus.tellingme.presentation.ui.myspace.MySpaceScreen
-import com.tellingus.tellingme.presentation.ui.otherSpace.OtherSpaceScreen
+import com.tellingus.tellingme.presentation.ui.feature.main.home.HomeScreen
+import com.tellingus.tellingme.presentation.ui.feature.main.myPage.MyPageScreen
+import com.tellingus.tellingme.presentation.ui.feature.main.myspace.MySpaceScreen
+import com.tellingus.tellingme.presentation.ui.feature.main.otherSpace.OtherSpaceScreen
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
@@ -92,7 +91,7 @@ fun TellingMeScreen(
                 startDestination = TellingMeScreenRoute.HOME.route
             ) {
                 composable(route = TellingMeScreenRoute.HOME.route) {
-                    HomeScreen(navController)
+                    HomeScreen()
                 }
                 composable(route = TellingMeScreenRoute.MY_SPACE.route) {
                     MySpaceScreen(navController)

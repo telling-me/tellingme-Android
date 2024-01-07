@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.myPage
+package com.tellingus.tellingme.presentation.ui.feature.main.myPage
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
