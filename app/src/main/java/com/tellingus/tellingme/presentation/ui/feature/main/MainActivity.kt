@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
                     Greeting()
 //                    안녕하세요!!!!@#!@#!@#!@
 //                    테스트-1 작업중이에요
+                    // 테스트1 작업 수정내용
                 }
             }
         }
