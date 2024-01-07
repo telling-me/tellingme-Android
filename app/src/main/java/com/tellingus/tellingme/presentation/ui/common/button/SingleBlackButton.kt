@@ -18,40 +18,44 @@ import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray50
+import com.tellingus.tellingme.presentation.ui.theme.Gray600
+import com.tellingus.tellingme.presentation.ui.theme.Primary100
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
+import com.tellingus.tellingme.presentation.ui.theme.Primary50
+import com.tellingus.tellingme.presentation.ui.theme.Primary500
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
-fun PrimaryLightButton(
+fun SingleBlackButton(
     modifier: Modifier = Modifier,
     size: BUTTON_SIZE,
     text: String,
     onClick: () -> Unit,
     enable: Boolean = true
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides PrimaryLightButtonRippleTheme) {
+    CompositionLocalProvider(LocalRippleTheme provides SingleBlackButtonRippleTheme) {
         Button(
             modifier = modifier,
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Gray50,
-                contentColor = Primary400,
-                disabledContainerColor = Gray50,
+                containerColor = Base0,
+                contentColor = Gray600,
+                disabledContainerColor = Base0,
                 disabledContentColor = Gray300
             ),
             contentPadding = when(size) {
                 BUTTON_SIZE.LARGE -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_large),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_large)
+                    vertical = dimensionResource(R.dimen.single_button_padding_vertical_large),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
                 BUTTON_SIZE.MEDIUM -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_medium),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_medium)
+                    vertical = dimensionResource(R.dimen.single_button_padding_vertical_medium),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
                 BUTTON_SIZE.SMALL -> PaddingValues(
-                    vertical = dimensionResource(R.dimen.button_padding_vertical_small),
-                    horizontal = dimensionResource(R.dimen.button_padding_horizontal_small)
+                    vertical = dimensionResource(R.dimen.single_button_padding_vertical_small),
+                    horizontal = dimensionResource(R.dimen.single_button_padding_horizontal)
                 )
             },
             enabled = enable
@@ -68,7 +72,7 @@ fun PrimaryLightButton(
     }
 }
 
-private object PrimaryLightButtonRippleTheme : RippleTheme {
+private object SingleBlackButtonRippleTheme : RippleTheme {
     @Composable
     override fun defaultColor() = Gray50
 
@@ -81,14 +85,14 @@ private object PrimaryLightButtonRippleTheme : RippleTheme {
 
 @Preview
 @Composable
-fun PrimaryLightButtonLargePreview() {
+fun SingleBlackButtonLargePreview() {
     Column {
-        PrimaryLightButton(
+        SingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
             onClick = { }
         )
-        PrimaryLightButton(
+        SingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
             onClick = { },
@@ -99,14 +103,14 @@ fun PrimaryLightButtonLargePreview() {
 
 @Preview
 @Composable
-fun PrimaryLightButtonMediumPreview() {
+fun SingleBlackButtonMediumPreview() {
     Column {
-        PrimaryLightButton(
+        SingleBlackButton(
             size = BUTTON_SIZE.MEDIUM,
             text = "Medium",
             onClick = { }
         )
-        PrimaryLightButton(
+        SingleBlackButton(
             size = BUTTON_SIZE.MEDIUM,
             text = "Medium",
             onClick = { },
@@ -117,14 +121,14 @@ fun PrimaryLightButtonMediumPreview() {
 
 @Preview
 @Composable
-fun PrimaryLightButtonSmallPreview() {
+fun SingleBlackButtonSmallPreview() {
     Column {
-        PrimaryLightButton(
+        SingleBlackButton(
             size = BUTTON_SIZE.SMALL,
             text = "Small",
             onClick = { }
         )
-        PrimaryLightButton(
+        SingleBlackButton(
             size = BUTTON_SIZE.SMALL,
             text = "Small",
             onClick = { },

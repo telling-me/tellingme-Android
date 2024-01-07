@@ -59,9 +59,9 @@ fun PrimaryButton(
             Text(
                 text = text,
                 style = when(size) {
-                    BUTTON_SIZE.LARGE -> TellingmeTheme.typography.head1Regular
-                    BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.head1Regular
-                    BUTTON_SIZE.SMALL -> TellingmeTheme.typography.head1Regular
+                    BUTTON_SIZE.LARGE -> TellingmeTheme.typography.body1Bold
+                    BUTTON_SIZE.MEDIUM -> TellingmeTheme.typography.body2Bold
+                    BUTTON_SIZE.SMALL -> TellingmeTheme.typography.caption1Bold
                 }
             )
         }
