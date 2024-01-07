@@ -6,5 +6,5 @@ enum class BUTTON_SIZE {
 
 enum class BUTTON_STATE {
     // HOVER는 Ripple 효과로 제외
-    DEFAULT, SELECTED
+    ENABLED, DISABLED, SELECTED
 }
