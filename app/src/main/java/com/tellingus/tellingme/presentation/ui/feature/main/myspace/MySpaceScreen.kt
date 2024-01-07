@@ -1,13 +1,12 @@
-package com.tellingus.tellingme.presentation.ui.everyspace
+package com.tellingus.tellingme.presentation.ui.feature.main.myspace
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
-fun EverySpaceScreen(
+fun MySpaceScreen(
     navHostController: NavHostController
-
 ) {
-    Text(text = "모두의 공간")
+    Text(text = "나의 공간")
 }
