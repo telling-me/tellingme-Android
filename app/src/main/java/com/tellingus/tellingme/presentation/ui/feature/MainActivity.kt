@@ -39,10 +39,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TellingmeTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(modifier = Modifier.fillMaxSize()) {
                     TellingMeScreen()
-//                    Greeting()
-                    ////////// test1111111111
                 }
             }
         }
@@ -50,53 +48,11 @@ class MainActivity : ComponentActivity() {
 
 }
 
-@Composable
-fun Greeting() {
-    Surface(
-        modifier = Modifier.padding(horizontal = 12.dp)
-    ) {
-    Column {
-        PrimaryButton(
-            modifier = Modifier.fillMaxWidth(),
-            size = BUTTON_SIZE.LARGE,
-            text = "버튼버튼",
-            onClick = { }
-        )
-        PrimaryLightButton(
-            size = BUTTON_SIZE.LARGE,
-            text = "버튼버튼",
-            onClick = { }
-        )
-        SecondaryButton(
-            size = BUTTON_SIZE.LARGE,
-            text = "버튼버튼",
-            onClick = { }
-        )
-        SingleButton(
-            size = BUTTON_SIZE.LARGE,
-            text = "버튼버튼",
-            onClick = { }
-        )
-        SingleBlackButton(
-            size = BUTTON_SIZE.LARGE,
-            text = "버튼버튼",
-            onClick = { }
-        )
-        SingleBlackButton(
-            size = BUTTON_SIZE.LARGE,
-            text = "버튼버튼",
-            onClick = { }
-        )
-        FloatingButton {}
-        TellingmeIconButton {}
-    }
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     TellingmeTheme {
-        Greeting()
+        TellingMeScreen()
     }
 }
