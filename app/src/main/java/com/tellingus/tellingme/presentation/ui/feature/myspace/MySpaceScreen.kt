@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.main.myspace
+package com.tellingus.tellingme.presentation.ui.feature.myspace
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

@@ -1,8 +1,7 @@
-package com.tellingus.tellingme.presentation.ui.feature.main
+package com.tellingus.tellingme.presentation.ui.feature
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -42,12 +41,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.tellingus.tellingme.R
-import com.tellingus.tellingme.presentation.ui.feature.main.home.HomeScreen
-import com.tellingus.tellingme.presentation.ui.feature.main.home.record.RecordScreen
-import com.tellingus.tellingme.presentation.ui.feature.main.myPage.MyPageScreen
-import com.tellingus.tellingme.presentation.ui.feature.main.myspace.MySpaceScreen
-import com.tellingus.tellingme.presentation.ui.feature.main.otherSpace.OtherSpaceScreen
-import com.tellingus.tellingme.presentation.ui.feature.main.otherSpace.detail.OtherSpaceDetailScreen
+import com.tellingus.tellingme.presentation.ui.feature.home.HomeScreen
+import com.tellingus.tellingme.presentation.ui.feature.home.record.RecordScreen
+import com.tellingus.tellingme.presentation.ui.feature.mypage.MyPageScreen
+import com.tellingus.tellingme.presentation.ui.feature.myspace.MySpaceScreen
+import com.tellingus.tellingme.presentation.ui.feature.otherspace.OtherSpaceScreen
+import com.tellingus.tellingme.presentation.ui.feature.otherspace.detail.OtherSpaceDetailScreen
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
@@ -59,10 +58,9 @@ import com.tellingus.tellingme.presentation.ui.theme.Primary400
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TellingMeScreen(
-//    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController(),
     uri: Uri? = null,
 ) {
-    val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -123,7 +121,7 @@ fun TellingMeScreen(
                     OtherSpaceScreen()
                 }
                 composable(
-                    route = "${TellingMeScreenRoute.OTHER_SPACE.route}/{${KEY_ID}}",
+                    route = "${TellingMeScreenRoute.OTHER_SPACE.route}/{$KEY_ID}",
                     arguments = listOf(
                         navArgument(KEY_ID) {
                             type = NavType.StringType

@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.main.otherSpace.detail
+package com.tellingus.tellingme.presentation.ui.feature.otherspace.detail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
