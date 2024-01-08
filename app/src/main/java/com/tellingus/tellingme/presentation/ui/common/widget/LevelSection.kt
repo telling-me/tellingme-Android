@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tellingus.tellingme.presentation.ui.common.ProgressBar.PercentBar
+import com.tellingus.tellingme.presentation.ui.common.progressbar.PercentBar
 import com.tellingus.tellingme.presentation.ui.common.chip.PercentChip
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
