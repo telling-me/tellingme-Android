@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.main
+package com.tellingus.tellingme.presentation.ui.feature
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

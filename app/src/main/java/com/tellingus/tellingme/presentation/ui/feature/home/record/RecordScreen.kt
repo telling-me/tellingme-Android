@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.main.home.record
+package com.tellingus.tellingme.presentation.ui.feature.home.record
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
