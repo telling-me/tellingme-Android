@@ -49,7 +49,8 @@ fun TellingmeIconButton(
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick
+                onClick = onClick,
+                enabled = true
             ),
         tint = when(state) {
             ICON_BUTTON_STATE.DEFAULT, ICON_BUTTON_STATE.SELECTED -> color
