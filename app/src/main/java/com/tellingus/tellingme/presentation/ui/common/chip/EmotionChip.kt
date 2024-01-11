@@ -36,6 +36,7 @@ fun EmotionChip(modifier: Modifier = Modifier, feeling: String = "happy") {
 fun getFeeling(data: String): String {
     return when (data.lowercase()) {
         "happy" -> "행복해요"
-        else -> "행복해요"
+        "excited" -> "신나요"
+        else -> "기본값"
     }
 }

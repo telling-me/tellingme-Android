@@ -39,9 +39,9 @@ fun OpinionCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(max = 148.dp)
+            .heightIn(min = 130.dp)
             .background(Color.White, shape = RoundedCornerShape(20.dp))
-            .padding(start = 22.dp, end = 22.dp, top = 20.dp, bottom = 20.dp)
+            .padding(start = 22.dp, end = 22.dp, top = 20.dp)
     ) {
         Row(
         ) {
@@ -59,7 +59,6 @@ fun OpinionCard(
             }
             Column() {
                 EmotionChip(feeling = feeling)
-
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = description,
