@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.common.appbar.TellingMeAppBar
+import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_STATE
+import com.tellingus.tellingme.presentation.ui.common.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.widget.LevelSection
@@ -51,13 +53,17 @@ fun HomeScreen(
                     )
                 }
 
-                Column(modifier = Modifier.padding(start = 20.dp, top = 32.dp)) {
+                Column(modifier = Modifier.padding(start = 20.dp, top = 32.dp, end = 20.dp)) {
                     Text(text = "나와 비슷한 텔러들의 이야기", style = TellingmeTheme.typography.body1Bold)
-                    
-                    Column {
-                        Text(text = "의견 카드 캐로셀")
+
+                    Column(modifier = Modifier.padding(top = 8.dp)) {
+                        OpinionCard(
+                            heartCount = 1234,
+                            buttonState = BUTTON_STATE.SELECTED,
+                            feeling = "happy"
+                        )
                     }
-                    
+
                 }
             }
         })
