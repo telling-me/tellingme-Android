@@ -19,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_STATE
 import com.tellingus.tellingme.presentation.ui.common.button.HeartButton
+import com.tellingus.tellingme.presentation.ui.common.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.chip.EmotionChip
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
@@ -32,6 +34,7 @@ fun OpinionCard(
     heartCount: Int,
     buttonState: BUTTON_STATE,
     feeling: String,
+    description: String = "나는 보통 집단 안에서 이야기 나온 내용에서 핵심을 뽑아내 정리하는 것을 잘하는 것 같다. 예를 들면 학교 팀플을 진행할 때 빛을 보인다. 팀원들의 의견을 수용하여 핵심만을 요약한다."
 ) {
     Box(
         modifier = modifier
@@ -59,7 +62,7 @@ fun OpinionCard(
 
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
-                    text = "나는 보통 집단 안에서 이야기 나온 내용에서 핵심을 뽑아내 정리하는 것을 잘하는 것 같다. 예를 들면 학교 팀플을 진행할 때 빛을 보인다. 팀원들의 의견을 수용하여 핵심만을 요약한다.",
+                    text = description,
                     style = TellingmeTheme.typography.caption1Regular
                 )
             }
@@ -76,5 +79,13 @@ fun OpinionCard(
                 onClick = {}
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OpinionCardPreview() {
+    Column {
+        OpinionCard(heartCount = 1234, buttonState = BUTTON_STATE.SELECTED, feeling = "happy")
     }
 }
