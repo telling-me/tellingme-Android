@@ -1,20 +1,17 @@
 package com.tellingus.tellingme.presentation.ui.feature.home
 
-import android.widget.ScrollView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.tellingus.tellingme.presentation.ui.common.appbar.TellingMeAppBar
 import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.theme.Background100
@@ -22,6 +19,7 @@ import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
 fun HomeScreen(
+    navigateToRecordScreen: () -> Unit,
     navigateToOtherSpace: (name: String) -> Unit
 ) {
     MainLayout(
@@ -44,6 +42,12 @@ fun HomeScreen(
                         modifier = Modifier.padding(top = 5.dp),
                         text = "12명이 대답했어요!",
                         style = TellingmeTheme.typography.caption1Regular
+                    )
+                    QuestionSection(
+                        modifier = Modifier.padding(top=12.dp),
+                        title = "지금까지의 나의 인생을 두 단계로\n나눈다면 어느 시점에 구분선을 둘 건가요?",
+                        description = "그 역활이 나의 성향을 반영할 수 있어요",
+                        onClickButton = navigateToRecordScreen
                     )
                 }
             }
