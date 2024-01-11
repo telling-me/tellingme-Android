@@ -1,18 +1,242 @@
 package com.tellingus.tellingme.presentation.ui.feature.home.record
 
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.tellingus.tellingme.R
+import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
+import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
+import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
+import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.theme.Background100
+import com.tellingus.tellingme.presentation.ui.theme.Base0
+import com.tellingus.tellingme.presentation.ui.theme.Base100
+import com.tellingus.tellingme.presentation.ui.theme.Gray300
+import com.tellingus.tellingme.presentation.ui.theme.Gray500
+import com.tellingus.tellingme.presentation.ui.theme.Gray600
+import com.tellingus.tellingme.presentation.ui.theme.Gray700
+import com.tellingus.tellingme.presentation.ui.theme.Gray800
+import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
-fun RecordScreen(navigateToPreviousScreen: () -> Unit) {
-    Column {
+fun RecordScreen(
+    modifier: Modifier = Modifier,
+    navigateToPreviousScreen: () -> Unit
+) {
+    Surface(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Background100)
+    ) {
+        MainLayout(
+            header = {
+                RecordScreenHeader(modifier)
+            },
+            content = {
+                RecordScreenContent(modifier)
+            }
+        )
+    }
+}
 
-        Text(text = "기록하기 화면입니다")
+@Composable
+fun RecordScreenHeader(
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
 
-        Button(onClick = { navigateToPreviousScreen() }) {
-            Text("이전")
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = 12.dp,
+                top = 5.dp,
+                bottom = 5.dp,
+                end = 10.dp
+            ),
+    ) {
+        TellingmeIconButton(
+            modifier = modifier.align(Alignment.CenterStart),
+            iconRes = R.drawable.icon_caret_left,
+            size = BUTTON_SIZE.MEDIUM,
+            color = Gray500,
+            onClick = {
+                Toast.makeText(context, "뒤로가기",Toast.LENGTH_SHORT).show()
+            }
+        )
+        SingleButton(
+            modifier = modifier.align(Alignment.CenterEnd),
+            size = BUTTON_SIZE.LARGE,
+            text = "완료",
+            onClick = {
+                Toast.makeText(context, "완료클릭",Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RecordScreenContent(
+    modifier: Modifier = Modifier
+) {
+    var recordText by remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(
+                    top = 16.dp,
+                    start = 20.dp,
+                    end = 20.dp,
+                    bottom = 31.dp
+                )
+        ) {
+            Text(
+                text = "지금까지 나의 인생을 두 단계로\n나눈다면 어느 시점에 구분선을 둘 건가요?",
+                style = TellingmeTheme.typography.head3Regular,
+                color = Gray700
+            )
+            Spacer(modifier = modifier.size(8.dp))
+            Text(
+                text = "스스로 크게 변화한 시점을 떠올려봐요.",
+                style = TellingmeTheme.typography.body2Regular,
+                color = Gray500
+            )
+            Spacer(modifier = modifier.size(16.dp))
+
+            Card(
+                modifier = modifier.fillMaxSize(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(Base0)
+            ) {
+                Column(
+                    modifier = modifier.padding(horizontal = 16.dp, vertical = 20.dp)
+                ) {
+                    Row {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                modifier = modifier.size(44.dp),
+                                painter = painterResource(R.drawable.emotion_circle),
+                                contentDescription = null
+                            )
+                            Spacer(modifier = modifier.size(8.dp))
+                            Text(
+                                modifier = modifier
+                                    .defaultMinSize(minWidth = 63.dp)
+                                    .background(
+                                        color = Background100,
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(horizontal = 6.dp, vertical = 1.5.dp),
+                                text = "?",
+                                textAlign = TextAlign.Center,
+                                style = TellingmeTheme.typography.body2Bold,
+                                color = Gray600
+                            )
+                        }
+                    }
+                    Spacer(modifier = modifier.size(12.dp))
+                    Text(
+                        text = "2023.08.26",
+                        style = TellingmeTheme.typography.caption1Bold,
+                        color = Gray300
+                    )
+                    Spacer(modifier = modifier.size(8.dp))
+
+                    BasicTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        value = recordText,
+                        onValueChange = {
+                            recordText = it
+                        },
+                        textStyle = TellingmeTheme.typography.body2Regular.copy(
+                            color = Gray800,
+                            lineHeight = 24.sp,
+                            textAlign = TextAlign.Start
+                        ),
+                        decorationBox = { innerTextField ->
+                            Box {
+                                if (recordText.isBlank()) {
+                                    Text(
+                                        text = "여기를 눌러 작성해주세요!",
+                                        style = TellingmeTheme.typography.body2Regular.copy(
+                                            color = Gray300
+                                        )
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        }
+                    )
+                }
+            }
         }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = "공개",
+                style = TellingmeTheme.typography.caption1Bold,
+                color = Gray600
+            )
+            Spacer(modifier = modifier.size(10.dp))
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RecordScreenHeaderPreview() {
+    RecordScreenHeader()
+}
+
+@Preview
+@Composable
+fun RecordScreenPreview() {
+    RecordScreen {
+
     }
 }
