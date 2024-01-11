@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
@@ -79,7 +80,13 @@ fun QuestionSection(
             )
 
         }
-
     }
+}
 
+@Preview(showBackground = true)
+@Composable
+fun QuestionSectionPreview() {
+    Column {
+        QuestionSection(title = "제목을 입력해주세요", description = "내용을 입력해주세요", onClickButton = {})
+    }
 }
