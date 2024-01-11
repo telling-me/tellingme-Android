@@ -44,11 +44,20 @@ fun HomeScreen(
                         style = TellingmeTheme.typography.caption1Regular
                     )
                     QuestionSection(
-                        modifier = Modifier.padding(top=12.dp),
+                        modifier = Modifier.padding(top = 12.dp),
                         title = "지금까지의 나의 인생을 두 단계로\n나눈다면 어느 시점에 구분선을 둘 건가요?",
                         description = "그 역활이 나의 성향을 반영할 수 있어요",
                         onClickButton = navigateToRecordScreen
                     )
+                }
+
+                Column(modifier = Modifier.padding(start = 20.dp, top = 32.dp)) {
+                    Text(text = "나와 비슷한 텔러들의 이야기", style = TellingmeTheme.typography.body1Bold)
+                    
+                    Column {
+                        Text(text = "의견 카드 캐로셀")
+                    }
+                    
                 }
             }
         })
