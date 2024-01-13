@@ -1,8 +1,8 @@
 package com.tellingus.tellingme.presentation.ui.common.dialog
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
-import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButtonLargePreview
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
@@ -29,10 +28,8 @@ fun DoubleButtonDialog(
     modifier: Modifier = Modifier,
     title: String,
     contents: String,
-    rightButtonText: String,
-    onClickRightButton: () -> Unit,
-    leftButtonText: String,
-    onClickLeftButton: () -> Unit
+    leftButton: @Composable RowScope.() -> Unit,
+    rightButton: @Composable RowScope.() -> Unit
 ) {
     Card(
         modifier = modifier
@@ -68,23 +65,12 @@ fun DoubleButtonDialog(
             Spacer(modifier = modifier.size(20.dp))
 
             Row {
-                PrimaryLightButton(
-                    modifier = modifier.weight(1f),
-                    size = BUTTON_SIZE.LARGE,
-                    text = leftButtonText,
-                    onClick = onClickLeftButton
-                )
+                leftButton()
                 Spacer(modifier = modifier.size(8.dp))
-                PrimaryButton(
-                    modifier = modifier.weight(1f),
-                    size = BUTTON_SIZE.LARGE,
-                    text = rightButtonText,
-                    onClick = onClickRightButton
-                )
+                rightButton()
             }
         }
     }
-
 }
 
 @Preview
@@ -93,9 +79,21 @@ fun DoubleButtonDialogPreview() {
     DoubleButtonDialog(
         title = "Title",
         contents = "텍스트",
-        rightButtonText = "완료",
-        leftButtonText = "취소",
-        onClickRightButton = {},
-        onClickLeftButton = {}
+        leftButton = {
+            PrimaryLightButton(
+                modifier = Modifier.weight(1f),
+                size = BUTTON_SIZE.LARGE,
+                text = "취소",
+                onClick = {}
+            )
+        },
+        rightButton = {
+            PrimaryButton(
+                  modifier = Modifier.weight(1f),
+                  size = BUTTON_SIZE.LARGE,
+                  text = "완료",
+                  onClick = {}
+              )
+        }
     )
 }
