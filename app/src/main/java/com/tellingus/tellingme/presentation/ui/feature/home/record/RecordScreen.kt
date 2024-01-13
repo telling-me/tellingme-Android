@@ -54,6 +54,7 @@ import com.tellingus.tellingme.presentation.ui.common.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
 import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.dialog.DoubleButtonDialog
+import com.tellingus.tellingme.presentation.ui.common.dialog.ShowDoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
@@ -121,42 +122,8 @@ fun RecordScreenHeader(
         )
 
         if (showDialogState) {
-            ShowDialog(
+            ShowDoubleButtonDialog(
                 modifier = modifier,
-                onClickLeftButton = {
-                    showDialogState = false
-                },
-                onClickRightButton = {
-                    Toast.makeText(context, "완료 후 홈화면 이동해야 함",Toast.LENGTH_SHORT).show()
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun ShowDialog(
-    modifier: Modifier = Modifier,
-    onClickLeftButton: () -> Unit,
-    onClickRightButton: () -> Unit
-) {
-    Dialog(
-        onDismissRequest = {},
-        properties = DialogProperties(
-            dismissOnBackPress = false,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Surface(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(20.dp),
-            color = Base0
-        ) {
-            DoubleButtonDialog(
                 title = "글을 등록할까요?",
                 contents = "글을 등록하고 나면 감정을 바꿀 수 없어요.",
                 leftButton = {
@@ -164,7 +131,7 @@ fun ShowDialog(
                         modifier = Modifier.weight(1f),
                         size = BUTTON_SIZE.LARGE,
                         text = "취소",
-                        onClick = onClickLeftButton
+                        onClick = { showDialogState = false }
                     )
                 },
                 rightButton = {
@@ -172,7 +139,9 @@ fun ShowDialog(
                         modifier = Modifier.weight(1f),
                         size = BUTTON_SIZE.LARGE,
                         text = "완료",
-                        onClick = onClickRightButton
+                        onClick = {
+                            Toast.makeText(context, "완료 후 홈으로 이동", Toast.LENGTH_SHORT).show()
+                        }
                     )
                 }
             )
