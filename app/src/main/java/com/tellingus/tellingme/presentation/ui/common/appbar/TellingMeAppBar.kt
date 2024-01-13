@@ -47,7 +47,11 @@ fun BasicAppBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        leftSlot?.let { it() }
-        rightSlot?.let { it() }
+        Box() {
+            leftSlot?.let { it() }
+        }
+        Box() {
+            rightSlot?.let { it() }
+        }
     }
 }
