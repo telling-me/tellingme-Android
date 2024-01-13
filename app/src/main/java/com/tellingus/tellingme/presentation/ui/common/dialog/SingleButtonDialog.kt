@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.common.dialog
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,8 +25,7 @@ fun SingleButtonDialog(
     modifier: Modifier = Modifier,
     title: String,
     contents: String,
-    buttonText: String,
-    onClickButton: () -> Unit
+    completeButton: @Composable () -> Unit
 ) {
     Card(
         modifier = modifier
@@ -61,16 +59,9 @@ fun SingleButtonDialog(
                 )
             )
             Spacer(modifier = modifier.size(20.dp))
-
-            PrimaryButton(
-                modifier = modifier.fillMaxWidth(),
-                size = BUTTON_SIZE.LARGE,
-                text = buttonText,
-                onClick = onClickButton
-            )
+            completeButton()
         }
     }
-
 }
 
 @Preview
@@ -79,7 +70,13 @@ fun SingleButtonDialogPreview() {
     SingleButtonDialog(
         title = "Title",
         contents = "텍스트",
-        buttonText = "완료",
-        onClickButton = {}
+        completeButton = {
+            PrimaryButton(
+                modifier = Modifier.fillMaxWidth(),
+                size = BUTTON_SIZE.LARGE,
+                text = "완료",
+                onClick = {}
+            )
+        }
     )
 }
