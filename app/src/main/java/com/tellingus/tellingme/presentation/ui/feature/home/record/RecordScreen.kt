@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.ripple.rememberRipple
@@ -44,10 +45,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
+import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
 import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
+import com.tellingus.tellingme.presentation.ui.common.dialog.DoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
@@ -86,6 +92,7 @@ fun RecordScreenHeader(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    var showDialogState by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -110,14 +117,69 @@ fun RecordScreenHeader(
             modifier = modifier.align(Alignment.CenterEnd),
             size = BUTTON_SIZE.LARGE,
             text = "완료",
-            onClick = {
-                Toast.makeText(context, "완료클릭",Toast.LENGTH_SHORT).show()
-            }
+            onClick = { showDialogState = !showDialogState }
         )
+
+        if (showDialogState) {
+            ShowDialog(
+                modifier = modifier,
+                onClickLeftButton = {
+                    showDialogState = false
+                },
+                onClickRightButton = {
+                    Toast.makeText(context, "완료 후 홈화면 이동해야 함",Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ShowDialog(
+    modifier: Modifier = Modifier,
+    onClickLeftButton: () -> Unit,
+    onClickRightButton: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Surface(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(20.dp),
+            color = Base0
+        ) {
+            DoubleButtonDialog(
+                title = "글을 등록할까요?",
+                contents = "글을 등록하고 나면 감정을 바꿀 수 없어요.",
+                leftButton = {
+                    PrimaryLightButton(
+                        modifier = Modifier.weight(1f),
+                        size = BUTTON_SIZE.LARGE,
+                        text = "취소",
+                        onClick = onClickLeftButton
+                    )
+                },
+                rightButton = {
+                    PrimaryButton(
+                        modifier = Modifier.weight(1f),
+                        size = BUTTON_SIZE.LARGE,
+                        text = "완료",
+                        onClick = onClickRightButton
+                    )
+                }
+            )
+        }
+    }
+}
+
 @Composable
 fun RecordScreenContent(
     modifier: Modifier = Modifier
@@ -250,12 +312,6 @@ fun RecordScreenContent(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RecordScreenHeaderPreview() {
-    RecordScreenHeader()
 }
 
 @Preview
