@@ -23,12 +23,12 @@ fun MainLayout(
     background: Color = Background100,
 ) {
     Scaffold(
+        modifier = Modifier.background(background),
         topBar = { header?.let { header() } },
         content = {
             Box(
                 modifier = Modifier
                     .padding(top = if (header != null) 48.dp else 0.dp)
-                    .background(background)
                     .verticalScroll(
                         rememberScrollState()
                     )
