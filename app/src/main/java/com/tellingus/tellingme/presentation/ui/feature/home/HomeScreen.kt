@@ -1,21 +1,23 @@
 package com.tellingus.tellingme.presentation.ui.feature.home
 
+
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.tellingus.tellingme.presentation.ui.common.appbar.TellingMeAppBar
+import com.tellingus.tellingme.R
+import com.tellingus.tellingme.presentation.ui.common.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_STATE
 import com.tellingus.tellingme.presentation.ui.common.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.chip.ActionChip
@@ -23,7 +25,7 @@ import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
-import com.tellingus.tellingme.presentation.ui.theme.Background100
+import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -46,9 +48,25 @@ fun HomeScreen(
         "excited",
     )
 
-    MainLayout(header = { TellingMeAppBar(title = "헤더영역") }, content = {
+    MainLayout(header = {
+        BasicAppBar(
+            leftSlot = {
+                Image(
+                    painter = painterResource(R.drawable.icon_caret_left),
+                    contentDescription = "",
+                    modifier = Modifier.size(24.dp),
+                )
+            },
+            rightSlot = {
+                Text(
+                    text = "완료",
+                    style = TellingmeTheme.typography.body1Bold,
+                    color = Primary400
+                )
+            }
+        )
+    }, content = {
         Column(
-            modifier = Modifier.background(Background100),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
@@ -93,8 +111,6 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .padding(top = 14.dp, bottom = 30.dp)
-                    .height(100.dp)
-                    .background(Color.Red)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
