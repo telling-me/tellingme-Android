@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -75,7 +76,6 @@ fun RecordScreen(
     Surface(
         modifier = modifier
             .fillMaxSize()
-            .background(Background100)
     ) {
         MainLayout(
             header = {
@@ -83,7 +83,8 @@ fun RecordScreen(
             },
             content = {
                 RecordScreenContent(modifier)
-            }
+            },
+            isScrollable = false
         )
     }
 }
@@ -161,7 +162,6 @@ fun RecordScreenContent(
     ) {
         Column(
             modifier = modifier
-                .fillMaxWidth()
                 .weight(1f)
                 .padding(
                     top = 16.dp,
@@ -189,7 +189,8 @@ fun RecordScreenContent(
                 colors = CardDefaults.cardColors(Base0)
             ) {
                 Column(
-                    modifier = modifier.padding(horizontal = 16.dp, vertical = 20.dp)
+                    modifier = modifier
+                        .padding(horizontal = 16.dp, vertical = 20.dp)
                 ) {
                     Row {
                         Column(
