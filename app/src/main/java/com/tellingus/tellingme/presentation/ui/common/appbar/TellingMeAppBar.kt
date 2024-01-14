@@ -7,13 +7,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tellingus.tellingme.R
+import com.tellingus.tellingme.presentation.ui.theme.Gray200
+import com.tellingus.tellingme.presentation.ui.theme.Primary400
 
 
 /**
@@ -37,8 +43,8 @@ fun TellingMeAppBar( // 제거 되도될것같음
 fun BasicAppBar(
     modifier: Modifier = Modifier
         .background(Color.White)
-        .height(44.dp)
-        .padding(start = 8.dp, end = 8.dp)
+        .height(48.dp)
+        .padding(start = 20.dp, end = 20.dp)
         .fillMaxWidth(),
     leftSlot: @Composable (() -> Unit)? = null, rightSlot: @Composable (() -> Unit)? = null
 ) {
@@ -54,4 +60,23 @@ fun BasicAppBar(
             rightSlot?.let { it() }
         }
     }
+}
+
+@Preview()
+@Composable
+fun BasicAppBarPreview() {
+    BasicAppBar(leftSlot = {
+        Icon(
+            painter = painterResource(R.drawable.tellingme_logo),
+            contentDescription = "tellingme_logo",
+            tint = Primary400
+        )
+    }, rightSlot = {
+        Icon(
+            painter = painterResource(R.drawable.icon_notice),
+            contentDescription = "icon_notice",
+            modifier = Modifier.size(24.dp),
+            tint = Gray200
+        )
+    })
 }
