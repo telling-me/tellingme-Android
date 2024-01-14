@@ -3,6 +3,7 @@ package com.tellingus.tellingme.presentation.ui.common.layout
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,6 +22,7 @@ fun MainLayout(
     header: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
     background: Color = Background100,
+    isScrollable: Boolean = true
 ) {
     Scaffold(
         modifier = Modifier.background(background),
@@ -29,9 +31,15 @@ fun MainLayout(
             Box(
                 modifier = Modifier
                     .padding(top = if (header != null) 48.dp else 0.dp)
-                    .verticalScroll(
-                        rememberScrollState()
-                    )
+                    .let {
+                        if (isScrollable) {
+                            it.verticalScroll(
+                                rememberScrollState()
+                            )
+                        } else {
+                            it
+                        }
+                    }
             ) {
                 content()
             }
