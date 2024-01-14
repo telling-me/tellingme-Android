@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
+import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
@@ -44,14 +46,17 @@ fun HomeScreen(
 @Composable()
 fun HomeScreenHeader() {
     BasicAppBar(leftSlot = {
-        Image(
-            painter = painterResource(R.drawable.icon_caret_left),
-            contentDescription = "",
-            modifier = Modifier.size(24.dp),
+        Icon(
+            painter = painterResource(R.drawable.tellingme_logo),
+            contentDescription = "tellingme_logo",
+            tint = Primary400
         )
     }, rightSlot = {
-        Text(
-            text = "완료", style = TellingmeTheme.typography.body1Bold, color = Primary400
+        Icon(
+            painter = painterResource(R.drawable.icon_notice),
+            contentDescription = "icon_notice",
+            modifier = Modifier.size(24.dp),
+            tint = Gray200
         )
     })
 }
@@ -137,6 +142,7 @@ fun HomeScreenContent(
 fun HomeScreenHeaderPreview() {
     HomeScreenHeader()
 }
+
 @Preview
 @Composable
 fun HomeScreenPreview() {
