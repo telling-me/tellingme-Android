@@ -60,6 +60,7 @@ dependencies {
     // BottomNavigation 및 BottomNavigationItem
     implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.webkit:webkit:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     // Navigation Compose
     val nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
