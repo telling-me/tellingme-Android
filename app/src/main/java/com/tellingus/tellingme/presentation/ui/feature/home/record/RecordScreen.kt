@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.home.record
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,55 +10,46 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
 import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
-import com.tellingus.tellingme.presentation.ui.common.dialog.DoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.dialog.ShowDoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
-import com.tellingus.tellingme.presentation.ui.theme.Base100
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
@@ -67,22 +57,51 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray700
 import com.tellingus.tellingme.presentation.ui.theme.Gray800
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RecordScreen(
     modifier: Modifier = Modifier,
     navigateToPreviousScreen: () -> Unit
 ) {
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = false
+    )
+
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        sheetBackgroundColor = Background100,
+        sheetContent = {
+            Column(
+                modifier = modifier
+                    .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+            ) {
+                Text(
+                    text = "이 글 속 나의 감정을 떠올려 봐요",
+                    style = TellingmeTheme.typography.head3Bold,
+                    color = Gray600
+                )
+                Spacer(modifier = modifier.size(4.dp))
+                Text(
+                    text = "행복해요.",
+                    style = TellingmeTheme.typography.body1Regular,
+                    color = Gray600
+                )
+
+                //이 아래로 감정표현 요소들 ~~~
+
+            }
+        }
     ) {
         MainLayout(
             header = {
                 RecordScreenHeader(modifier)
             },
             content = {
-                RecordScreenContent(modifier)
+                RecordScreenContent(modifier, bottomSheetState)
             },
             isScrollable = false
         )
@@ -150,12 +169,15 @@ fun RecordScreenHeader(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RecordScreenContent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    bottomSheetState: ModalBottomSheetState
 ) {
     var recordText by remember { mutableStateOf("") }
     var switchState by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -192,7 +214,16 @@ fun RecordScreenContent(
                     modifier = modifier
                         .padding(horizontal = 16.dp, vertical = 20.dp)
                 ) {
-                    Row {
+                    Row(
+                        modifier = modifier
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = {
+                                    scope.launch { bottomSheetState.show() }
+                                }
+                            )
+                    ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
