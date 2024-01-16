@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
     // ConstraintLayout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
