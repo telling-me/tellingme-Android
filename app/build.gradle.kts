@@ -78,6 +78,9 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    // Material detail version
+    implementation("androidx.compose.material3:material3:1.1.1")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.2")
