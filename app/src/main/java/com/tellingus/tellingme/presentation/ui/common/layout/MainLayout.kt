@@ -25,7 +25,9 @@ fun MainLayout(
     isScrollable: Boolean = true
 ) {
     Scaffold(
-        modifier = Modifier.background(background),
+        modifier = Modifier
+            .background(background)
+            .fillMaxSize(),
         topBar = { header?.let { header() } },
         content = {
             Box(
