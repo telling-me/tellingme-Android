@@ -44,8 +44,8 @@ fun SingleButtonDialog(
                 .padding(
                     top = 30.dp,
                     bottom = 20.dp,
-                    start = 20.dp,
-                    end = 20.dp
+                    start = 16.dp,
+                    end = 16.dp
                 )
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
