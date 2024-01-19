@@ -26,8 +26,8 @@ fun MainLayout(
 ) {
     Scaffold(
         modifier = Modifier
-            .background(background)
             .fillMaxSize(),
+        containerColor = background,
         topBar = { header?.let { header() } },
         content = {
             Box(
