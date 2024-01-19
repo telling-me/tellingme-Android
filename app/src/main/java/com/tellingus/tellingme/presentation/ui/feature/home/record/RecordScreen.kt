@@ -1,12 +1,15 @@
 package com.tellingus.tellingme.presentation.ui.feature.home.record
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -14,6 +17,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
@@ -26,13 +33,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +59,8 @@ import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
 import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.dialog.ShowDoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.widget.TOOLTIP_TYPE
+import com.tellingus.tellingme.presentation.ui.common.widget.ToolTip
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
@@ -54,6 +70,8 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray700
 import com.tellingus.tellingme.presentation.ui.theme.Gray800
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecordScreen(
@@ -174,14 +192,16 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                         .padding(horizontal = 16.dp, vertical = 20.dp)
                 ) {
                     Row(
-                        modifier = modifier
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { isEmotionBottomSheetOpen = true }
-                            )
+                        modifier = modifier.fillMaxWidth()
+//                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(
+                            modifier = modifier
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = { isEmotionBottomSheetOpen = true }
+                                ),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
@@ -204,6 +224,12 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                                 color = Gray600
                             )
                         }
+                        Spacer(modifier = modifier.size(12.dp))
+                        ToolTip(
+                            modifier = modifier.padding(top = 4.dp),
+                            type = TOOLTIP_TYPE.BASIC,
+                            text = "감정을 선택해주세요!"
+                        )
                     }
                     Spacer(modifier = modifier.size(12.dp))
                     Text(
@@ -257,12 +283,14 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = modifier.size(10.dp))
             Switch(
+                modifier = modifier.scale(0.8f),
                 checked = switchState,
                 onCheckedChange = { switchState = it },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = Base0,
                     checkedTrackColor = Primary400
-                )
+                ),
+                interactionSource = remember { MutableInteractionSource() }
             )
             Spacer(modifier = modifier.weight(1f))
             Text(
@@ -275,7 +303,9 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
 
     if (isEmotionBottomSheetOpen) {
         EmotionBottomSheet(
-            closeSheet = { isEmotionBottomSheetOpen = false }
+            onDismiss = { isEmotionBottomSheetOpen = false },
+            onClickCancel = { isEmotionBottomSheetOpen = false },
+            onClickConfirm = { isEmotionBottomSheetOpen = false }
         )
     }
 }
@@ -284,12 +314,28 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
 @Composable
 fun EmotionBottomSheet(
     modifier: Modifier = Modifier,
-    closeSheet: () -> Unit
+    onDismiss: () -> Unit = {},
+    onClickCancel: () -> Unit,
+    onClickConfirm: () -> Unit,
 ) {
+    val emotionList = listOf<Int>(
+        R.drawable.emotion_happy_large,
+        R.drawable.emotion_proud_large,
+        R.drawable.emotion_meh_large,
+        R.drawable.emotion_tired_large,
+        R.drawable.emotion_sad_large,
+        R.drawable.emotion_angry_large,
+    )
+//    val sheetState = rememberModalBottomSheetState(
+//        skipPartiallyExpanded = false,
+//        confirmValueChange = {false}
+//    )
     val sheetState = rememberModalBottomSheetState()
+    var selectedEmotion by remember { mutableStateOf(-1) }
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
-        onDismissRequest = closeSheet,
+        onDismissRequest = onDismiss,
         sheetState = sheetState,
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         containerColor = Background100,
@@ -306,13 +352,61 @@ fun EmotionBottomSheet(
             )
             Spacer(modifier = modifier.size(4.dp))
             Text(
-                text = "행복해요.",
+                text = "듀이 감정티콘을 선택해주세요",
                 style = TellingmeTheme.typography.body1Regular,
                 color = Gray600
             )
+            Spacer(modifier = modifier.size(16.dp))
 
-            //이 아래로 감정표현 요소들 ~~~
-
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(Base0),
+            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    contentPadding = PaddingValues(vertical = 24.dp)
+                ) {
+                    itemsIndexed(emotionList) {position, item ->
+                        Image(
+                            imageVector = ImageVector.vectorResource(item),
+                            contentDescription = "emotion",
+                            modifier = modifier
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = {
+                                        selectedEmotion = position
+                                    }
+                                )
+                                .alpha(
+                                    if (selectedEmotion == -1 || position == selectedEmotion) {
+                                        1f
+                                    } else {
+                                        0.5f
+                                    }
+                                )
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = modifier.size(16.dp))
+            Row {
+                PrimaryLightButton(
+                    modifier = modifier.weight(1f),
+                    size = BUTTON_SIZE.LARGE,
+                    text = "취소",
+                    onClick = onClickCancel
+                )
+                Spacer(modifier = modifier.size(8.dp))
+                PrimaryButton(
+                    modifier = modifier.weight(1f),
+                    size = BUTTON_SIZE.LARGE,
+                    text = "완료",
+                    onClick = onClickConfirm
+                )
+            }
         }
     }
 }
@@ -320,7 +414,5 @@ fun EmotionBottomSheet(
 @Preview
 @Composable
 fun RecordScreenPreview() {
-    RecordScreen {
-
-    }
+    RecordScreen {}
 }
