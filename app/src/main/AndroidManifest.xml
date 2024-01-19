@@ -19,7 +19,8 @@
             android:name=".presentation.ui.feature.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TellingMe" >
+            android:theme="@style/Theme.TellingMe"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
