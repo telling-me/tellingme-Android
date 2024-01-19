@@ -1,6 +1,7 @@
 package com.tellingus.tellingme.presentation.ui.common.button
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,8 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.R
@@ -27,6 +32,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray50
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
+import com.tellingus.tellingme.presentation.ui.theme.Red400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
@@ -36,6 +42,7 @@ fun IconSingleBlackButton(
     text: String,
     onClick: () -> Unit,
     @DrawableRes iconResId: Int = R.drawable.icon_heart,
+    iconColor: Color = Gray600,
     enable: Boolean = true
 ) {
     CompositionLocalProvider(LocalRippleTheme provides IconSingleBlackButtonRippleTheme) {
@@ -44,9 +51,9 @@ fun IconSingleBlackButton(
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Base0,
-                contentColor = Gray600,
-                disabledContainerColor = Base0,
+                containerColor = Color.Transparent,
+                contentColor = iconColor,
+                disabledContainerColor = Color.Transparent,
                 disabledContentColor = Gray300
             ),
             contentPadding = when(size) {
@@ -66,9 +73,10 @@ fun IconSingleBlackButton(
             enabled = enable
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(iconResId),
-                    contentDescription = ""
+                Image(
+                    imageVector = ImageVector.vectorResource(iconResId),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(iconColor)
                 )
                 Spacer(modifier = modifier.size(8.dp))
                 Text(
@@ -80,9 +88,10 @@ fun IconSingleBlackButton(
                     }
                 )
                 Spacer(modifier = modifier.size(8.dp))
-                Icon(
-                    painter = painterResource(iconResId),
-                    contentDescription = ""
+                Image(
+                    imageVector = ImageVector.vectorResource(iconResId),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(iconColor)
                 )
             }
         }
@@ -107,6 +116,7 @@ fun IconSingleBlackButtonLargePreview() {
         IconSingleBlackButton(
             size = BUTTON_SIZE.LARGE,
             text = "Large",
+            iconColor = Red400,
             onClick = { }
         )
         IconSingleBlackButton(
