@@ -65,87 +65,72 @@ fun TellingMeScreen(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
-    ModalBottomSheetLayout(
-        sheetContent = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            ) {
-                TellingMeBottomSheetContent()
+    Scaffold(
+        bottomBar = {
+            if (currentDestination?.route != TellingMeScreenRoute.RECORD.route) {
+                TellingMeTabBar(
+                    currentDestination = currentDestination,
+                    navigateToScreen = { navigationItem ->
+                        navigateBottomNavigationScreen(
+                            navController = navController,
+                            navigationItem = navigationItem
+                        )
+                    })
             }
-        },
-        sheetState = sheetState,
-        scrimColor = ModalBottomSheetDefaults.scrimColor,
-    ) {
-        Scaffold(
-            bottomBar = {
-                if (currentDestination?.route != TellingMeScreenRoute.RECORD.route) {
-                    TellingMeTabBar(
-                        currentDestination = currentDestination,
-                        navigateToScreen = { navigationItem ->
-                            navigateBottomNavigationScreen(
-                                navController = navController,
-                                navigationItem = navigationItem
-                            )
+        }) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            NavHost(
+                navController = navController,
+                startDestination = TellingMeScreenRoute.HOME.route
+            ) {
+                composable(route = TellingMeScreenRoute.HOME.route) {
+                    HomeScreen(
+                        navigateToRecordScreen = {
+                            navController.navigate(TellingMeScreenRoute.RECORD.route)
+                        },
+                        navigateToOtherSpace = { id ->
+                            navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
                         })
                 }
-            }) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
-                NavHost(
-                    navController = navController,
-                    startDestination = TellingMeScreenRoute.HOME.route
-                ) {
-                    composable(route = TellingMeScreenRoute.HOME.route) {
-                        HomeScreen(
-                            navigateToRecordScreen = {
-                                navController.navigate(TellingMeScreenRoute.RECORD.route)
-                            },
-                            navigateToOtherSpace = { id ->
-                                navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
-                            })
-                    }
-                    composable(route = TellingMeScreenRoute.RECORD.route) {
-                        RecordScreen(
-                            navigateToPreviousScreen = {
-                                navController.popBackStack()
-                            })
-                    }
-                    composable(route = TellingMeScreenRoute.MY_SPACE.route) {
-                        MySpaceScreen(
-                            navigateToRecordScreen = {
-                                navController.navigate(
-                                    TellingMeScreenRoute.RECORD.route
-                                )
-                            },
-                        )
-                    }
-                    composable(route = TellingMeScreenRoute.OTHER_SPACE.route) {
-                        OtherSpaceScreen()
-                    }
-                    composable(
-                        route = "${TellingMeScreenRoute.OTHER_SPACE.route}/{$KEY_ID}",
-                        arguments = listOf(
-                            navArgument(KEY_ID) {
-                                type = NavType.StringType
-                            }
-                        )) {
-                        OtherSpaceDetailScreen(
-                            navigateToOtherSpaceScreen = {
-                                navController.navigate(TellingMeScreenRoute.OTHER_SPACE.route)
-                            })
-                    }
-                    composable(route = TellingMeScreenRoute.MY_PAGE.route) {
-                        MyPageScreen()
-                    }
+                composable(route = TellingMeScreenRoute.RECORD.route) {
+                    RecordScreen(
+                        navigateToPreviousScreen = {
+                            navController.popBackStack()
+                        })
                 }
-
+                composable(route = TellingMeScreenRoute.MY_SPACE.route) {
+                    MySpaceScreen(
+                        navigateToRecordScreen = {
+                            navController.navigate(
+                                TellingMeScreenRoute.RECORD.route
+                            )
+                        },
+                    )
+                }
+                composable(route = TellingMeScreenRoute.OTHER_SPACE.route) {
+                    OtherSpaceScreen()
+                }
+                composable(
+                    route = "${TellingMeScreenRoute.OTHER_SPACE.route}/{$KEY_ID}",
+                    arguments = listOf(
+                        navArgument(KEY_ID) {
+                            type = NavType.StringType
+                        }
+                    )) {
+                    OtherSpaceDetailScreen(
+                        navigateToOtherSpaceScreen = {
+                            navController.navigate(TellingMeScreenRoute.OTHER_SPACE.route)
+                        })
+                }
+                composable(route = TellingMeScreenRoute.MY_PAGE.route) {
+                    MyPageScreen()
+                }
             }
 
         }
+
     }
 }
 
@@ -201,11 +186,6 @@ fun TellingMeTabBar(
         }
     }
 
-}
-
-@Composable
-fun TellingMeBottomSheetContent() {
-    Text(text = "TellingMe Bottom Sheet Content")
 }
 
 enum class TellingMeBottomNavigationItem(
