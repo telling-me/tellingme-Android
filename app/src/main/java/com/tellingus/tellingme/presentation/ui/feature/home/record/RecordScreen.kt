@@ -54,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
@@ -83,7 +84,7 @@ fun RecordScreen(
 ) {
     MainLayout(
         header = {
-            RecordScreenHeader(modifier)
+            RecordScreenHeader(modifier,navigateToPreviousScreen)
         },
         content = {
             RecordScreenContent(modifier)
@@ -94,8 +95,10 @@ fun RecordScreen(
 
 @Composable
 fun RecordScreenHeader(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToPreviousScreen: () -> Unit
 ) {
+    val navController = rememberNavController()
     val context = LocalContext.current
     var showDialogState by remember { mutableStateOf(false) }
 
@@ -115,7 +118,8 @@ fun RecordScreenHeader(
             size = BUTTON_SIZE.MEDIUM,
             color = Gray500,
             onClick = {
-                Toast.makeText(context, "뒤로가기",Toast.LENGTH_SHORT).show()
+                // 인자로 넘기지 않고 다른 방법은 없을지??
+                navigateToPreviousScreen()
             }
         )
         SingleButton(
