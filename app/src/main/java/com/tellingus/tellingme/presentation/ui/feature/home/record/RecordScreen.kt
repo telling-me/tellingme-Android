@@ -2,6 +2,7 @@ package com.tellingus.tellingme.presentation.ui.feature.home.record
 
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +24,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -193,7 +196,6 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                 ) {
                     Row(
                         modifier = modifier.fillMaxWidth()
-//                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(
                             modifier = modifier
@@ -318,19 +320,27 @@ fun EmotionBottomSheet(
     onClickCancel: () -> Unit,
     onClickConfirm: () -> Unit,
 ) {
-    val emotionList = listOf<Int>(
-        R.drawable.emotion_happy_large,
-        R.drawable.emotion_proud_large,
-        R.drawable.emotion_meh_large,
-        R.drawable.emotion_tired_large,
-        R.drawable.emotion_sad_large,
-        R.drawable.emotion_angry_large,
+    val emotionList = listOf<Emotion>(
+        Emotion(R.drawable.emotion_happy_large, "행복해요"),
+        Emotion(R.drawable.emotion_proud_large, "뿌듯해요"),
+        Emotion(R.drawable.emotion_meh_large, "그저 그래요"),
+        Emotion(R.drawable.emotion_tired_large, "피곤해요"),
+        Emotion(R.drawable.emotion_sad_large, "슬퍼요"),
+        Emotion(R.drawable.emotion_angry_large, "화나요"),
+        Emotion(R.drawable.emotion_excited_large, "설레요"),
+        Emotion(R.drawable.emotion_thrilled_large, "신나요"),
+        Emotion(R.drawable.emotion_relaxed_large, "편안해요"),
+        Emotion(R.drawable.emotion_lethargic_large, "무기력해요"),
+        Emotion(R.drawable.emotion_lonely_large, "외로워요"),
+        Emotion(R.drawable.emotion_complicated_large, "복잡해요"),
     )
 //    val sheetState = rememberModalBottomSheetState(
 //        skipPartiallyExpanded = false,
 //        confirmValueChange = {false}
 //    )
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
     var selectedEmotion by remember { mutableStateOf(-1) }
     val scope = rememberCoroutineScope()
 
@@ -370,7 +380,7 @@ fun EmotionBottomSheet(
                 ) {
                     itemsIndexed(emotionList) {position, item ->
                         Image(
-                            imageVector = ImageVector.vectorResource(item),
+                            imageVector = ImageVector.vectorResource(item.icon),
                             contentDescription = "emotion",
                             modifier = modifier
                                 .clickable(
@@ -410,6 +420,11 @@ fun EmotionBottomSheet(
         }
     }
 }
+
+data class Emotion(
+    @DrawableRes val icon: Int,
+    val description: String
+)
 
 @Preview
 @Composable
