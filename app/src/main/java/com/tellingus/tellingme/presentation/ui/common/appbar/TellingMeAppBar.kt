@@ -41,12 +41,9 @@ fun TellingMeAppBar( // 제거 되도될것같음
 
 @Composable
 fun BasicAppBar(
-    modifier: Modifier = Modifier
-        .background(Color.White)
-        .height(48.dp)
-        .padding(start = 20.dp, end = 20.dp)
-        .fillMaxWidth(),
-    leftSlot: @Composable (() -> Unit)? = null, rightSlot: @Composable (() -> Unit)? = null
+    modifier: Modifier = Modifier,
+    leftSlot: @Composable (() -> Unit)? = null,
+    rightSlot: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
