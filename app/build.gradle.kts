@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
@@ -5,6 +6,10 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+}
+
+fun getKakaoNativeAppKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
 android {
@@ -22,6 +27,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // local.properties에 숨겨져 있는 키에 접근
+        manifestPlaceholders["kakaoNativeAppKey"] = "kakao${getKakaoNativeAppKey("KAKAO_NATIVE_APP_KEY")}"
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", getKakaoNativeAppKey("KAKAO_NATIVE_APP_KEY"))
     }
 
     buildTypes {
@@ -41,6 +50,7 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {

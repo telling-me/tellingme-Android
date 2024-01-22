@@ -25,7 +25,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <data android:host="oauth" android:scheme="kakaoc515a0c1559c52e253c9985aee676a05" />
+                <data android:host="oauth" android:scheme="${kakaoNativeAppKey}" />
             </intent-filter>
         </activity>
     </application>
