@@ -144,7 +144,7 @@ fun HomeScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ActionChip(
-                onClick = { /*TODO*/ }, text = "더보기"
+                onClick = { /*TODO*/ }, text = "더보기gg"
             )
         }
     }
