@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.R
@@ -39,9 +40,9 @@ fun SingleBlackButton(
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Base0,
+                containerColor = Color.Transparent,
                 contentColor = Gray600,
-                disabledContainerColor = Base0,
+                disabledContainerColor = Color.Transparent,
                 disabledContentColor = Gray300
             ),
             contentPadding = when(size) {
