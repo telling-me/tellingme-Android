@@ -56,11 +56,12 @@ android {
 dependencies {
     // ConstraintLayout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // BottomNavigation 및 BottomNavigationItem
     implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.webkit:webkit:1.9.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
     // Navigation Compose
     val nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -81,6 +82,9 @@ dependencies {
 
     // Material detail version
     implementation("androidx.compose.material3:material3:1.1.1")
+
+    // Kakao Login
+    implementation("com.kakao.sdk:v2-all:2.19.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
