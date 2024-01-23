@@ -3,6 +3,7 @@ package com.tellingus.tellingme.presentation.ui.feature
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 
@@ -32,7 +33,9 @@ import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
 
 
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,17 +45,8 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     TellingMeScreen()
                 }
+
             }
         }
-    }
-
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TellingmeTheme {
-        TellingMeScreen()
     }
 }
