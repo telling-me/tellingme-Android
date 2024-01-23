@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.data.di
+package com.tellingus.tellingme.di
 
 import com.tellingus.tellingme.data.repositoryimpl.LoginRepositoryImpl
 import com.tellingus.tellingme.domain.repository.LoginRepository
