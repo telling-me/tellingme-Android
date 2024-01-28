@@ -57,7 +57,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Primary400
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TellingMeScreen(
     navController: NavHostController = rememberNavController(),

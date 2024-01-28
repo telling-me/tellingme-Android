@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.home.record
 
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -31,6 +32,8 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,12 +45,17 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
@@ -68,14 +76,21 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray700
 import com.tellingus.tellingme.presentation.ui.theme.Gray800
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecordScreen(
     modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel = hiltViewModel(),
     navigateToPreviousScreen: () -> Unit
 ) {
     val context = LocalContext.current
     var showDialogState by remember { mutableStateOf(false) }
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     MainLayout(
         header = {
@@ -90,7 +105,8 @@ fun RecordScreen(
                         color = Gray500,
                         onClick = {
                             // 인자로 넘기지 않고 다른 방법은 없을지??
-                            navigateToPreviousScreen()
+//                            navigateToPreviousScreen()
+                            loginViewModel.plusTestValue()
                         }
                     )
                 },
@@ -133,6 +149,14 @@ fun RecordScreen(
                 )
             }
         )
+    }
+
+    LaunchedEffect(Unit) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            loginViewModel.testValue.collectLatest {
+                Log.d("taag", it.toString())
+            }
+        }
     }
 }
 

@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.home
 
-
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,6 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -40,10 +42,11 @@ import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
 
 @Composable
 fun HomeScreen(
-    navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit
+    navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
 ) {
     MainLayout(
         header = { HomeScreenHeader() },
@@ -85,7 +88,8 @@ fun HomeScreenHeader() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenContent(
-    navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit
+    navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val cardList = listOf(
@@ -154,17 +158,24 @@ fun HomeScreenContent(
             ActionChip(
                 text = "더보기",
                 onClick = {
-                    loginFromKakao(context)
+                    loginFromKakao(
+                        context = context,
+                        isSuccessKakaoLogin = { token ->
+                            loginViewModel.loginFromKakao(token)
+                        }
+                    )
                 }
             )
         }
     }
 }
 
-private fun loginFromKakao(context: Context) {
+/** 카카오디벨로퍼 공식문서에서 설명하는 발생 가능한 예외 처리 분기입니다. **/
+private fun loginFromKakao(
+    context: Context,
+    isSuccessKakaoLogin: (String) -> Unit,
+) {
     val TAG = "taag"
-
-    /** 제가 직접 짠 로직은 아니고 카카오디벨롶 공식문서에서 설명하는 발생 가능한 예외 처리 분기입니다. **/
 
     // 카카오계정으로 로그인 공통 callback 구성
     // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
@@ -173,6 +184,8 @@ private fun loginFromKakao(context: Context) {
             Log.e(TAG, "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+
+            isSuccessKakaoLogin(token.accessToken)
         }
     }
 
@@ -192,6 +205,8 @@ private fun loginFromKakao(context: Context) {
                 UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
             } else if (token != null) {
                 Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+
+                isSuccessKakaoLogin(token.accessToken)
             }
         }
     } else {

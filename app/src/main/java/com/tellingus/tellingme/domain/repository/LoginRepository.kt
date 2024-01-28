@@ -1,8 +1,8 @@
 package com.tellingus.tellingme.domain.repository
 
-import com.tellingus.tellingme.data.model.DefaultResponse
+import com.tellingus.tellingme.data.model.LoginResponse
 import retrofit2.Response
 
 interface LoginRepository {
-    suspend fun kakaoLogin(): Response<DefaultResponse>
+    suspend fun loginFromKakao(): Response<LoginResponse>
 }
