@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "733130314683",
+    "project_id": "tellingus-tellingme-android",
+    "storage_bucket": "tellingus-tellingme-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733130314683:android:51e9953d76ab8a46b4aa9e",
+        "android_client_info": {
+          "package_name": "com.tellingus.tellingme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmbdofzoLQJAF3MgGlYQTf-BHQdaNi6dY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
