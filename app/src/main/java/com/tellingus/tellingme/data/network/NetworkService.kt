@@ -1,14 +1,14 @@
 package com.tellingus.tellingme.data.network
 
-import com.tellingus.tellingme.data.model.DefaultResponse
+import com.tellingus.tellingme.data.model.LoginResponse
 import retrofit2.Response
 import retrofit2.http.POST
 
 interface NetworkService {
 
-    @POST
-    suspend fun postKakaoLogin(
+    @POST("")
+    suspend fun loginFromKakao(
 
-    ): Response<DefaultResponse>
+    ): Response<LoginResponse>
 
 }
