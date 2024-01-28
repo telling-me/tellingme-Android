@@ -31,6 +31,7 @@ android {
         // local.properties에 숨겨져 있는 키에 접근
         manifestPlaceholders["kakaoNativeAppKey"] = "kakao${getKakaoNativeAppKey("KAKAO_NATIVE_APP_KEY")}"
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", getKakaoNativeAppKey("KAKAO_NATIVE_APP_KEY"))
+        buildConfigField("String", "BASE_URL", getKakaoNativeAppKey("BASE_URL"))
     }
 
     buildTypes {

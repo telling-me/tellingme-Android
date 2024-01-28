@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.di
 
+import com.tellingus.tellingme.BuildConfig
 import com.tellingus.tellingme.data.network.NetworkService
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://www.naver.com/"
+    private const val BASE_URL = BuildConfig.BASE_URL
 
     @Singleton
     @Provides
