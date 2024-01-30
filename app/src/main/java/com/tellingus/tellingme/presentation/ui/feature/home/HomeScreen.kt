@@ -45,6 +45,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.presentation.viewmodel.IS_AUTO
 import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
+import com.tellingus.tellingme.util.TAG
 
 @Composable
 fun HomeScreen(
@@ -175,7 +176,6 @@ private fun loginFromKakao(
     context: Context,
     loginViewModel: LoginViewModel
 ) {
-    val TAG = "taag"
 
     // 카카오계정으로 로그인 공통 callback 구성
     // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨

@@ -1,18 +1,15 @@
 package com.tellingus.tellingme.presentation.viewmodel
 
-import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApiClient
 import com.tellingus.tellingme.data.model.login.LoginRequestBody
+import com.tellingus.tellingme.data.network.adapter.onFailure
+import com.tellingus.tellingme.data.network.adapter.onNetworkError
+import com.tellingus.tellingme.data.network.adapter.onSuccess
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
+import com.tellingus.tellingme.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +32,31 @@ class LoginViewModel @Inject constructor(
                 loginRequestBody = loginRequestBody
             )
 
-            Log.d("taag", response.code().toString())
+            response
+                .onSuccess { it, code ->
+                    Log.d("taag", it.toString())
+                    when(code) {
+                        404 -> {
+                            Log.d(TAG, it.toString())
+                        }
+                        200 -> {
+                            Log.d(TAG, it.toString())
+                        }
+                    }
+                }
+                .onFailure { it, code ->
+                    when(code) {
+                        1000 -> {
+                            Log.d(TAG, code.toString())
+                        }
+                        1001 -> {
+                            Log.d(TAG, code.toString())
+                        }
+                    }
+                }
+                .onNetworkError {
+
+                }
         }
     }
 
@@ -43,7 +64,7 @@ class LoginViewModel @Inject constructor(
 }
 
 enum class LOGIN_TYPE(name: String) {
-    KAKAO("kakao")
+    KAKAO("kakaoo")
 }
 enum class IS_AUTO(name: String) {
     MANUAL("manual"),

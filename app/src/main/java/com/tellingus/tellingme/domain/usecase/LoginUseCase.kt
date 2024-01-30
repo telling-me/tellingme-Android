@@ -2,6 +2,7 @@ package com.tellingus.tellingme.domain.usecase
 
 import com.tellingus.tellingme.data.model.login.LoginRequestBody
 import com.tellingus.tellingme.data.model.login.LoginResponse
+import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.LoginRepository
 import retrofit2.Response
 import javax.inject.Inject
@@ -14,7 +15,7 @@ class LoginUseCase @Inject constructor(
         loginType: String,
         isAuto: String,
         loginRequestBody: LoginRequestBody
-    ) : Response<LoginResponse> {
+    ) : ApiResult<LoginResponse> {
         return loginRepository.loginFromKakao(oauthToken, loginType, isAuto, loginRequestBody)
     }
 }
