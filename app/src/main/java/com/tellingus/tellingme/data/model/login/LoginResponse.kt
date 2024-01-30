@@ -1,8 +1,8 @@
 package com.tellingus.tellingme.data.model.login
 
 data class LoginResponse(
-    val accessToken: String,
-    val refreshToken: String,
-    val socialId: String,
-    val socialLoginType: String
+    val accessToken: String = "",
+    val refreshToken: String = "",
+    val socialId: String = "",
+    val socialLoginType: String = ""
 )
