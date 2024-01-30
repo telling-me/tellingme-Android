@@ -9,6 +9,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.tellingus.tellingme.data.model.login.LoginRequestBody
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,17 +21,31 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    val testValue = MutableStateFlow<Int>(0)
-
-    fun loginFromKakao(token: String) {
+    fun loginFromKakao(
+        oauthToken: String,
+        loginType: String = LOGIN_TYPE.KAKAO.name,
+        isAuto: String,
+        loginRequestBody: LoginRequestBody
+    ) {
         viewModelScope.launch {
-            val response = loginUseCase()
-            Log.d("taag", token)
+            val response = loginUseCase(
+                oauthToken = oauthToken,
+                loginType = loginType,
+                isAuto = isAuto,
+                loginRequestBody = loginRequestBody
+            )
+
+            Log.d("taag", response.code().toString())
         }
     }
 
-    fun plusTestValue() {
-        testValue.value = testValue.value + 1
-    }
 
+}
+
+enum class LOGIN_TYPE(name: String) {
+    KAKAO("kakao")
+}
+enum class IS_AUTO(name: String) {
+    MANUAL("manual"),
+    AUTO("auto")
 }

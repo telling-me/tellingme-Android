@@ -85,7 +85,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecordScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel(),
     navigateToPreviousScreen: () -> Unit
 ) {
     val context = LocalContext.current
@@ -105,8 +104,8 @@ fun RecordScreen(
                         color = Gray500,
                         onClick = {
                             // 인자로 넘기지 않고 다른 방법은 없을지??
-//                            navigateToPreviousScreen()
-                            loginViewModel.plusTestValue()
+                            navigateToPreviousScreen()
+
                         }
                     )
                 },
@@ -151,13 +150,13 @@ fun RecordScreen(
         )
     }
 
-    LaunchedEffect(Unit) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            loginViewModel.testValue.collectLatest {
-                Log.d("taag", it.toString())
-            }
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+//            loginViewModel.testValue.collectLatest {
+//                Log.d("taag", it.toString())
+//            }
+//        }
+//    }
 }
 
 @Composable
