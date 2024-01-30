@@ -1,6 +1,8 @@
 package com.tellingus.tellingme.data.network.adapter
 
+import android.util.Log
 import com.google.gson.Gson
+import com.tellingus.tellingme.util.TAG
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -13,18 +15,29 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
         delegate.enqueue(
             object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful || response.code() == 404) {
+                        Log.d(TAG,"1")
                         callback.onResponse(
                             this@ApiResultCall,
                             Response.success(
-                                ApiResult.Success(response.body()!!)
+                                ApiResult.Success(response.body()!!, response.code())
                             )
                         )
                     } else {
+                        Log.d(TAG,"2")
+                        val message = if (response.errorBody() == null) ErrorResponse(
+                            message = "알 수 없는 오류가 발생했습니다.",
+                            code = response.code(),
+                        ) else gson.fromJson(
+                            response.errorBody()!!.string(),
+                            ErrorResponse::class.java
+                        )
+                        Log.d(TAG, message.toString())
+
                         callback.onResponse(
                             this@ApiResultCall,
                             Response.success(
-                                ApiResult.Failure(response.message())
+                                ApiResult.Failure(message.message, message.code)
                             )
                         )
                     }
