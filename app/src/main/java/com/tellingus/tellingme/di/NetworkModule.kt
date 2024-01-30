@@ -2,6 +2,7 @@ package com.tellingus.tellingme.di
 
 import com.tellingus.tellingme.BuildConfig
 import com.tellingus.tellingme.data.network.NetworkService
+import com.tellingus.tellingme.data.network.adapter.ApiResultCallAdapterFactory
 import com.tellingus.tellingme.data.network.ssl.SelfSigningHelper
 import dagger.Module
 import dagger.Provides
@@ -42,6 +43,7 @@ object NetworkModule {
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(ApiResultCallAdapterFactory())
             .build()
     }
 
