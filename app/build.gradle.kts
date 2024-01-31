@@ -104,6 +104,7 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
