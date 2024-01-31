@@ -3,7 +3,6 @@ package com.tellingus.tellingme.presentation.ui.feature.home
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,8 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -43,7 +40,7 @@ import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.presentation.viewmodel.IS_AUTO
+import com.tellingus.tellingme.presentation.viewmodel.IsAuto
 import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
 import com.tellingus.tellingme.util.TAG
 
@@ -187,8 +184,8 @@ private fun loginFromKakao(
 
             loginViewModel.loginFromKakao(
                 oauthToken = token.accessToken,
-                isAuto = IS_AUTO.MANUAL.name,
-                loginRequestBody = LoginRequestBody("-1")
+                isAuto = IsAuto.MANUAL.name,
+                loginRequestBody = LoginRequestBody()
             )
         }
     }
@@ -212,8 +209,8 @@ private fun loginFromKakao(
 
                 loginViewModel.loginFromKakao(
                     oauthToken = token.accessToken,
-                    isAuto = IS_AUTO.MANUAL.name,
-                    loginRequestBody = LoginRequestBody("-1")
+                    isAuto = IsAuto.MANUAL.name,
+                    loginRequestBody = LoginRequestBody()
                 )
             }
         }

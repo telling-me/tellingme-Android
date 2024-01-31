@@ -2,20 +2,28 @@ package com.tellingus.tellingme.data.network.adapter
 
 import android.util.Log
 import com.google.gson.Gson
+import com.tellingus.tellingme.data.model.login.LoginFailResponse
+import com.tellingus.tellingme.data.model.login.LoginResponse
 import com.tellingus.tellingme.util.TAG
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Converter
 import retrofit2.Response
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
     private val gson = Gson()
+
     override fun enqueue(callback: Callback<ApiResult<T>>) {
         delegate.enqueue(
             object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
-                    if (response.isSuccessful || response.code() == 404) {
+                    // response.isSuccessful은 status가 200..299인 경우 작동
+                    Log.d(TAG+"status", response.code().toString())
+                    if (response.isSuccessful) {
                         Log.d(TAG,"1")
                         callback.onResponse(
                             this@ApiResultCall,
@@ -25,21 +33,36 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                         )
                     } else {
                         Log.d(TAG,"2")
-                        val message = if (response.errorBody() == null) ErrorResponse(
-                            message = "알 수 없는 오류가 발생했습니다.",
-                            code = response.code(),
-                        ) else gson.fromJson(
-                            response.errorBody()!!.string(),
-                            ErrorResponse::class.java
-                        )
-                        Log.d(TAG, message.toString())
+                        if (response.code() == 404) {
+                            if (response.errorBody() != null) {
+                                Log.d(TAG, response.errorBody()?.string()!!)
+                                val errorBody = gson.fromJson(
+                                    response.errorBody()?.string()!!,
+                                    LoginFailResponse::class.java
+                                )
+                                Log.d("taag 1", errorBody?.toString()!!)
+                                callback.onResponse(
+                                    this@ApiResultCall,
+                                    Response.success(
+                                        ApiResult.Failure(errorBody.socialId, response.code())
+                                    )
+                                )
+                            }
+                        } else {
+                            val message = if (response.errorBody() == null) {
+                                ErrorResponse(
+                                    status = response.code(),
+                                    message = "알 수 없는 오류가 발생했습니다.",
+                                )
+                            } else gson.fromJson(response.errorBody()!!.string(), ErrorResponse::class.java)
 
-                        callback.onResponse(
-                            this@ApiResultCall,
-                            Response.success(
-                                ApiResult.Failure(message.message, message.code)
+                            callback.onResponse(
+                                this@ApiResultCall,
+                                Response.success(
+                                    ApiResult.Failure(message.message, message.status)
+                                )
                             )
-                        )
+                        }
                     }
                 }
 

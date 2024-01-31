@@ -6,3 +6,8 @@ data class LoginResponse(
     val socialId: String = "",
     val socialLoginType: String = ""
 )
+
+data class LoginFailResponse(
+    val socialId: String,
+    val socialLoginType: String
+)
