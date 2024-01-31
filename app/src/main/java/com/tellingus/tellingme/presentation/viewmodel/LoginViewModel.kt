@@ -20,21 +20,20 @@ class LoginViewModel @Inject constructor(
 
     fun loginFromKakao(
         oauthToken: String,
-        loginType: String = LOGIN_TYPE.KAKAO.name,
+        loginType: String = LoginType.KAKAO.name,
         isAuto: String,
         loginRequestBody: LoginRequestBody
     ) {
         viewModelScope.launch {
             val response = loginUseCase(
                 oauthToken = oauthToken,
-                loginType = loginType,
-                isAuto = isAuto,
+                loginType = loginType.lowercase(),
+                isAuto = isAuto.lowercase(),
                 loginRequestBody = loginRequestBody
             )
 
             response
                 .onSuccess { it, code ->
-                    Log.d("taag", it.toString())
                     when(code) {
                         404 -> {
                             Log.d(TAG, it.toString())
@@ -63,10 +62,10 @@ class LoginViewModel @Inject constructor(
 
 }
 
-enum class LOGIN_TYPE(name: String) {
-    KAKAO("kakaoo")
+enum class LoginType(name: String) {
+    KAKAO("kakao")
 }
-enum class IS_AUTO(name: String) {
+enum class IsAuto(name: String) {
     MANUAL("manual"),
     AUTO("auto")
 }
