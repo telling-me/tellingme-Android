@@ -1,9 +1,9 @@
 package com.tellingus.tellingme.di
 
 import com.tellingus.tellingme.data.repositoryimpl.DataStoreRepositoryImpl
-import com.tellingus.tellingme.data.repositoryimpl.UserRepositoryImpl
+import com.tellingus.tellingme.data.repositoryimpl.LoginRepositoryImpl
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
-import com.tellingus.tellingme.domain.repository.UserRepository
+import com.tellingus.tellingme.domain.repository.LoginRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun provideUserRepository(
-        userRepositoryImpl: UserRepositoryImpl
-    ): UserRepository
+    abstract fun provideLoginRepository(
+        loginRepositoryImpl: LoginRepositoryImpl
+    ): LoginRepository
 }

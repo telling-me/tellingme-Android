@@ -7,7 +7,7 @@ import com.tellingus.tellingme.data.model.login.OauthRequestDto
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
-import com.tellingus.tellingme.data.repositoryimpl.DataStoreRepositoryImpl
+import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
 import com.tellingus.tellingme.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,16 +15,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
-    private val dataStoreRepositoryImpl: DataStoreRepositoryImpl,
+class LoginViewModel @Inject constructor(
+    private val dataStoreRepository: DataStoreRepository,
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
-
 
 
     fun loginFromKakao(
@@ -50,18 +50,16 @@ class UserViewModel @Inject constructor(
                 .onFailure { message, code ->
                     when(code) {
                         404 -> {
+                            // 최초 로그인이라면 로컬에 socialId 저장 후 추가정보 기입 화면으로 이동
                             val socialId = message.split("${'"'}")[3]
                             Log.d(TAG, "$message // socialId : $socialId")
 
-                            // 소셜로그인 로컬에 저장하고 읽기
-                            CoroutineScope(Dispatchers.IO).launch {
-                                dataStoreRepositoryImpl.setUserSocialId(socialId)
-                                withContext(Dispatchers.IO) {
-                                    dataStoreRepositoryImpl.getUserSocialId().collectLatest {
-                                        Log.d(TAG+"1", it)
-                                    }
-                                }
+                            // 소셜로그인 결과 404라면
+                            viewModelScope.launch {
+                                dataStoreRepository.setUserSocialId(socialId)
                             }
+
+
                         }
                         1000 -> {
                             Log.d(TAG, code.toString())
@@ -77,15 +75,7 @@ class UserViewModel @Inject constructor(
 
         }
     }
-
-    private fun saveUserSocialId(socialId: String) {
-        viewModelScope.launch {
-            dataStoreRepositoryImpl.setUserSocialId(socialId)
-        }
-    }
-
 }
-
 
 
 enum class LoginType(name: String) {

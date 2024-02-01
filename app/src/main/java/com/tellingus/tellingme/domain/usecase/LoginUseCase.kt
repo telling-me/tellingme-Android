@@ -3,11 +3,11 @@ package com.tellingus.tellingme.domain.usecase
 import com.tellingus.tellingme.data.model.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.login.TokenDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
-import com.tellingus.tellingme.domain.repository.UserRepository
+import com.tellingus.tellingme.domain.repository.LoginRepository
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
-    private val userRepository: UserRepository
+    private val loginRepository: LoginRepository
 ) {
     suspend operator fun invoke(
         oauthToken: String,
@@ -15,6 +15,6 @@ class LoginUseCase @Inject constructor(
         isAuto: String,
         oauthRequestDto: OauthRequestDto
     ) : ApiResult<TokenDto> {
-        return userRepository.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
+        return loginRepository.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
     }
 }
