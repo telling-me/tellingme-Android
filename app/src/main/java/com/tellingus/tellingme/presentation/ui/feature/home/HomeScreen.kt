@@ -41,7 +41,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.presentation.viewmodel.IsAuto
-import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
+import com.tellingus.tellingme.presentation.viewmodel.UserViewModel
 import com.tellingus.tellingme.util.TAG
 
 @Composable
@@ -89,7 +89,7 @@ fun HomeScreenHeader() {
 @Composable
 fun HomeScreenContent(
     navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val cardList = listOf(
@@ -160,7 +160,7 @@ fun HomeScreenContent(
                 onClick = {
                     loginFromKakao(
                         context = context,
-                        loginViewModel = loginViewModel
+                        userViewModel = userViewModel
                     )
                 }
             )
@@ -171,7 +171,7 @@ fun HomeScreenContent(
 /** 카카오디벨로퍼 공식문서에서 설명하는 발생 가능한 예외 처리 분기입니다. **/
 private fun loginFromKakao(
     context: Context,
-    loginViewModel: LoginViewModel
+    userViewModel: UserViewModel
 ) {
 
     // 카카오계정으로 로그인 공통 callback 구성
@@ -182,7 +182,7 @@ private fun loginFromKakao(
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
-            loginViewModel.loginFromKakao(
+            userViewModel.loginFromKakao(
                 oauthToken = token.accessToken,
                 isAuto = IsAuto.MANUAL.name,
                 oauthRequestDto = OauthRequestDto()
@@ -207,7 +207,7 @@ private fun loginFromKakao(
             } else if (token != null) {
                 Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
 
-                loginViewModel.loginFromKakao(
+                userViewModel.loginFromKakao(
                     oauthToken = token.accessToken,
                     isAuto = IsAuto.MANUAL.name,
                     oauthRequestDto = OauthRequestDto()
