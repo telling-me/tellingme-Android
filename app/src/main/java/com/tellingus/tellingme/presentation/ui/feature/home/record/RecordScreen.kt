@@ -76,7 +76,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray700
 import com.tellingus.tellingme.presentation.ui.theme.Gray800
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
