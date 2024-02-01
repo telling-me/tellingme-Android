@@ -1,7 +1,7 @@
 package com.tellingus.tellingme.domain.repository
 
-import com.tellingus.tellingme.data.model.login.LoginRequestBody
-import com.tellingus.tellingme.data.model.login.LoginResponse
+import com.tellingus.tellingme.data.model.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.login.TokenDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 
 interface LoginRepository {
@@ -9,6 +9,6 @@ interface LoginRepository {
         oauthToken: String,
         loginType: String,
         isAuto: String,
-        loginRequestBody: LoginRequestBody
-    ): ApiResult<LoginResponse>
+        oauthRequestDto: OauthRequestDto
+    ): ApiResult<TokenDto>
 }

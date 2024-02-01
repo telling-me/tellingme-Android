@@ -3,7 +3,7 @@ package com.tellingus.tellingme.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tellingus.tellingme.data.model.login.LoginRequestBody
+import com.tellingus.tellingme.data.model.login.OauthRequestDto
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
@@ -18,33 +18,34 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
+
+
     fun loginFromKakao(
         oauthToken: String,
         loginType: String = LoginType.KAKAO.name,
         isAuto: String,
-        loginRequestBody: LoginRequestBody
+        oauthRequestDto: OauthRequestDto
     ) {
         viewModelScope.launch {
-            val response = loginUseCase(
+            loginUseCase(
                 oauthToken = oauthToken,
                 loginType = loginType.lowercase(),
                 isAuto = isAuto.lowercase(),
-                loginRequestBody = loginRequestBody
+                oauthRequestDto = oauthRequestDto
             )
-
-            response
                 .onSuccess { it, code ->
                     when(code) {
-                        404 -> {
-                            Log.d(TAG, it.toString())
-                        }
                         200 -> {
                             Log.d(TAG, it.toString())
                         }
                     }
                 }
-                .onFailure { it, code ->
+                .onFailure { message, code ->
                     when(code) {
+                        404 -> {
+                            Log.d(TAG, message)
+                            Log.d(TAG, message.split("${'"'}")[3])
+                        }
                         1000 -> {
                             Log.d(TAG, code.toString())
                         }
@@ -56,10 +57,9 @@ class LoginViewModel @Inject constructor(
                 .onNetworkError {
 
                 }
+
         }
     }
-
-
 }
 
 enum class LoginType(name: String) {

@@ -1,9 +1,8 @@
 package com.tellingus.tellingme.data.network
 
-import com.tellingus.tellingme.data.model.login.LoginRequestBody
-import com.tellingus.tellingme.data.model.login.LoginResponse
+import com.tellingus.tellingme.data.model.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.login.TokenDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -17,8 +16,8 @@ interface NetworkService {
         @Header("oauthToken") oauthToken: String,
         @Path("loginType") loginType: String,
         @Path("isAuto") isAuto: String,
-        @Body loginRequestBody: LoginRequestBody
-    ): ApiResult<LoginResponse>
+        @Body oauthRequestDto: OauthRequestDto
+    ): ApiResult<TokenDto>
 
 
 }
