@@ -18,7 +18,7 @@ class DataStoreRepositoryImpl @Inject constructor(
 ): DataStoreRepository {
     override suspend fun setUserSocialId(socialId: String) {
         dataStore.edit {
-            it[KEY_USER_SOCIAL_ID] = socialId
+            it[USER_SOCIAL_ID] = socialId
         }
     }
 
@@ -28,12 +28,13 @@ class DataStoreRepositoryImpl @Inject constructor(
                 emit(emptyPreferences())
             }
             .map {
-                it[KEY_USER_SOCIAL_ID] ?: ""
+                it[USER_SOCIAL_ID] ?: ""
             }
     }
 
     companion object {
-        val KEY_USER_SOCIAL_ID = stringPreferencesKey("key_user_social_id")
-
+        val USER_SOCIAL_ID = stringPreferencesKey("user_social_id")
+        val ACCESS_TOKEN = stringPreferencesKey("access_token")
+        val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
     }
 }
