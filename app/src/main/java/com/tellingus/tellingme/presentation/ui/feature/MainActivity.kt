@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tellingus.tellingme.TellingmeFirebaseMessagingService
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
 import com.tellingus.tellingme.presentation.ui.common.button.FloatingButton
 import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
@@ -40,6 +41,8 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        TellingmeFirebaseMessagingService().getFirebaseToken()
 
         setContent {
             TellingmeTheme {
