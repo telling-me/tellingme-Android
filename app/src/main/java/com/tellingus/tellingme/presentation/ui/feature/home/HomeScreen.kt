@@ -37,11 +37,11 @@ import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
+import com.tellingus.tellingme.presentation.ui.feature.login.IsAuto
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.presentation.viewmodel.IsAuto
-import com.tellingus.tellingme.presentation.viewmodel.UserViewModel
+import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
 import com.tellingus.tellingme.util.TAG
 
 @Composable
@@ -89,7 +89,7 @@ fun HomeScreenHeader() {
 @Composable
 fun HomeScreenContent(
     navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
-    userViewModel: UserViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val cardList = listOf(
@@ -160,7 +160,7 @@ fun HomeScreenContent(
                 onClick = {
                     loginFromKakao(
                         context = context,
-                        userViewModel = userViewModel
+                        loginViewModel = loginViewModel
                     )
                 }
             )
@@ -171,7 +171,7 @@ fun HomeScreenContent(
 /** 카카오디벨로퍼 공식문서에서 설명하는 발생 가능한 예외 처리 분기입니다. **/
 private fun loginFromKakao(
     context: Context,
-    userViewModel: UserViewModel
+    loginViewModel: LoginViewModel
 ) {
 
     // 카카오계정으로 로그인 공통 callback 구성
@@ -182,7 +182,7 @@ private fun loginFromKakao(
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
-            userViewModel.loginFromKakao(
+            loginViewModel.loginFromKakao(
                 oauthToken = token.accessToken,
                 isAuto = IsAuto.MANUAL.name,
                 oauthRequestDto = OauthRequestDto()
@@ -207,7 +207,7 @@ private fun loginFromKakao(
             } else if (token != null) {
                 Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
 
-                userViewModel.loginFromKakao(
+                loginViewModel.loginFromKakao(
                     oauthToken = token.accessToken,
                     isAuto = IsAuto.MANUAL.name,
                     oauthRequestDto = OauthRequestDto()
