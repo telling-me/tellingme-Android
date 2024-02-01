@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.data.network.adapter
+package com.tellingus.tellingme.data.model.common
 
 data class ErrorResponse(
     val status: Int = 0,
