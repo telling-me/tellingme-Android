@@ -8,9 +8,5 @@
 
 
     <!--TEMP-->
-    <string name="breakfast_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string name="egg_notification_channel_id" translatable="false">egg_channel</string>
-    <string name="notification_title">Egg Timer</string>
-    <string name="snooze">Snooze</string>
-    <string name="eggs_ready">It is time! Bon appetit!</string>
+    <string name="fire_base_notification_channel_id" translatable="false">fcm_default_channel</string>
 </resources>
