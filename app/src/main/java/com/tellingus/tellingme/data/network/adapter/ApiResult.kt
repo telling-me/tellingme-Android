@@ -9,21 +9,21 @@ sealed class ApiResult<T> {
     class NetworkError<T>(val throwable: Throwable) : ApiResult<T>()
 }
 
-fun<T> ApiResult<T>.onSuccess(action: (T, Int) -> Unit): ApiResult<T> {
+inline fun<T> ApiResult<T>.onSuccess(action: (T, Int) -> Unit): ApiResult<T> {
     if (this is ApiResult.Success) {
         action.invoke(this.data, this.code)
     }
     return this
 }
 
-fun<T> ApiResult<T>.onFailure(action: (String, Int) -> Unit): ApiResult<T> {
+inline fun<T> ApiResult<T>.onFailure(action: (String, Int) -> Unit): ApiResult<T> {
     if (this is ApiResult.Failure) {
         action.invoke(this.message, this.code)
     }
     return this
 }
 
-fun<T> ApiResult<T>.onNetworkError(action: (Throwable) -> Unit): ApiResult<T> {
+inline fun<T> ApiResult<T>.onNetworkError(action: (Throwable) -> Unit): ApiResult<T> {
     if (this is ApiResult.NetworkError) {
         action.invoke(this.throwable)
     }
