@@ -1,5 +1,5 @@
 package com.tellingus.tellingme.data.model.login
 
-data class LoginRequestBody(
+data class OauthRequestDto(
     val socialId: String = "-1"
 )
