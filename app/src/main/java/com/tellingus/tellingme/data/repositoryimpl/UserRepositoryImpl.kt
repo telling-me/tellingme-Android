@@ -4,14 +4,14 @@ import com.tellingus.tellingme.data.model.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.login.TokenDto
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
-import com.tellingus.tellingme.domain.repository.LoginRepository
+import com.tellingus.tellingme.domain.repository.UserRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepositoryImpl @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     private val service: NetworkService
-): LoginRepository {
+): UserRepository {
     override suspend fun loginFromKakao(
         oauthToken: String,
         loginType: String,
