@@ -1,11 +1,10 @@
 package com.tellingus.tellingme.data.repositoryimpl
 
-import com.tellingus.tellingme.data.model.login.LoginRequestBody
-import com.tellingus.tellingme.data.model.login.LoginResponse
+import com.tellingus.tellingme.data.model.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.login.TokenDto
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.LoginRepository
-import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,9 +16,9 @@ class LoginRepositoryImpl @Inject constructor(
         oauthToken: String,
         loginType: String,
         isAuto: String,
-        loginRequestBody: LoginRequestBody
-    ): ApiResult<LoginResponse> {
-        return service.loginFromKakao(oauthToken, loginType, isAuto, loginRequestBody)
+        oauthRequestDto: OauthRequestDto
+    ): ApiResult<TokenDto> {
+        return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
     }
 
 }

@@ -28,7 +28,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.tellingus.tellingme.R
-import com.tellingus.tellingme.data.model.login.LoginRequestBody
+import com.tellingus.tellingme.data.model.login.OauthRequestDto
 import com.tellingus.tellingme.presentation.ui.common.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_STATE
 import com.tellingus.tellingme.presentation.ui.common.card.OpinionCard
@@ -185,7 +185,7 @@ private fun loginFromKakao(
             loginViewModel.loginFromKakao(
                 oauthToken = token.accessToken,
                 isAuto = IsAuto.MANUAL.name,
-                loginRequestBody = LoginRequestBody()
+                oauthRequestDto = OauthRequestDto()
             )
         }
     }
@@ -210,7 +210,7 @@ private fun loginFromKakao(
                 loginViewModel.loginFromKakao(
                     oauthToken = token.accessToken,
                     isAuto = IsAuto.MANUAL.name,
-                    loginRequestBody = LoginRequestBody()
+                    oauthRequestDto = OauthRequestDto()
                 )
             }
         }
