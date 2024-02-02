@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
@@ -15,45 +14,32 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.tellingus.tellingme.presentation.ui.feature.MainActivity
 
+
 class TellingmeFirebaseMessagingService : FirebaseMessagingService() {
     var TAG: String = "로그"
 
-    // FirebaseInstanceIdService 대체
+
+    /**
+     * FirebaseInstanceIdService 대체
+     * @title 토큰생성
+     * @TODO 불필요 시 제거
+     */
     override fun onNewToken(token: String) {
-        // 토큰발행 && 토큰저장로직(?)
         Log.d(TAG, "onNewToken: $token")
     }
     // 메세지 수신
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.d(TAG, "onMessageReceived: From${remoteMessage?.from}")
 
-        remoteMessage?.data?.let {
-            Log.d(TAG, "onMessageReceived: Messge data payload: ${remoteMessage.data}")
+        if(remoteMessage.data.isNotEmpty()) {
+            Log.d(TAG, "remoteMessage.data: ${remoteMessage.data}")
         }
 
         remoteMessage?.notification?.let {
-            Log.d(TAG, "onMessageReceived: Message Notifiction Body: ${it.body}")
-            sendNotification(remoteMessage)
+            Log.d(TAG, "remoteMessage.notification: ${it.title}, ${it.body} ")
+//            sendNotification(remoteMessage)
         }
     }
-
-    // Firebase Cloud Messaging Server 가 대기중인 메세지를 삭제 시 호출
-    override fun onDeletedMessages() {
-        super.onDeletedMessages()
-    }
-
-    // 메세지가 서버로 전송 성공 했을때 호출
-    override fun onMessageSent(p0: String) {
-        super.onMessageSent(p0)
-        Log.e(TAG, "sending success ")
-    }
-
-    // 메세지가 서버로 전송 실패 했을때 호출
-    override fun onSendError(p0: String, p1: Exception) {
-        super.onSendError(p0, p1)
-    }
-
 
     // 알림 생성
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -76,25 +62,29 @@ class TellingmeFirebaseMessagingService : FirebaseMessagingService() {
         // 알림에 대한 UI 정보와 작업을 지정한다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.tellingme_logo) // 아이콘 설정
-            .setContentTitle(remoteMessage.data["body"].toString()) // 제목
-            .setContentText(remoteMessage.data["title"].toString()) // 메시지 내용
+            /**
+             * @TODO 어떤 형식을 사용할지 백엔드 확인필요
+             */
+//            .setContentTitle(remoteMessage.data["title"].toString()) // 제목
+//            .setContentText(remoteMessage.data["body"].toString()) // 메시지 내용
+            .setContentTitle(remoteMessage.notification?.title.toString()) // 제목
+            .setContentText(remoteMessage.notification?.body.toString()) // 메시지 내용
+
             .setAutoCancel(true)
             .setSound(soundUri) // 알림 소리
             .setContentIntent(pendingIntent) // 알림 실행 시 Intent
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        // 오레오 버전 이후에는 채널이 필요하다.
+        // 오레오 버전 이후에는 채널이 필요
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId, "Notice", NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
-
         // 알림 생성
         notificationManager.notify(uniId, notificationBuilder.build())
     }
-
 
     /** Token 가져오기 */
     fun getFirebaseToken() {
@@ -102,16 +92,6 @@ class TellingmeFirebaseMessagingService : FirebaseMessagingService() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
             Log.d(TAG, "getFirebaseToken: $it")
         }
-
-//		  //동기방식
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//                if (!task.isSuccessful) {
-//                    Log.d(TAG, "Fetching FCM registration token failed ${task.exception}")
-//                    return@OnCompleteListener
-//                }
-//                var deviceToken = task.result
-//                Log.e(TAG, "token=${deviceToken}")
-//            })
     }
 
 }
