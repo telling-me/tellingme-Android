@@ -34,6 +34,7 @@ import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
 
 
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.util.NotificationUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        TellingmeFirebaseMessagingService().getFirebaseToken()
+        NotificationUtils().getFirebaseToken()
 
         setContent {
             TellingmeTheme {
