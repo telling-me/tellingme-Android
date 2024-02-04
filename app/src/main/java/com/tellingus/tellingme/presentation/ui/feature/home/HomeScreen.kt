@@ -28,20 +28,20 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.tellingus.tellingme.R
-import com.tellingus.tellingme.data.model.login.OauthRequestDto
-import com.tellingus.tellingme.presentation.ui.common.appbar.BasicAppBar
-import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_STATE
-import com.tellingus.tellingme.presentation.ui.common.card.OpinionCard
-import com.tellingus.tellingme.presentation.ui.common.chip.ActionChip
-import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
-import com.tellingus.tellingme.presentation.ui.common.section.QuestionSection
-import com.tellingus.tellingme.presentation.ui.common.widget.LevelSection
-import com.tellingus.tellingme.presentation.ui.common.widget.ProfileWidget
-import com.tellingus.tellingme.presentation.ui.feature.login.IsAuto
+import com.tellingus.tellingme.data.model.oauth.dto.OauthRequestDto
+import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
+import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
+import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
+import com.tellingus.tellingme.presentation.ui.common.component.section.QuestionSection
+import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
+import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.presentation.viewmodel.LoginViewModel
+import com.tellingus.tellingme.presentation.ui.feature.login.LoginViewModel
+import com.tellingus.tellingme.presentation.ui.feature.login.model.IsAuto
 import com.tellingus.tellingme.util.TAG
 
 @Composable
@@ -143,7 +143,7 @@ fun HomeScreenContent(
                 OpinionCard(
                     modifier = Modifier.padding(end = 12.dp),
                     heartCount = 1234,
-                    buttonState = BUTTON_STATE.SELECTED,
+                    buttonState = ButtonState.SELECTED,
                     feeling = item
                 )
             }

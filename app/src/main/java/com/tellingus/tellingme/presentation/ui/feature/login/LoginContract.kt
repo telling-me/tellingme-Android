@@ -1,6 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.login
 
-import com.tellingus.tellingme.data.model.login.JoinRequestDto
+import com.tellingus.tellingme.data.model.oauth.response.JoinRequestDto
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
