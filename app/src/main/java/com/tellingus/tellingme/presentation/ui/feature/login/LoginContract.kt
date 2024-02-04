@@ -1,18 +1,25 @@
 package com.tellingus.tellingme.presentation.ui.feature.login
 
-import com.tellingus.tellingme.data.model.oauth.response.JoinRequestDto
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import android.content.Context
+import com.tellingus.tellingme.presentation.ui.common.base.UiEffect
+import com.tellingus.tellingme.presentation.ui.common.base.UiEvent
+import com.tellingus.tellingme.presentation.ui.common.base.UiState
 
-interface LoginContract {
-    val joinRequestState: StateFlow<JoinRequestDto>
-    val loginUiEffect: SharedFlow<LoginUiEffect>
-}
+class LoginContract {
+    data class State(
+        val isLoading: Boolean = false
+    ): UiState
 
-sealed class LoginUiEffect {
-    data class MoveToOauthJoin(
-        val socialId: String
-    ): LoginUiEffect()
+    sealed class Event: UiEvent {
+        data class KakaoLoginButtonClicked(
+            val context: Context
+        ): Event()
+    }
 
-    object MoveToHome : LoginUiEffect()
+    sealed class Effect: UiEffect {
+        data class MoveToOauthJoin(
+            val socialId: String
+        ): Effect()
+        object MoveToHome : Effect()
+    }
 }
