@@ -15,6 +15,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,26 +38,43 @@ import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.component.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
+import com.tellingus.tellingme.presentation.ui.feature.login.LoginContract
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.presentation.ui.feature.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.feature.login.model.IsAuto
 import com.tellingus.tellingme.util.TAG
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
     navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     MainLayout(
         header = { HomeScreenHeader() },
         content = {
             HomeScreenContent(
                 navigateToRecordScreen = navigateToRecordScreen,
-                navigateToOtherSpace = navigateToOtherSpace
+                navigateToOtherSpace = navigateToOtherSpace,
+                viewModel = viewModel
             )
         }
     )
+
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is LoginContract.Effect.MoveToOauthJoin -> {
+                    Log.d(TAG, "111")
+                }
+                is LoginContract.Effect.MoveToHome -> {
+                    Log.d(TAG, "222")
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -89,7 +107,7 @@ fun HomeScreenHeader() {
 @Composable
 fun HomeScreenContent(
     navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel
 ) {
     val context = LocalContext.current
     val cardList = listOf(
@@ -158,64 +176,10 @@ fun HomeScreenContent(
             ActionChip(
                 text = "더보기",
                 onClick = {
-                    loginFromKakao(
-                        context = context,
-                        loginViewModel = loginViewModel
-                    )
+                    viewModel.processEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
                 }
             )
         }
-    }
-}
-
-/** 카카오디벨로퍼 공식문서에서 설명하는 발생 가능한 예외 처리 분기입니다. **/
-private fun loginFromKakao(
-    context: Context,
-    loginViewModel: LoginViewModel
-) {
-
-    // 카카오계정으로 로그인 공통 callback 구성
-    // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
-    val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (error != null) {
-            Log.e(TAG, "카카오계정으로 로그인 실패", error)
-        } else if (token != null) {
-            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-
-            loginViewModel.loginFromKakao(
-                oauthToken = token.accessToken,
-                isAuto = IsAuto.MANUAL.name,
-                oauthRequestDto = OauthRequestDto()
-            )
-        }
-    }
-
-    // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-    if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-        UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
-            if (error != null) {
-                Log.e(TAG, "카카오톡으로 로그인 실패", error)
-
-                // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-                // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
-                if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                    return@loginWithKakaoTalk
-                }
-
-                // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
-            } else if (token != null) {
-                Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-
-                loginViewModel.loginFromKakao(
-                    oauthToken = token.accessToken,
-                    isAuto = IsAuto.MANUAL.name,
-                    oauthRequestDto = OauthRequestDto()
-                )
-            }
-        }
-    } else {
-        UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
     }
 }
 

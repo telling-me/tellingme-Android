@@ -44,7 +44,7 @@ abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
     protected fun updateState(state: State) {
         _uiState.value = state
     }
-    
+
     protected abstract fun reduceState(event: Event)
 
     private fun subscribeEvents() {
@@ -58,6 +58,12 @@ abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
     protected fun postEffect(effect: Effect) {
         viewModelScope.launch {
             _effect.send(effect)
+        }
+    }
+
+    fun processEvent(event: Event) {
+        viewModelScope.launch {
+            _event.emit(event)
         }
     }
 }

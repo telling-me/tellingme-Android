@@ -1,22 +1,23 @@
 package com.tellingus.tellingme.presentation.ui.feature.login
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tellingus.tellingme.data.model.oauth.response.JoinRequestDto
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApiClient
 import com.tellingus.tellingme.data.model.oauth.dto.OauthRequestDto
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
+import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
+import com.tellingus.tellingme.presentation.ui.feature.login.model.IsAuto
 import com.tellingus.tellingme.presentation.ui.feature.login.model.LoginType
 import com.tellingus.tellingme.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,37 +25,74 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val loginUseCase: LoginUseCase,
-): ViewModel(), LoginContract {
+): BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
+    initialState = LoginContract.State()
+) {
+    init {
+        // 로그인 여부 확인하는 작업을 여기서 할듯?
 
-    private val _joinRequestState = MutableStateFlow<JoinRequestDto>(JoinRequestDto())
-    override val joinRequestState: StateFlow<JoinRequestDto> get() = _joinRequestState
+    }
 
-    private val _loginUiEffect = MutableSharedFlow<LoginUiEffect>()
-    override val loginUiEffect: SharedFlow<LoginUiEffect> get() = _loginUiEffect
-
-    fun loginFromKakao(
-        oauthToken: String,
-        loginType: String = LoginType.KAKAO.name,
-        isAuto: String,
-        oauthRequestDto: OauthRequestDto
-    ) {
+    override fun reduceState(event: LoginContract.Event) {
         viewModelScope.launch {
+            when (event) {
+                is LoginContract.Event.KakaoLoginButtonClicked -> {
+                    kakaoLogin(event.context)
+                }
+            }
+        }
+    }
+
+    private fun kakaoLogin(context: Context) {
+        // 카카오계정으로 로그인 공통 callback 구성
+        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e(TAG, "카카오계정으로 로그인 실패", error)
+            } else if (token != null) {
+                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+                loginFromKakao(token.accessToken)
+            }
+        }
+
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
+            UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
+                if (error != null) {
+                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
+
+                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        return@loginWithKakaoTalk
+                    }
+
+                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                    UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+                } else if (token != null) {
+                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    loginFromKakao(token.accessToken)
+                }
+            }
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+        }
+    }
+
+    fun loginFromKakao(oauthToken: String) {
+        viewModelScope.launch {
+            updateState(currentState.copy(isLoading = true))
             loginUseCase(
                 oauthToken = oauthToken,
-                loginType = loginType.lowercase(),
-                isAuto = isAuto.lowercase(),
-                oauthRequestDto = oauthRequestDto
+                loginType = LoginType.KAKAO.name.lowercase(),
+                isAuto = IsAuto.MANUAL.name.lowercase(),
+                oauthRequestDto = OauthRequestDto()
             )
-                .onSuccess { it, code ->
-                    when(code) {
-                        200 -> {
-                            Log.d(TAG, it.toString())
+                .onSuccess {
+                    Log.d(TAG, it.toString())
+                    updateState(currentState.copy(isLoading = true))
 
-                            _loginUiEffect.emit(
-                                LoginUiEffect.MoveToHome
-                            )
-                        }
-                    }
+                    postEffect(LoginContract.Effect.MoveToHome)
                 }
                 .onFailure { message, code ->
                     when(code) {
@@ -63,15 +101,13 @@ class LoginViewModel @Inject constructor(
                             val socialId = message.split("${'"'}")[3]
                             Log.d(TAG, "$message // socialId : $socialId")
 
-                            // 소셜로그인 결과 404라면
+                            // 소셜로그인 결과 404라면 추가정보 기입 화면으로 이동
                             dataStoreRepository.setUserSocialId(socialId)
-
-                            _loginUiEffect.emit(
-                                LoginUiEffect.MoveToOauthJoin(socialId)
-                            )
+                            postEffect(LoginContract.Effect.MoveToOauthJoin(socialId))
                         }
                         1000 -> {
                             Log.d(TAG, code.toString())
+
                         }
                         1001 -> {
                             Log.d(TAG, code.toString())
@@ -81,7 +117,6 @@ class LoginViewModel @Inject constructor(
                 .onNetworkError {
 
                 }
-
         }
     }
 }
