@@ -14,7 +14,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.tellingus.tellingme.presentation.ui.feature.MainActivity
 
 
-class TellingmeFirebaseMessagingService : FirebaseMessagingService() {
+class TellingMeFirebaseMessagingService : FirebaseMessagingService() {
     private val NOTIFICATION_CHANNEL_ID = "tellingus_tellingme"
     private val NOTIFICATION_CHANNEL_NAME = "Notification"
     private val NOTIFICATION_CHANNEL_DESCRIPTION = "notification channel"
