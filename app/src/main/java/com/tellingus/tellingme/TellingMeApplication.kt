@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.util
+package com.tellingus.tellingme
 
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
