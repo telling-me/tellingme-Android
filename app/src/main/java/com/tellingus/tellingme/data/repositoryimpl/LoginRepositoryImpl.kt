@@ -1,7 +1,7 @@
 package com.tellingus.tellingme.data.repositoryimpl
 
-import com.tellingus.tellingme.data.model.login.OauthRequestDto
-import com.tellingus.tellingme.data.model.login.TokenDto
+import com.tellingus.tellingme.data.model.oauth.dto.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.response.TokenDto
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.LoginRepository

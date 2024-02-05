@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.home.record
 
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -32,8 +31,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,21 +49,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tellingus.tellingme.R
-import com.tellingus.tellingme.presentation.ui.common.appbar.BasicAppBar
-import com.tellingus.tellingme.presentation.ui.common.button.BUTTON_SIZE
-import com.tellingus.tellingme.presentation.ui.common.button.PrimaryButton
-import com.tellingus.tellingme.presentation.ui.common.button.PrimaryLightButton
-import com.tellingus.tellingme.presentation.ui.common.button.SingleButton
-import com.tellingus.tellingme.presentation.ui.common.button.TellingmeIconButton
-import com.tellingus.tellingme.presentation.ui.common.dialog.ShowDoubleButtonDialog
-import com.tellingus.tellingme.presentation.ui.common.layout.MainLayout
-import com.tellingus.tellingme.presentation.ui.common.widget.TOOLTIP_TYPE
-import com.tellingus.tellingme.presentation.ui.common.widget.ToolTip
+import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryLightButton
+import com.tellingus.tellingme.presentation.ui.common.component.button.SingleButton
+import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
+import com.tellingus.tellingme.presentation.ui.common.component.dialog.ShowDoubleButtonDialog
+import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
+import com.tellingus.tellingme.presentation.ui.common.model.ToolTipType
+import com.tellingus.tellingme.presentation.ui.common.component.widget.ToolTip
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
@@ -99,7 +92,7 @@ fun RecordScreen(
                 leftSlot = {
                     TellingmeIconButton(
                         iconRes = R.drawable.icon_caret_left,
-                        size = BUTTON_SIZE.MEDIUM,
+                        size = ButtonSize.MEDIUM,
                         color = Gray500,
                         onClick = {
                             // 인자로 넘기지 않고 다른 방법은 없을지??
@@ -110,7 +103,7 @@ fun RecordScreen(
                 },
                 rightSlot = {
                     SingleButton(
-                        size = BUTTON_SIZE.LARGE,
+                        size = ButtonSize.LARGE,
                         text = "완료",
                         onClick = { showDialogState = !showDialogState }
                     )
@@ -131,7 +124,7 @@ fun RecordScreen(
             leftButton = {
                 PrimaryLightButton(
                     modifier = Modifier.weight(1f),
-                    size = BUTTON_SIZE.LARGE,
+                    size = ButtonSize.LARGE,
                     text = "취소",
                     onClick = { showDialogState = false }
                 )
@@ -139,7 +132,7 @@ fun RecordScreen(
             rightButton = {
                 PrimaryButton(
                     modifier = Modifier.weight(1f),
-                    size = BUTTON_SIZE.LARGE,
+                    size = ButtonSize.LARGE,
                     text = "완료",
                     onClick = {
                         Toast.makeText(context, "완료 후 홈으로 이동", Toast.LENGTH_SHORT).show()
@@ -231,7 +224,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                         Spacer(modifier = modifier.size(12.dp))
                         ToolTip(
                             modifier = modifier.padding(top = 4.dp),
-                            type = TOOLTIP_TYPE.BASIC,
+                            type = ToolTipType.BASIC,
                             text = "감정을 선택해주세요!"
                         )
                     }
@@ -403,14 +396,14 @@ fun EmotionBottomSheet(
             Row {
                 PrimaryLightButton(
                     modifier = modifier.weight(1f),
-                    size = BUTTON_SIZE.LARGE,
+                    size = ButtonSize.LARGE,
                     text = "취소",
                     onClick = onClickCancel
                 )
                 Spacer(modifier = modifier.size(8.dp))
                 PrimaryButton(
                     modifier = modifier.weight(1f),
-                    size = BUTTON_SIZE.LARGE,
+                    size = ButtonSize.LARGE,
                     text = "완료",
                     onClick = onClickConfirm
                 )

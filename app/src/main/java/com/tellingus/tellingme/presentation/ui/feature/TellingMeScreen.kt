@@ -5,24 +5,17 @@ import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetDefaults
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -32,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -45,6 +39,7 @@ import androidx.navigation.navArgument
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.feature.home.HomeScreen
 import com.tellingus.tellingme.presentation.ui.feature.home.record.RecordScreen
+import com.tellingus.tellingme.presentation.ui.feature.login.LoginScreen
 import com.tellingus.tellingme.presentation.ui.feature.mypage.MyPageScreen
 import com.tellingus.tellingme.presentation.ui.feature.myspace.MySpaceScreen
 import com.tellingus.tellingme.presentation.ui.feature.otherspace.OtherSpaceScreen
@@ -54,12 +49,14 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
+import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
 fun TellingMeScreen(
     navController: NavHostController = rememberNavController(),
+    viewModel: TellingMeViewModel = hiltViewModel(),
     uri: Uri? = null,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -84,6 +81,16 @@ fun TellingMeScreen(
                 navController = navController,
                 startDestination = TellingMeScreenRoute.HOME.route
             ) {
+                composable(route = TellingMeScreenRoute.LOGIN.route) {
+                    LoginScreen(
+                        navigateToOauthJoinScreen = {
+                            navController.navigate(TellingMeScreenRoute.LOGIN.route)
+                        },
+                        navigateToHomeScreen = {
+                            navController.navigate(TellingMeScreenRoute.HOME.route)
+                        }
+                    )
+                }
                 composable(route = TellingMeScreenRoute.HOME.route) {
                     HomeScreen(
                         navigateToRecordScreen = {
@@ -91,20 +98,20 @@ fun TellingMeScreen(
                         },
                         navigateToOtherSpace = { id ->
                             navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
-                        })
+                        }
+                    )
                 }
                 composable(route = TellingMeScreenRoute.RECORD.route) {
                     RecordScreen(
                         navigateToPreviousScreen = {
                             navController.popBackStack()
-                        })
+                        }
+                    )
                 }
                 composable(route = TellingMeScreenRoute.MY_SPACE.route) {
                     MySpaceScreen(
                         navigateToRecordScreen = {
-                            navController.navigate(
-                                TellingMeScreenRoute.RECORD.route
-                            )
+                            navController.navigate(TellingMeScreenRoute.RECORD.route)
                         },
                     )
                 }
@@ -117,22 +124,31 @@ fun TellingMeScreen(
                         navArgument(KEY_ID) {
                             type = NavType.StringType
                         }
-                    )) {
+                    )
+                ) {
                     OtherSpaceDetailScreen(
                         navigateToOtherSpaceScreen = {
                             navController.navigate(TellingMeScreenRoute.OTHER_SPACE.route)
-                        })
+                        }
+                    )
                 }
                 composable(route = TellingMeScreenRoute.MY_PAGE.route) {
                     MyPageScreen()
                 }
             }
-
         }
+    }
+    
+    LaunchedEffect(key1 = viewModel.tellingMeUiEffect) {
+        viewModel.tellingMeUiEffect.collectLatest { tellingMeUiEffect ->
+            when (tellingMeUiEffect) {
+                is TellingMeUiEffect.MoveToLogin -> {
 
+                }
+            }
+        }
     }
 }
-
 
 fun navigateBottomNavigationScreen(
     navController: NavHostController,
@@ -213,6 +229,7 @@ enum class TellingMeBottomNavigationItem(
 }
 
 enum class TellingMeScreenRoute(val route: String) {
+    LOGIN("login"),
     HOME("home"),
     MY_SPACE("my-space"),
     OTHER_SPACE("other-space"),
