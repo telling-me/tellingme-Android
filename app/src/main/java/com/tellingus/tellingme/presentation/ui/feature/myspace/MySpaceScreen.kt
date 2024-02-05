@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 
 @Composable
@@ -17,4 +18,10 @@ fun MySpaceScreen(
             Text(text = "기록하기")
         }
     }
+}
+
+@Preview
+@Composable
+fun MySpaceScreenPreview() {
+    MySpaceScreen {}
 }
