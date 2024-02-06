@@ -5,14 +5,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavController
 
-val useNavControllerContext = staticCompositionLocalOf<NavController?> { null }
+val LocalNavController = staticCompositionLocalOf<NavController?> { null }
 
 @Composable
 fun NavigationProvider(
     navController: NavController,
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(useNavControllerContext provides navController) {
+    CompositionLocalProvider(LocalNavController provides navController) {
         content()
     }
 }
