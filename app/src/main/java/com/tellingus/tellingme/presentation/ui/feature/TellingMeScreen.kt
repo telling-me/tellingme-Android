@@ -65,11 +65,11 @@ fun TellingMeScreen(
     val currentDestination = navBackStackEntry?.destination
     val coroutineScope = rememberCoroutineScope()
 
-    val routeList = listOf(TellingMeScreenRoute.RECORD.route, TellingMeScreenRoute.ALARM.route)
+    val bottomNavNotIncludeList = listOf(TellingMeScreenRoute.RECORD.route, TellingMeScreenRoute.ALARM.route)
 
     Scaffold(
         bottomBar = {
-            if (currentDestination?.route !in routeList) {
+            if (currentDestination?.route !in bottomNavNotIncludeList) {
                 TellingMeTabBar(
                     currentDestination = currentDestination,
                     navigateToScreen = { navigationItem ->
