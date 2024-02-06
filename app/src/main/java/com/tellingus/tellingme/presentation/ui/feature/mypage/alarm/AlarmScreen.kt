@@ -1,5 +1,10 @@
 package com.tellingus.tellingme.presentation.ui.feature.mypage.alarm
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,8 +14,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.R
@@ -23,7 +32,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary100
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.provider.useNavControllerContext
+import com.tellingus.tellingme.provider.LocalNavController
 
 @Composable
 fun AlarmScreen() {
@@ -36,7 +45,7 @@ fun AlarmScreen() {
 
 @Composable
 fun AlarmScreenHeader() {
-    val navController = useNavControllerContext.current
+    val navController = LocalNavController.current
 
     BasicAppBar(
         modifier = Modifier
@@ -66,26 +75,39 @@ fun AlarmScreenContent() {
             Text(text = "알림")
             ActionChip(onClick = { /*TODO*/ }, text = "전체 읽음", hasArrow = false)
         }
-            LazyColumn() {
-                items(items = dummyList) {it
-                    AlarmCard(
-                        alarmType = it.alarmType,
-                        title = it.title,
-                        content = it.content,
-                        date = it.date
-                    )
-                }
+        LazyColumn() {
+            items(items = dummyList) {
+                it
+                AlarmCard(
+                    alarmType = it.alarmType,
+                    title = it.title,
+                    content = it.content,
+                    date = it.date,
+                    isRead = it.isRead
+                )
             }
+        }
     }
 }
 
-
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun AlarmCard(alarmType: String, title: String, content: String = "", date: String) {
+fun AlarmCard(
+    alarmType: String,
+    title: String,
+    content: String = "",
+    date: String,
+    isRead: Boolean = false
+) {
+
+    val isSelected: MutableState<Boolean> = mutableStateOf(isRead)
+//    LaunchedEffect(key1 = , block = )
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp, bottom = 12.dp)
+            .alpha(if (isRead === true) 0.5f else 1f)
     ) {
         Text(
             text = getAlarmCardTypeText(alarmType),
@@ -112,7 +134,6 @@ fun AlarmCard(alarmType: String, title: String, content: String = "", date: Stri
             style = TellingmeTheme.typography.caption1Regular,
             modifier = Modifier.padding(top = 4.dp)
         )
-
     }
 }
 
@@ -129,7 +150,8 @@ data class AlarmItem(
     val alarmType: String,
     val title: String,
     val content: String = "",
-    val date: String
+    val date: String,
+    val isRead: Boolean = false,
 )
 
 @Preview
@@ -139,14 +161,14 @@ fun AlarmScreenPreview() {
 }
 
 val dummyList = listOf(
-    AlarmItem("alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.20"),
+    AlarmItem("alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.20", isRead = true),
     AlarmItem(
         "event",
         "텔링미북 모으는 분들 주목!",
         "더 나은 텔링미 북 제작을 위한 여러분들의 의견이 궁금합니다! 설문 조사에 참여해주세요.",
         "2023.09.15"
     ),
-    AlarmItem("alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.13"),
+    AlarmItem("alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.13", isRead = true),
     AlarmItem(
         alarmType = "notice",
         title = "서비스 오류 공지",
