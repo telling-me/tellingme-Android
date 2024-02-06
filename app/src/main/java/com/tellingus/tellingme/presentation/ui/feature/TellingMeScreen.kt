@@ -65,9 +65,11 @@ fun TellingMeScreen(
     val currentDestination = navBackStackEntry?.destination
     val coroutineScope = rememberCoroutineScope()
 
+    val routeList = listOf(TellingMeScreenRoute.RECORD.route, TellingMeScreenRoute.ALARM.route)
+
     Scaffold(
         bottomBar = {
-            if (currentDestination?.route != TellingMeScreenRoute.RECORD.route) {
+            if (currentDestination?.route !in routeList) {
                 TellingMeTabBar(
                     currentDestination = currentDestination,
                     navigateToScreen = { navigationItem ->
@@ -78,8 +80,6 @@ fun TellingMeScreen(
                     })
             }
         }) { paddingValues ->
-
-
         NavigationProvider(navController = navController) {
             Box(modifier = Modifier.padding(paddingValues)) {
                 NavHost(
