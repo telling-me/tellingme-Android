@@ -29,7 +29,8 @@ fun ActionChip(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String,
-    enable: Boolean = true
+    enable: Boolean = true,
+    hasArrow: Boolean = true,
 ) {
     OutlinedButton(
         modifier = modifier,
@@ -55,12 +56,14 @@ fun ActionChip(
                 style = TellingmeTheme.typography.body2Bold
             )
             Spacer(modifier = modifier.size(2.dp))
-            Icon(
-                modifier = modifier.size(20.dp),
-                painter = painterResource(R.drawable.icon_caret_right),
-                contentDescription = "",
-                tint = if (enable) Gray600 else Gray300
-            )
+            if (hasArrow) {
+                Icon(
+                    modifier = modifier.size(20.dp),
+                    painter = painterResource(R.drawable.icon_caret_right),
+                    contentDescription = "",
+                    tint = if (enable) Gray600 else Gray300
+                )
+            }
         }
     }
 }
@@ -69,7 +72,8 @@ fun ActionChip(
 @Composable
 fun ActionChipPreview() {
     Column {
-        ActionChip(onClick = {  }, text = "Button", enable = true)
-        ActionChip(onClick = {  }, text = "Button", enable = false)
+        ActionChip(onClick = { }, text = "Button", enable = true)
+        ActionChip(onClick = { }, text = "Button", enable = false)
+        ActionChip(onClick = { }, text = "Button", hasArrow = false)
     }
 }
