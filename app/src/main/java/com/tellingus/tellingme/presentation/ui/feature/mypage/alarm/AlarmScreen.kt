@@ -1,10 +1,9 @@
 package com.tellingus.tellingme.presentation.ui.feature.mypage.alarm
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,9 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -99,15 +97,19 @@ fun AlarmCard(
     date: String,
     isRead: Boolean = false
 ) {
-
-    val isSelected: MutableState<Boolean> = mutableStateOf(isRead)
-//    LaunchedEffect(key1 = , block = )
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp, bottom = 12.dp)
-            .alpha(if (isRead === true) 0.5f else 1f)
+            .alpha(if (isRead === true || isPressed === true) 0.5f else 1f)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = {}
+            )
     ) {
         Text(
             text = getAlarmCardTypeText(alarmType),
