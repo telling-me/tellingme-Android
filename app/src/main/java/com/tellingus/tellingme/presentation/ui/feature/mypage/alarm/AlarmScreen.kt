@@ -98,7 +98,6 @@ fun AlarmScreenContent() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -149,6 +148,7 @@ fun AlarmCard(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .background(Red600)
             .swipeable(
                 state = swipeableState,
                 orientation = Orientation.Horizontal,
@@ -158,7 +158,7 @@ fun AlarmCard(
 //                    -dipToPx(context, 100f) to 1,
 //                    dipToPx(context, 100f) to 2
 //                ),
-                thresholds = { _, _ -> FractionalThreshold(0.3f) },
+                thresholds = { _, _ -> FractionalThreshold(0.5f) },
                 velocityThreshold = 1000.dp
             )
     ) {
@@ -166,9 +166,6 @@ fun AlarmCard(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .fillMaxHeight()
-                .background(Red600)
-
         ) {
             TextButton(
                 modifier = Modifier
@@ -194,11 +191,12 @@ fun AlarmCard(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(Color.White)
+
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp, bottom = 12.dp)
+                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp)
                     .alpha(if (isRead === true || isPressed === true) 0.5f else 1f)
                     .clickable(
                         interactionSource = interactionSource,
