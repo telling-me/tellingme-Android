@@ -20,17 +20,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.DismissDirection
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.SwipeToDismiss
-import androidx.compose.material.rememberDismissState
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
-import androidx.compose.material3.Button
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -41,34 +34,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
-import com.google.firebase.annotations.concurrent.Background
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
-import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary100
 import com.tellingus.tellingme.presentation.ui.theme.Red600
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.provider.LocalNavController
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun AlarmScreen() {
+fun AlarmScreen(navigateToPreviousScreen: () -> Unit) {
     MainLayout(
-        header = { AlarmScreenHeader() },
+        header = { AlarmScreenHeader(navigateToPreviousScreen) },
         content = { AlarmScreenContent() },
         isScrollable = false,
         background = Color.White
@@ -76,8 +64,7 @@ fun AlarmScreen() {
 }
 
 @Composable
-fun AlarmScreenHeader() {
-    val navController = LocalNavController.current
+fun AlarmScreenHeader(navigateToPreviousScreen: () -> Unit) {
 
     BasicAppBar(
         modifier = Modifier
@@ -87,7 +74,7 @@ fun AlarmScreenHeader() {
             TellingmeIconButton(iconRes = R.drawable.icon_caret_left,
                 size = ButtonSize.MEDIUM,
                 color = Gray500,
-                onClick = { navController?.popBackStack() })
+                onClick = { navigateToPreviousScreen() })
         },
     )
 }
@@ -100,7 +87,9 @@ fun AlarmScreenContent() {
             .fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -262,7 +251,7 @@ private fun dipToPx(context: Context, dipValue: Float): Float {
 @Preview
 @Composable
 fun AlarmScreenPreview() {
-    AlarmScreen()
+    AlarmScreen(navigateToPreviousScreen = {})
 }
 
 val dummyList = listOf(
