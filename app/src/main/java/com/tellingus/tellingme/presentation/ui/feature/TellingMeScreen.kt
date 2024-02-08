@@ -2,6 +2,7 @@ package com.tellingus.tellingme.presentation.ui.feature
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
@@ -56,8 +57,9 @@ import kotlinx.coroutines.flow.collectLatest
 @ExperimentalMaterial3Api
 @Composable
 fun TellingMeScreen(
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
     viewModel: TellingMeViewModel = hiltViewModel(),
+    startDestination: String = TellingMeScreenRoute.HOME.route,
     uri: Uri? = null,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -87,26 +89,33 @@ fun TellingMeScreen(
                 startDestination = TellingMeScreenRoute.HOME.route
             ) {
                 composable(route = TellingMeScreenRoute.LOGIN.route) {
-                    LoginScreen(
-                        navigateToOauthJoinScreen = {
-                            navController.navigate(TellingMeScreenRoute.LOGIN.route)
-                        },
-                        navigateToHomeScreen = {
-                            navController.navigate(TellingMeScreenRoute.HOME.route)
-                        }
-                    )
+
+                    LoginScreen(navController)
+//                    LoginScreen(
+//                        navigateToOauthJoinScreen = {
+//                            navController.navigate(TellingMeScreenRoute.LOGIN.route)
+//                        },
+//                        navigateToHomeScreen = {
+//                            navController.navigate(TellingMeScreenRoute.HOME.route)
+//                        }
+//                    )
                 }
                 composable(route = TellingMeScreenRoute.HOME.route) {
-                    HomeScreen(
-                        navigateToRecordScreen = {
-                            navController.navigate(TellingMeScreenRoute.RECORD.route)
-                        },
-                        navigateToOtherSpace = { id ->
-                            navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
-                        }
-                    )
+                    val backStackTestId = it.arguments?.getString("id")
+                    Log.d("taag", backStackTestId.toString())
+                    HomeScreen(navController)
+//                    HomeScreen(
+//                        navigateToRecordScreen = {
+//                            navController.navigate(TellingMeScreenRoute.RECORD.route)
+//                        },
+//                        navigateToOtherSpace = { id ->
+//                            navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
+//                        }
+//                    )
                 }
-                composable(route = TellingMeScreenRoute.RECORD.route) {
+                composable(route = "${TellingMeScreenRoute.RECORD.route}/{id}") {
+                    val backStackTestId = it.arguments?.getString("id")
+                    Log.d("taag", backStackTestId.toString())
                     RecordScreen(
                         navigateToPreviousScreen = {
                             navController.popBackStack()

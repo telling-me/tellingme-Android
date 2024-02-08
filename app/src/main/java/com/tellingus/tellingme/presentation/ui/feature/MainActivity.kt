@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 
 
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TellingmeTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    TellingMeScreen()
+                    TellingMeScreen(navController = rememberNavController())
                 }
 
             }
