@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
@@ -77,7 +78,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecordScreen(
     modifier: Modifier = Modifier,
-    navigateToPreviousScreen: () -> Unit
+    navController: NavController,
 ) {
     val context = LocalContext.current
     var showDialogState by remember { mutableStateOf(false) }
@@ -96,8 +97,8 @@ fun RecordScreen(
                         color = Gray500,
                         onClick = {
                             // 인자로 넘기지 않고 다른 방법은 없을지??
-                            navigateToPreviousScreen()
-
+                            navController.previousBackStackEntry?.savedStateHandle?.set("msg","이전 데이터")
+                            navController.popBackStack()
                         }
                     )
                 },
@@ -420,5 +421,5 @@ data class Emotion(
 @Preview
 @Composable
 fun RecordScreenPreview() {
-    RecordScreen {}
+//    RecordScreen {}
 }
