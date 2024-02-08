@@ -10,10 +10,13 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -79,7 +82,6 @@ fun AlarmScreenHeader(navigateToPreviousScreen: () -> Unit) {
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AlarmScreenContent() {
     Column(
@@ -136,8 +138,12 @@ fun AlarmCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight()
-            .background(Red600)
+            /**
+             * 상위 컴포넌트에 최대높이를 설정
+             * 최대높이를 상위 컴포넌트에 설정해줌으로서 하위컴포넌트에서 fillMaxHeight의 값이 측정되어 적용가능
+             */
+            .height(IntrinsicSize.Min)
+            .background(Color.White)
             .swipeable(
                 state = swipeableState,
                 orientation = Orientation.Horizontal,
@@ -151,7 +157,6 @@ fun AlarmCard(
                 velocityThreshold = 1000.dp
             )
     ) {
-
         Box(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -159,8 +164,8 @@ fun AlarmCard(
             TextButton(
                 modifier = Modifier
                     .width(80.dp)
-                    .fillMaxHeight(),
-
+                    .fillMaxHeight()
+                    .background(Red600),
                 onClick = {
                     scope.launch {
                         swipeableState.animateTo(0, tween(600, 0))
@@ -220,8 +225,6 @@ fun AlarmCard(
                 )
             }
         }
-
-
     }
 
 }
