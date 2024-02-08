@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
@@ -32,6 +33,7 @@ import com.tellingus.tellingme.presentation.ui.common.component.section.Question
 import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
+import com.tellingus.tellingme.presentation.ui.feature.TellingMeScreenRoute
 import com.tellingus.tellingme.presentation.ui.feature.login.LoginContract
 import com.tellingus.tellingme.presentation.ui.feature.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
@@ -42,14 +44,22 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
-    navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
+    navigateToOtherSpace: (name: String) -> Unit,
+    navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+
+    val msg = navController.currentBackStackEntry?.savedStateHandle?.get<String>("msg")
+    Log.d("taag", msg.toString())
+
     MainLayout(
         header = { HomeScreenHeader() },
         content = {
             HomeScreenContent(
-                navigateToRecordScreen = navigateToRecordScreen,
+//                navigateToRecordScreen = navigateToRecordScreen,
+                navigateToRecordScreen = {
+                    navController.navigate(TellingMeScreenRoute.RECORD.route)
+                },
                 navigateToOtherSpace = navigateToOtherSpace,
                 viewModel = viewModel
             )
@@ -99,7 +109,8 @@ fun HomeScreenHeader() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenContent(
-    navigateToRecordScreen: () -> Unit, navigateToOtherSpace: (name: String) -> Unit,
+    navigateToRecordScreen: () -> Unit,
+    navigateToOtherSpace: (name: String) -> Unit,
     viewModel: LoginViewModel
 ) {
     val context = LocalContext.current
@@ -185,6 +196,6 @@ fun HomeScreenHeaderPreview() {
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navigateToRecordScreen = { /*TODO*/ }, navigateToOtherSpace = {})
+//    HomeScreen(navigateToRecordScreen = { /*TODO*/ }, navigateToOtherSpace = {})
 }
 

@@ -89,8 +89,7 @@ fun TellingMeScreen(
                 startDestination = TellingMeScreenRoute.HOME.route
             ) {
                 composable(route = TellingMeScreenRoute.LOGIN.route) {
-
-                    LoginScreen(navController)
+//                    LoginScreen(navController)
 //                    LoginScreen(
 //                        navigateToOauthJoinScreen = {
 //                            navController.navigate(TellingMeScreenRoute.LOGIN.route)
@@ -101,25 +100,17 @@ fun TellingMeScreen(
 //                    )
                 }
                 composable(route = TellingMeScreenRoute.HOME.route) {
-                    val backStackTestId = it.arguments?.getString("id")
-                    Log.d("taag", backStackTestId.toString())
-                    HomeScreen(navController)
-//                    HomeScreen(
-//                        navigateToRecordScreen = {
-//                            navController.navigate(TellingMeScreenRoute.RECORD.route)
-//                        },
-//                        navigateToOtherSpace = { id ->
-//                            navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
-//                        }
-//                    )
-                }
-                composable(route = "${TellingMeScreenRoute.RECORD.route}/{id}") {
-                    val backStackTestId = it.arguments?.getString("id")
-                    Log.d("taag", backStackTestId.toString())
-                    RecordScreen(
-                        navigateToPreviousScreen = {
-                            navController.popBackStack()
+//                    HomeScreen(navController)
+                    HomeScreen(
+                        navController = navController,
+                        navigateToOtherSpace = { id ->
+                            navController.navigate("${TellingMeScreenRoute.OTHER_SPACE.route}/$id")
                         }
+                    )
+                }
+                composable(route = TellingMeScreenRoute.RECORD.route) {
+                    RecordScreen(
+                        navController = navController
                     )
                 }
                 composable(route = TellingMeScreenRoute.MY_SPACE.route) {
