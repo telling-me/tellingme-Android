@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TellingmeTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    TellingMeScreen(navController = rememberNavController())
+                    TellingMeNavHost(navController = rememberNavController())
                 }
 
             }
