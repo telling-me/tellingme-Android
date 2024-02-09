@@ -33,7 +33,7 @@ import com.tellingus.tellingme.presentation.ui.common.component.section.Question
 import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
-import com.tellingus.tellingme.presentation.ui.feature.TellingMeScreenRoute
+import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.feature.login.LoginContract
 import com.tellingus.tellingme.presentation.ui.feature.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
@@ -48,17 +48,13 @@ fun HomeScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-
-    val msg = navController.currentBackStackEntry?.savedStateHandle?.get<String>("msg")
-    Log.d("taag", msg.toString())
-
     MainLayout(
         header = { HomeScreenHeader() },
         content = {
             HomeScreenContent(
 //                navigateToRecordScreen = navigateToRecordScreen,
                 navigateToRecordScreen = {
-                    navController.navigate(TellingMeScreenRoute.RECORD.route)
+                    navController.navigate(HomeDestinations.RECORD)
                 },
                 navigateToOtherSpace = navigateToOtherSpace,
                 viewModel = viewModel
