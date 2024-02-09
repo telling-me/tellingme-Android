@@ -29,6 +29,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.BottomNavigationItem
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
@@ -52,7 +53,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun TellingMeScreen(
     navController: NavHostController,
     viewModel: TellingMeViewModel = hiltViewModel(),
-    startDestination: String = HomeDestinations.ROUTE,
+    startDestination: String = AuthDestinations.ROUTE,
     uri: Uri? = null,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -130,9 +131,7 @@ fun TellingMeBottomNavigationBar(
                 },
                 label = {
                     Text(
-                        text = stringResource(
-                            navigationItem.title
-                        ),
+                        text = stringResource(navigationItem.title),
                         fontSize = 10.sp,
                         color = when (navigationItem.route) {
                             currentDestination?.route -> Gray600

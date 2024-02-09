@@ -13,6 +13,9 @@ fun NavGraphBuilder.loginGraph(
         route = AuthDestinations.ROUTE,
         startDestination = AuthDestinations.LOGIN
     ) {
+        composable(route = AuthDestinations.SPLASH) {
+//            Splash
+        }
         composable(route = AuthDestinations.LOGIN) {
             LoginScreen(navController)
         }
