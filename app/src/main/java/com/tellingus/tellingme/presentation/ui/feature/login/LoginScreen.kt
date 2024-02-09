@@ -12,6 +12,8 @@ import androidx.navigation.NavController
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
+import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
+import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 
 @Composable
 fun LoginScreen(
@@ -29,7 +31,11 @@ fun LoginScreen(
                     size = ButtonSize.LARGE,
                     text = "카카오 로그인",
                     onClick = {
-
+                        navController.navigate(HomeDestinations.HOME) {
+                            popUpTo(AuthDestinations.ROUTE) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
