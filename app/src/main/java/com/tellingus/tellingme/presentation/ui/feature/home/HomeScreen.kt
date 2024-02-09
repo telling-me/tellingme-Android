@@ -45,33 +45,15 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
 ) {
     MainLayout(
         header = { HomeScreenHeader() },
         content = {
             HomeScreenContent(
-//                navigateToRecordScreen = navigateToRecordScreen,
-                navigateToRecordScreen = {
-                    navController.navigate(HomeDestinations.RECORD)
-                },
-                viewModel = viewModel
+                navController = navController
             )
         }
     )
-
-    LaunchedEffect(key1 = viewModel.effect) {
-        viewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is LoginContract.Effect.MoveToOauthJoin -> {
-                    Log.d(TAG, "111")
-                }
-                is LoginContract.Effect.MoveToHome -> {
-                    Log.d(TAG, "222")
-                }
-            }
-        }
-    }
 }
 
 @Composable
@@ -103,8 +85,7 @@ fun HomeScreenHeader() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenContent(
-    navigateToRecordScreen: () -> Unit,
-    viewModel: LoginViewModel
+    navController: NavController,
 ) {
     val context = LocalContext.current
     val cardList = listOf(
@@ -142,7 +123,9 @@ fun HomeScreenContent(
                 modifier = Modifier.padding(top = 12.dp),
                 title = "지금까지의 나의 인생을 두 단계로\n나눈다면 어느 시점에 구분선을 둘 건가요?",
                 description = "그 역활이 나의 성향을 반영할 수 있어요",
-                onClickButton = navigateToRecordScreen
+                onClickButton = {
+                    navController.navigate(HomeDestinations.RECORD)
+                }
             )
         }
 
@@ -173,7 +156,7 @@ fun HomeScreenContent(
             ActionChip(
                 text = "더보기",
                 onClick = {
-                    viewModel.processEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
+
                 }
             )
         }

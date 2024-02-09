@@ -87,9 +87,8 @@ class LoginViewModel @Inject constructor(
                 oauthRequestDto = OauthRequestDto()
             )
                 .onSuccess {
-                    Log.d(TAG, it.toString())
+                    // 자동 로그인인 경우 바로 홈 화면으로 진입
                     updateState(currentState.copy(isLoading = true))
-
                     postEffect(LoginContract.Effect.MoveToHome)
                 }
                 .onFailure { message, code ->

@@ -50,7 +50,7 @@ import kotlinx.coroutines.flow.collectLatest
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
-fun TellingMeScreen(
+fun TellingMeNavHost(
     navController: NavHostController,
     viewModel: TellingMeViewModel = hiltViewModel(),
     startDestination: String = AuthDestinations.ROUTE,
