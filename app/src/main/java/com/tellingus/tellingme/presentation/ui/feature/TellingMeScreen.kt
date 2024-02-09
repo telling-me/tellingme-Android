@@ -2,9 +2,6 @@ package com.tellingus.tellingme.presentation.ui.feature
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,12 +32,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.tellingus.tellingme.R
+import com.tellingus.tellingme.presentation.ui.common.navigation.BottomNavigationItem
 import com.tellingus.tellingme.presentation.ui.feature.home.HomeScreen
 import com.tellingus.tellingme.presentation.ui.feature.home.record.RecordScreen
-import com.tellingus.tellingme.presentation.ui.feature.login.LoginScreen
 import com.tellingus.tellingme.presentation.ui.feature.mypage.MyPageScreen
 import com.tellingus.tellingme.presentation.ui.feature.mypage.alarm.AlarmScreen
 import com.tellingus.tellingme.presentation.ui.feature.myspace.MySpaceScreen
@@ -164,7 +159,7 @@ fun TellingMeScreen(
 
 fun navigateBottomNavigationScreen(
     navController: NavHostController,
-    navigationItem: TellingMeBottomNavigationItem,
+    navigationItem: BottomNavigationItem,
 ) {
     // ...
     navController.navigate(navigationItem.route) {
@@ -179,10 +174,10 @@ fun navigateBottomNavigationScreen(
 @Composable
 fun TellingMeTabBar(
     currentDestination: NavDestination?,
-    navigateToScreen: (TellingMeBottomNavigationItem) -> Unit,
+    navigateToScreen: (BottomNavigationItem) -> Unit,
 ) {
     BottomNavigation(backgroundColor = Color.White) {
-        TellingMeBottomNavigationItem.values().forEach { navigationItem ->
+        BottomNavigationItem.values().forEach { navigationItem ->
             BottomNavigationItem(
                 icon = {
                     Icon(
@@ -215,30 +210,6 @@ fun TellingMeTabBar(
 
 }
 
-enum class TellingMeBottomNavigationItem(
-    val route: String, @DrawableRes val icon: Int, @StringRes val title: Int
-) {
-    HOME(
-        route = TellingMeScreenRoute.HOME.route,
-        icon = R.drawable.icon_home,
-        title = R.string.navigation_home_text
-    ),
-    MY_SPACE(
-        route = TellingMeScreenRoute.MY_SPACE.route,
-        icon = R.drawable.icon_my_space,
-        title = R.string.navigation_my_space_text
-    ),
-    OTHER_SPACE(
-        route = TellingMeScreenRoute.OTHER_SPACE.route,
-        icon = R.drawable.icon_other_space,
-        title = R.string.navigation_other_space_text
-    ),
-    MY_PAGE(
-        route = TellingMeScreenRoute.MY_PAGE.route,
-        icon = R.drawable.icon_user,
-        title = R.string.navigation_my_page_text
-    ),
-}
 
 enum class TellingMeScreenRoute(val route: String) {
     LOGIN("login"),
