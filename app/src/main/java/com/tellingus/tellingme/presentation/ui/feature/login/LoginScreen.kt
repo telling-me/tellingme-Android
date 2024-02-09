@@ -8,14 +8,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 
 @Composable
 fun LoginScreen(
-    navigateToOauthJoinScreen: () -> Unit,
-    navigateToHomeScreen: () -> Unit,
+    navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     MainLayout(
@@ -41,8 +41,5 @@ fun LoginScreen(
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(
-        navigateToOauthJoinScreen = {},
-        navigateToHomeScreen = {}
-    )
+//    LoginScreen()
 }
