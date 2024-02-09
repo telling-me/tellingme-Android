@@ -39,6 +39,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
@@ -54,9 +56,11 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun AlarmScreen(navigateToPreviousScreen: () -> Unit) {
+fun AlarmScreen(
+    navController: NavController
+) {
     MainLayout(
-        header = { AlarmScreenHeader(navigateToPreviousScreen) },
+        header = { AlarmScreenHeader { navController.popBackStack() } },
         content = { AlarmScreenContent() },
         isScrollable = false,
         background = Color.White
@@ -237,7 +241,7 @@ data class AlarmItem(
 @Preview
 @Composable
 fun AlarmScreenPreview() {
-    AlarmScreen(navigateToPreviousScreen = {})
+    AlarmScreen(navController = rememberNavController())
 }
 
 val dummyList = listOf(

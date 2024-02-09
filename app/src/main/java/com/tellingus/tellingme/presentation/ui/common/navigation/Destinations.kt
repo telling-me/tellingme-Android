@@ -27,7 +27,6 @@ object HomeDestinations {
     const val HOME = "home"
 
     const val RECORD = "record"
-    const val ALARM = "alarm"
 }
 
 object MySpaceDestinations {
@@ -43,7 +42,9 @@ object OtherSpaceDestinations {
 }
 
 object MyPageDestinations {
-    const val ROUTE = "myPageSpaceRoute"
+    const val ROUTE = "myPageRoute"
 
     const val MY_PAGE = "myPageSpace"
+    const val ALARM = "alarm"
+
 }

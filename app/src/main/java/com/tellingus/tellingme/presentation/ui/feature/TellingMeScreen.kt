@@ -39,13 +39,11 @@ import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestination
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MySpaceDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
-import com.tellingus.tellingme.presentation.ui.feature.home.HomeScreen
-import com.tellingus.tellingme.presentation.ui.feature.home.record.RecordScreen
-import com.tellingus.tellingme.presentation.ui.feature.mypage.MyPageScreen
-import com.tellingus.tellingme.presentation.ui.feature.mypage.alarm.AlarmScreen
-import com.tellingus.tellingme.presentation.ui.feature.myspace.MySpaceScreen
-import com.tellingus.tellingme.presentation.ui.feature.otherspace.OtherSpaceScreen
+import com.tellingus.tellingme.presentation.ui.feature.home.homeGraph
+import com.tellingus.tellingme.presentation.ui.feature.mypage.myPageGraph
+import com.tellingus.tellingme.presentation.ui.feature.myspace.mySpaceGraph
 import com.tellingus.tellingme.presentation.ui.feature.otherspace.detail.OtherSpaceDetailScreen
+import com.tellingus.tellingme.presentation.ui.feature.otherspace.otherSpaceGraph
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
@@ -91,8 +89,7 @@ fun TellingMeScreen(
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-//                startDestination = HomeDestinations.ROUTE
-                startDestination = HomeDestinations.HOME
+                startDestination = HomeDestinations.ROUTE
             ) {
                 composable(route = AuthDestinations.Login.LOGIN) {
 //                    LoginScreen(navController)
@@ -105,54 +102,70 @@ fun TellingMeScreen(
 //                        }
 //                    )
                 }
-                composable(route = HomeDestinations.HOME) {
+                homeGraph(
+                    navController = navController
+                )
+                mySpaceGraph(
+                    navController = navController
+                )
+                otherSpaceGraph(
+                    navController = navController
+                )
+                myPageGraph(
+                    navController = navController
+                )
+
+//                composable(route = HomeDestinations.HOME) {
 //                    HomeScreen(navController)
-                    HomeScreen(
-                        navController = navController,
-                        navigateToOtherSpace = { id ->
-                            navController.navigate("${OtherSpaceDestinations.OTHER_SPACE}/$id")
-                        }
-                    )
-                }
-                composable(route = HomeDestinations.RECORD) {
-                    RecordScreen(
-                        navController = navController
-                    )
-                }
-                composable(route = MySpaceDestinations.MY_SPACE) {
-                    MySpaceScreen(
-                        navigateToRecordScreen = {
-                            navController.navigate(HomeDestinations.RECORD)
-                        },
-                    )
-                }
-                composable(route = OtherSpaceDestinations.OTHER_SPACE) {
-                    OtherSpaceScreen()
-                }
-                composable(
-                    route = "${OtherSpaceDestinations.OTHER_SPACE}/{$KEY_ID}",
-                    arguments = listOf(
-                        navArgument(KEY_ID) {
-                            type = NavType.StringType
-                        }
-                    )
-                ) {
-                    OtherSpaceDetailScreen(
-                        navigateToOtherSpaceScreen = {
-                            navController.navigate(OtherSpaceDestinations.OTHER_SPACE)
-                        }
-                    )
-                }
-                composable(route = MyPageDestinations.MY_PAGE) {
-                    MyPageScreen(navigateToAlarmScreen = {
-                        navController.navigate(HomeDestinations.ALARM)
-                    })
-                }
-                composable(route = HomeDestinations.ALARM) {
-                    AlarmScreen(navigateToPreviousScreen = {
-                        navController.popBackStack()
-                    })
-                }
+//                    HomeScreen(
+//                        navController = navController,
+//                        navigateToOtherSpace = { id ->
+//                            navController.navigate("${OtherSpaceDestinations.OTHER_SPACE}/$id")
+//                        }
+//                    )
+//                }
+//                composable(route = HomeDestinations.RECORD) {
+//                    RecordScreen(
+//                        navController = navController
+//                    )
+//                }
+//                composable(route = MySpaceDestinations.MY_SPACE) {
+//                    MySpaceScreen(
+//                        navigateToRecordScreen = {
+//                            navController.navigate(HomeDestinations.RECORD)
+//                        },
+//                    )
+//                }
+//                composable(route = OtherSpaceDestinations.OTHER_SPACE) {
+//                    OtherSpaceScreen()
+//                }
+//                composable(
+//                    route = "${OtherSpaceDestinations.OTHER_SPACE}/{$KEY_ID}",
+//                    arguments = listOf(
+//                        navArgument(KEY_ID) {
+//                            type = NavType.StringType
+//                        }
+//                    )
+//                ) {
+//                    OtherSpaceDetailScreen(
+//                        navigateToOtherSpaceScreen = {
+//                            navController.navigate(OtherSpaceDestinations.OTHER_SPACE)
+//                        }
+//                    )
+//                }
+//                myPageGraph(
+//                    navController = navController
+//                )
+//                composable(route = MyPageDestinations.MY_PAGE) {
+//                    MyPageScreen(navigateToAlarmScreen = {
+//                        navController.navigate(HomeDestinations.ALARM)
+//                    })
+//                }
+//                composable(route = HomeDestinations.ALARM) {
+//                    AlarmScreen(navigateToPreviousScreen = {
+//                        navController.popBackStack()
+//                    })
+//                }
             }
         }
     }

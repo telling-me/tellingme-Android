@@ -5,12 +5,19 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 
 @Composable
-fun MyPageScreen(navigateToAlarmScreen: () -> Unit) {
+fun MyPageScreen(
+    navController: NavController,
+) {
     Column {
         Text(text = "마이 페이지")
-        Button(onClick = { navigateToAlarmScreen() }) {
+        Button(onClick = {
+//            navigateToAlarmScreen()
+            navController.navigate(MyPageDestinations.ALARM)
+        }) {
             Text(text = "알람페이지 이동")
         }
     }
@@ -19,5 +26,5 @@ fun MyPageScreen(navigateToAlarmScreen: () -> Unit) {
 @Preview
 @Composable
 fun MyPageScreenPreview() {
-    MyPageScreen(navigateToAlarmScreen = {})
+//    MyPageScreen(navigateToAlarmScreen = {})
 }
