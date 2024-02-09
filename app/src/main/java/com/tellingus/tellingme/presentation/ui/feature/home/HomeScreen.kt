@@ -44,7 +44,6 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
-    navigateToOtherSpace: (name: String) -> Unit,
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -56,7 +55,6 @@ fun HomeScreen(
                 navigateToRecordScreen = {
                     navController.navigate(HomeDestinations.RECORD)
                 },
-                navigateToOtherSpace = navigateToOtherSpace,
                 viewModel = viewModel
             )
         }
@@ -106,7 +104,6 @@ fun HomeScreenHeader() {
 @Composable
 fun HomeScreenContent(
     navigateToRecordScreen: () -> Unit,
-    navigateToOtherSpace: (name: String) -> Unit,
     viewModel: LoginViewModel
 ) {
     val context = LocalContext.current
