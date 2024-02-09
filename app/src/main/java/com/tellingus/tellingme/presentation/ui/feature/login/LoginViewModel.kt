@@ -14,8 +14,6 @@ import com.tellingus.tellingme.data.network.adapter.onSuccess
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
-import com.tellingus.tellingme.presentation.ui.feature.login.model.IsAuto
-import com.tellingus.tellingme.presentation.ui.feature.login.model.LoginType
 import com.tellingus.tellingme.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -79,7 +77,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loginFromKakao(oauthToken: String) {
+    private fun loginFromKakao(oauthToken: String) {
         viewModelScope.launch {
             updateState(currentState.copy(isLoading = true))
             loginUseCase(
@@ -119,4 +117,13 @@ class LoginViewModel @Inject constructor(
                 }
         }
     }
+}
+
+enum class IsAuto(name: String) {
+    MANUAL("manual"),
+    AUTO("auto")
+}
+
+enum class LoginType(name: String) {
+    KAKAO("kakao")
 }
