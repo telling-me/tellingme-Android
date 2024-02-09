@@ -67,13 +67,15 @@ fun TellingMeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val bottomNavNotIncludeList = listOf(
-        HomeDestinations.RECORD,
-        HomeDestinations.ALARM
+        HomeDestinations.HOME,
+        MySpaceDestinations.MY_SPACE,
+        OtherSpaceDestinations.OTHER_SPACE,
+        MyPageDestinations.MY_PAGE
     )
 
     Scaffold(
         bottomBar = {
-            if (currentDestination?.route !in bottomNavNotIncludeList) {
+            if (currentDestination?.route in bottomNavNotIncludeList) {
                 TellingMeTabBar(
                     currentDestination = currentDestination,
                     navigateToScreen = { navigationItem ->
