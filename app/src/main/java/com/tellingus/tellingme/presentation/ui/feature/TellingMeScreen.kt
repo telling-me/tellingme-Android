@@ -33,8 +33,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.BottomNavigationItem
-import com.tellingus.tellingme.presentation.ui.common.navigation.ScreenRoute
+import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
+import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
+import com.tellingus.tellingme.presentation.ui.common.navigation.MySpaceDestinations
+import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
 import com.tellingus.tellingme.presentation.ui.feature.home.HomeScreen
 import com.tellingus.tellingme.presentation.ui.feature.home.record.RecordScreen
 import com.tellingus.tellingme.presentation.ui.feature.mypage.MyPageScreen
@@ -55,15 +59,17 @@ import kotlinx.coroutines.flow.collectLatest
 fun TellingMeScreen(
     navController: NavHostController,
     viewModel: TellingMeViewModel = hiltViewModel(),
-    startDestination: String = ScreenRoute.HOME.route,
+    startDestination: String = HomeDestinations.HOME,
     uri: Uri? = null,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val coroutineScope = rememberCoroutineScope()
 
-    val bottomNavNotIncludeList =
-        listOf(ScreenRoute.RECORD.route, ScreenRoute.ALARM.route)
+    val bottomNavNotIncludeList = listOf(
+        HomeDestinations.RECORD,
+        HomeDestinations.ALARM
+    )
 
     Scaffold(
         bottomBar = {
@@ -75,16 +81,18 @@ fun TellingMeScreen(
                             navController = navController,
                             navigationItem = navigationItem
                         )
-                    })
+                    }
+                )
             }
-        }) { paddingValues ->
-
+        }
+    ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = ScreenRoute.HOME.route
+//                startDestination = HomeDestinations.ROUTE
+                startDestination = HomeDestinations.HOME
             ) {
-                composable(route = ScreenRoute.LOGIN.route) {
+                composable(route = AuthDestinations.Login.LOGIN) {
 //                    LoginScreen(navController)
 //                    LoginScreen(
 //                        navigateToOauthJoinScreen = {
@@ -95,32 +103,32 @@ fun TellingMeScreen(
 //                        }
 //                    )
                 }
-                composable(route = ScreenRoute.HOME.route) {
+                composable(route = HomeDestinations.HOME) {
 //                    HomeScreen(navController)
                     HomeScreen(
                         navController = navController,
                         navigateToOtherSpace = { id ->
-                            navController.navigate("${ScreenRoute.OTHER_SPACE.route}/$id")
+                            navController.navigate("${OtherSpaceDestinations.OTHER_SPACE}/$id")
                         }
                     )
                 }
-                composable(route = ScreenRoute.RECORD.route) {
+                composable(route = HomeDestinations.RECORD) {
                     RecordScreen(
                         navController = navController
                     )
                 }
-                composable(route = ScreenRoute.MY_SPACE.route) {
+                composable(route = MySpaceDestinations.MY_SPACE) {
                     MySpaceScreen(
                         navigateToRecordScreen = {
-                            navController.navigate(ScreenRoute.RECORD.route)
+                            navController.navigate(HomeDestinations.RECORD)
                         },
                     )
                 }
-                composable(route = ScreenRoute.OTHER_SPACE.route) {
+                composable(route = OtherSpaceDestinations.OTHER_SPACE) {
                     OtherSpaceScreen()
                 }
                 composable(
-                    route = "${ScreenRoute.OTHER_SPACE.route}/{$KEY_ID}",
+                    route = "${OtherSpaceDestinations.OTHER_SPACE}/{$KEY_ID}",
                     arguments = listOf(
                         navArgument(KEY_ID) {
                             type = NavType.StringType
@@ -129,16 +137,16 @@ fun TellingMeScreen(
                 ) {
                     OtherSpaceDetailScreen(
                         navigateToOtherSpaceScreen = {
-                            navController.navigate(ScreenRoute.OTHER_SPACE.route)
+                            navController.navigate(OtherSpaceDestinations.OTHER_SPACE)
                         }
                     )
                 }
-                composable(route = ScreenRoute.MY_PAGE.route) {
+                composable(route = MyPageDestinations.MY_PAGE) {
                     MyPageScreen(navigateToAlarmScreen = {
-                        navController.navigate(ScreenRoute.ALARM.route)
+                        navController.navigate(HomeDestinations.ALARM)
                     })
                 }
-                composable(route = ScreenRoute.ALARM.route) {
+                composable(route = HomeDestinations.ALARM) {
                     AlarmScreen(navigateToPreviousScreen = {
                         navController.popBackStack()
                     })

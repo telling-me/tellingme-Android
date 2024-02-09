@@ -96,8 +96,6 @@ fun RecordScreen(
                         size = ButtonSize.MEDIUM,
                         color = Gray500,
                         onClick = {
-                            // 인자로 넘기지 않고 다른 방법은 없을지??
-                            navController.previousBackStackEntry?.savedStateHandle?.set("msg","이전 데이터")
                             navController.popBackStack()
                         }
                     )
