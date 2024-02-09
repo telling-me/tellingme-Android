@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
-import com.tellingus.tellingme.presentation.ui.feature.KEY_ID
 import com.tellingus.tellingme.presentation.ui.feature.otherspace.detail.OtherSpaceDetailScreen
 
 fun NavGraphBuilder.otherSpaceGraph(
@@ -35,3 +34,5 @@ fun NavGraphBuilder.otherSpaceGraph(
         }
     }
 }
+
+const val KEY_ID = "key-id"

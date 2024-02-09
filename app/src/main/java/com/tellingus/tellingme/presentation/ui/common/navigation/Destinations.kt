@@ -4,12 +4,7 @@ object AuthDestinations {
     const val ROUTE = "authRoute"
 
     const val SPLASH = "splash"
-
-    object Login {
-        const val ROUTE = "loginRoute"
-
-        const val LOGIN = "login"
-    }
+    const val LOGIN = "login"
 
     object SignUp {
         const val ROUTE = "signUpRoute"

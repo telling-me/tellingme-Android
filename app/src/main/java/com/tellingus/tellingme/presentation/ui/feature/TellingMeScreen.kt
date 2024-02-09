@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,21 +27,17 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.navArgument
-import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.BottomNavigationItem
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MySpaceDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
 import com.tellingus.tellingme.presentation.ui.feature.home.homeGraph
+import com.tellingus.tellingme.presentation.ui.feature.login.loginGraph
 import com.tellingus.tellingme.presentation.ui.feature.mypage.myPageGraph
 import com.tellingus.tellingme.presentation.ui.feature.myspace.mySpaceGraph
-import com.tellingus.tellingme.presentation.ui.feature.otherspace.detail.OtherSpaceDetailScreen
 import com.tellingus.tellingme.presentation.ui.feature.otherspace.otherSpaceGraph
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
@@ -57,12 +52,11 @@ import kotlinx.coroutines.flow.collectLatest
 fun TellingMeScreen(
     navController: NavHostController,
     viewModel: TellingMeViewModel = hiltViewModel(),
-    startDestination: String = HomeDestinations.HOME,
+    startDestination: String = HomeDestinations.ROUTE,
     uri: Uri? = null,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val coroutineScope = rememberCoroutineScope()
 
     val bottomNavNotIncludeList = listOf(
         HomeDestinations.HOME,
@@ -74,14 +68,9 @@ fun TellingMeScreen(
     Scaffold(
         bottomBar = {
             if (currentDestination?.route in bottomNavNotIncludeList) {
-                TellingMeTabBar(
-                    currentDestination = currentDestination,
-                    navigateToScreen = { navigationItem ->
-                        navigateBottomNavigationScreen(
-                            navController = navController,
-                            navigationItem = navigationItem
-                        )
-                    }
+                TellingMeBottomNavigationBar(
+                    navController = navController,
+                    currentDestination = currentDestination
                 )
             }
         }
@@ -89,19 +78,11 @@ fun TellingMeScreen(
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = HomeDestinations.ROUTE
+                startDestination = startDestination
             ) {
-                composable(route = AuthDestinations.Login.LOGIN) {
-//                    LoginScreen(navController)
-//                    LoginScreen(
-//                        navigateToOauthJoinScreen = {
-//                            navController.navigate(ScreenRoute.LOGIN.route)
-//                        },
-//                        navigateToHomeScreen = {
-//                            navController.navigate(ScreenRoute.HOME.route)
-//                        }
-//                    )
-                }
+                loginGraph(
+                    navController = navController
+                )
                 homeGraph(
                     navController = navController
                 )
@@ -114,58 +95,6 @@ fun TellingMeScreen(
                 myPageGraph(
                     navController = navController
                 )
-
-//                composable(route = HomeDestinations.HOME) {
-//                    HomeScreen(navController)
-//                    HomeScreen(
-//                        navController = navController,
-//                        navigateToOtherSpace = { id ->
-//                            navController.navigate("${OtherSpaceDestinations.OTHER_SPACE}/$id")
-//                        }
-//                    )
-//                }
-//                composable(route = HomeDestinations.RECORD) {
-//                    RecordScreen(
-//                        navController = navController
-//                    )
-//                }
-//                composable(route = MySpaceDestinations.MY_SPACE) {
-//                    MySpaceScreen(
-//                        navigateToRecordScreen = {
-//                            navController.navigate(HomeDestinations.RECORD)
-//                        },
-//                    )
-//                }
-//                composable(route = OtherSpaceDestinations.OTHER_SPACE) {
-//                    OtherSpaceScreen()
-//                }
-//                composable(
-//                    route = "${OtherSpaceDestinations.OTHER_SPACE}/{$KEY_ID}",
-//                    arguments = listOf(
-//                        navArgument(KEY_ID) {
-//                            type = NavType.StringType
-//                        }
-//                    )
-//                ) {
-//                    OtherSpaceDetailScreen(
-//                        navigateToOtherSpaceScreen = {
-//                            navController.navigate(OtherSpaceDestinations.OTHER_SPACE)
-//                        }
-//                    )
-//                }
-//                myPageGraph(
-//                    navController = navController
-//                )
-//                composable(route = MyPageDestinations.MY_PAGE) {
-//                    MyPageScreen(navigateToAlarmScreen = {
-//                        navController.navigate(HomeDestinations.ALARM)
-//                    })
-//                }
-//                composable(route = HomeDestinations.ALARM) {
-//                    AlarmScreen(navigateToPreviousScreen = {
-//                        navController.popBackStack()
-//                    })
-//                }
             }
         }
     }
@@ -181,24 +110,10 @@ fun TellingMeScreen(
     }
 }
 
-fun navigateBottomNavigationScreen(
-    navController: NavHostController,
-    navigationItem: BottomNavigationItem,
-) {
-    // ...
-    navController.navigate(navigationItem.route) {
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
-        }
-        launchSingleTop = true
-//        restoreState = true
-    }
-}
-
 @Composable
-fun TellingMeTabBar(
+fun TellingMeBottomNavigationBar(
+    navController: NavHostController,
     currentDestination: NavDestination?,
-    navigateToScreen: (BottomNavigationItem) -> Unit,
 ) {
     BottomNavigation(backgroundColor = Color.White) {
         BottomNavigationItem.values().forEach { navigationItem ->
@@ -225,13 +140,18 @@ fun TellingMeTabBar(
                         }
                     )
                 },
-                onClick = { navigateToScreen(navigationItem) },
                 selected = currentDestination?.hierarchy?.any { it.route == navigationItem.route } == true,
                 selectedContentColor = Primary400,
+                onClick = {
+                    navController.navigate(navigationItem.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true    // 최상위 아이템은 백스택에 쌓지 않기
+                        }
+                        launchSingleTop = true    // 동일한 항목에 대한 중복 X
+                        restoreState = true    // 이전 아이템 클릭 시 상태 복원
+                    }
+                }
             )
         }
     }
-
 }
-
-const val KEY_ID = "key-id"
