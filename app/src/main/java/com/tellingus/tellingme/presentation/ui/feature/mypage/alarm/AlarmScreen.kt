@@ -1,7 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.mypage.alarm
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,7 +9,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -37,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -123,36 +120,24 @@ fun AlarmCard(
     date: String,
     isRead: Boolean = false
 ) {
-    val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val swipeableState = rememberSwipeableState(initialValue = 0)
-    val scope = rememberCoroutineScope()
-
+    val coroutineScope = rememberCoroutineScope()
     val squareSize = 80.dp
     val sizePx = with(LocalDensity.current) { squareSize.toPx() }
-
     val anchors = mapOf(0f to 0, -sizePx to 1)
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            /**
-             * 상위 컴포넌트에 최대높이를 설정
-             * 최대높이를 상위 컴포넌트에 설정해줌으로서 하위컴포넌트에서 fillMaxHeight의 값이 측정되어 적용가능
-             */
             .height(IntrinsicSize.Min)
             .background(Color.White)
             .swipeable(
                 state = swipeableState,
                 orientation = Orientation.Horizontal,
                 anchors = anchors,
-//                anchors = mapOf(
-//                    0f to 0,
-//                    -dipToPx(context, 100f) to 1,
-//                    dipToPx(context, 100f) to 2
-//                ),
                 thresholds = { _, _ -> FractionalThreshold(0.5f) },
                 velocityThreshold = 1000.dp
             )
@@ -167,7 +152,7 @@ fun AlarmCard(
                     .fillMaxHeight()
                     .background(Red600),
                 onClick = {
-                    scope.launch {
+                    coroutineScope.launch {
                         swipeableState.animateTo(0, tween(600, 0))
                     }
                 }) {
@@ -179,8 +164,10 @@ fun AlarmCard(
         Box(
             modifier = Modifier
                 .offset {
-                    // swipe했을 때 위치가 움직이도록 offset 설정
-                    IntOffset(swipeableState.offset.value.roundToInt(), 0)
+                    IntOffset(
+                        swipeableState.offset.value.roundToInt(),
+                        0
+                    )
                 }
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -246,10 +233,6 @@ data class AlarmItem(
     val date: String,
     val isRead: Boolean = false,
 )
-
-private fun dipToPx(context: Context, dipValue: Float): Float {
-    return dipValue * context.resources.displayMetrics.density
-}
 
 @Preview
 @Composable
