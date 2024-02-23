@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.home
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,18 +10,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
@@ -34,13 +31,9 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSect
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
-import com.tellingus.tellingme.presentation.ui.feature.login.LoginContract
-import com.tellingus.tellingme.presentation.ui.feature.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.util.TAG
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
@@ -87,7 +80,6 @@ fun HomeScreenHeader() {
 fun HomeScreenContent(
     navController: NavController,
 ) {
-    val context = LocalContext.current
     val cardList = listOf(
         "happy",
         "excited",
@@ -132,9 +124,10 @@ fun HomeScreenContent(
         Column(modifier = Modifier.padding(start = 20.dp, top = 32.dp)) {
             Text(text = "나와 비슷한 텔러들의 이야기", style = TellingmeTheme.typography.body1Bold)
 
+            val pagerState = rememberPagerState { cardList.size }
+
             HorizontalPager(
-                modifier = Modifier.padding(top = 12.dp),
-                pageCount = cardList.size,
+                state = pagerState, modifier = Modifier.padding(top = 12.dp),
                 contentPadding = PaddingValues(end = 32.dp),
             ) { page ->
                 val item = cardList[page]
@@ -146,7 +139,6 @@ fun HomeScreenContent(
                 )
             }
         }
-
         Column(
             modifier = Modifier
                 .padding(top = 14.dp, bottom = 30.dp)
@@ -162,6 +154,7 @@ fun HomeScreenContent(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
