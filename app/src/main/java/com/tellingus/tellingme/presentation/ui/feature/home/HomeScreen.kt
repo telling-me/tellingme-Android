@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -80,7 +80,6 @@ fun HomeScreenHeader() {
 fun HomeScreenContent(
     navController: NavController,
 ) {
-    val context = LocalContext.current
     val cardList = listOf(
         "happy",
         "excited",
@@ -125,9 +124,10 @@ fun HomeScreenContent(
         Column(modifier = Modifier.padding(start = 20.dp, top = 32.dp)) {
             Text(text = "나와 비슷한 텔러들의 이야기", style = TellingmeTheme.typography.body1Bold)
 
+            val pagerState = rememberPagerState { cardList.size }
+
             HorizontalPager(
-                modifier = Modifier.padding(top = 12.dp),
-                pageCount = cardList.size,
+                state = pagerState, modifier = Modifier.padding(top = 12.dp),
                 contentPadding = PaddingValues(end = 32.dp),
             ) { page ->
                 val item = cardList[page]
@@ -139,7 +139,6 @@ fun HomeScreenContent(
                 )
             }
         }
-
         Column(
             modifier = Modifier
                 .padding(top = 14.dp, bottom = 30.dp)
@@ -155,6 +154,7 @@ fun HomeScreenContent(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
