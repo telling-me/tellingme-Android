@@ -35,7 +35,8 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is LoginContract.Event.KakaoLoginButtonClicked -> {
-                    kakaoLogin(event.context)
+//                    kakaoLogin(event.context)
+                    loginFromKakao("")    /** 로그인 없이 테스트 목적 **/
                 }
                 is LoginContract.Event.MoveToHomeButtonClicked -> {
                     postEffect(LoginContract.Effect.MoveToHome)
