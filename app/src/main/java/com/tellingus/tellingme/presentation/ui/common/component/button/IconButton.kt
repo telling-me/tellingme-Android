@@ -20,7 +20,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray100
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Profile100
-import com.tellingus.tellingme.presentation.ui.theme.Red400
+import com.tellingus.tellingme.presentation.ui.theme.Error400
 
 @Composable
 fun TellingmeIconButton(
@@ -62,6 +62,6 @@ fun TellingmeIconButtonPreview() {
     Column {
         TellingmeIconButton(iconRes = R.drawable.icon_heart, size = ButtonSize.LARGE, color = Gray500) {}
         TellingmeIconButton(iconRes = R.drawable.icon_level_sample, size = ButtonSize.MEDIUM, color = Profile100) {}
-        TellingmeIconButton(iconRes = R.drawable.icon_home, size = ButtonSize.SMALL, color = Red400) {}
+        TellingmeIconButton(iconRes = R.drawable.icon_home, size = ButtonSize.SMALL, color = Error400) {}
     }
 }

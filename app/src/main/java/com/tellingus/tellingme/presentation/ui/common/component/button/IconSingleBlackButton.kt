@@ -31,7 +31,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray50
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
-import com.tellingus.tellingme.presentation.ui.theme.Red400
+import com.tellingus.tellingme.presentation.ui.theme.Error400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
@@ -115,7 +115,7 @@ fun IconSingleBlackButtonLargePreview() {
         IconSingleBlackButton(
             size = ButtonSize.LARGE,
             text = "Large",
-            iconColor = Red400,
+            iconColor = Error400,
             onClick = { }
         )
         IconSingleBlackButton(
