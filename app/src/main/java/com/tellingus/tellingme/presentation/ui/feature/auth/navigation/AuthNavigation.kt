@@ -20,9 +20,11 @@ fun NavGraphBuilder.authGraph(
         composable(route = AuthDestinations.SPLASH) {
 //            Splash
         }
+
         composable(route = AuthDestinations.LOGIN) {
             LoginScreen(navController)
         }
+
         composable(
             route = "${AuthDestinations.SIGNUP}/{socialId}",
             arguments = listOf(navArgument("socialId") {
@@ -32,7 +34,7 @@ fun NavGraphBuilder.authGraph(
         ) {
             SignupScreen(
                 navController = navController,
-                socialId = it.arguments?.getString("socialId")?.toLong()!!
+                socialId = it.arguments?.getString("socialId")!!
             )
         }
     }
