@@ -11,9 +11,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
@@ -49,11 +52,7 @@ fun LoginScreen(
                     size = ButtonSize.LARGE,
                     text = "홈 화면으로 이동",
                     onClick = {
-                        navController.navigate(HomeDestinations.HOME) {
-                            popUpTo(AuthDestinations.ROUTE) {
-                                inclusive = true
-                            }
-                        }
+                        viewModel.processEvent(LoginContract.Event.MoveToHomeButtonClicked)
                     }
                 )
             }
@@ -61,20 +60,42 @@ fun LoginScreen(
         isScrollable = false
     )
 
-    LaunchedEffect(key1 = viewModel.effect) {
-        viewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is LoginContract.Effect.MoveToSignup -> {
-                    navController.navigate("${AuthDestinations.SIGNUP}/${effect.socialId}")
-//                    navController.navigate("${AuthDestinations.SIGNUP}/{$3}")
-//                    navController.navigate(AuthDestinations.SIGNUP)
-                }
-                is LoginContract.Effect.MoveToHome -> {
-                    Toast.makeText(context, "자동로그인 -> 홈 화면 이동", Toast.LENGTH_SHORT).show()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(viewModel.effect, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    is LoginContract.Effect.MoveToSignup -> {
+                        navController.navigate("${AuthDestinations.SIGNUP}/${effect.socialId}")
+                    }
+                    is LoginContract.Effect.MoveToHome -> {
+                        navController.navigate(HomeDestinations.HOME) {
+                            popUpTo(AuthDestinations.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
+//    LaunchedEffect(key1 = viewModel.effect) {
+//        viewModel.effect.collectLatest { effect ->
+//            when (effect) {
+//                is LoginContract.Effect.MoveToSignup -> {
+//                    navController.navigate("${AuthDestinations.SIGNUP}/${effect.socialId}")
+//                }
+//                is LoginContract.Effect.MoveToHome -> {
+//                    navController.navigate(HomeDestinations.HOME) {
+//                        popUpTo(AuthDestinations.ROUTE) {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 @Preview
