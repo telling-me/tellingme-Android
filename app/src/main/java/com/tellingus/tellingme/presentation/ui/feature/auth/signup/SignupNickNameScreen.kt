@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
@@ -32,6 +33,7 @@ import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryBu
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
+import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Error600
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
@@ -40,9 +42,11 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.util.TAG
+import com.tellingus.tellingme.util.collectWithLifecycle
 
 @Composable
-fun SignupNickNameScreen(
+fun SignupNicknameScreen(
     navController: NavController,
     socialId: String,
     viewModel: SignupViewModel = hiltViewModel(),
@@ -69,9 +73,9 @@ fun SignupNickNameScreen(
             )
         },
         content = {
-            SignupNickNameContentScreen(
+            SignupNicknameContentScreen(
                 navController = navController,
-                viewModel = viewModel,
+                viewModel = viewModel
             )
         },
         isScrollable = false,
@@ -81,14 +85,26 @@ fun SignupNickNameScreen(
 }
 
 @Composable
-fun SignupNickNameContentScreen(
+fun SignupNicknameContentScreen(
     navController: NavController,
     viewModel: SignupViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    var isEnableUseNickName by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var isEnableUseNickname by remember { mutableStateOf(false) }
     var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
+
+    Log.d("taag", uiState.joinRequestDto.toString())
+
+    viewModel.effect.collectWithLifecycle { effect ->
+        when(effect) {
+            is SignupContract.Effect.MoveToBirthGender -> {
+                navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
+            }
+            else -> {}
+        }
+    }
 
     Column(
         modifier = modifier
@@ -123,6 +139,8 @@ fun SignupNickNameContentScreen(
                 onValueChange = {
                     if (it.length <=8) {
                         nickname = it
+                        // 닉네임 관련 API 쏘기
+
                     }
                 },
                 textStyle = TellingmeTheme.typography.body1Regular.copy(
@@ -171,14 +189,21 @@ fun SignupNickNameContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-            enable = isEnableUseNickName,
-            onClick = { }
+//            enable = isEnableUseNickname,
+            onClick = {
+                viewModel.processEvent(SignupContract.Event.NextButtonClickedInNickname)
+            }
         )
     }
 }
 
+@Composable
+fun SignupBirthGenderScreen() {
+
+}
+
 @Preview
 @Composable
-fun SignupNickNameScreenPreview() {
-    SignupNickNameScreen(navController = rememberNavController(), socialId = "")
+fun SignupNicknameScreenPreview() {
+    SignupNicknameScreen(navController = rememberNavController(), socialId = "")
 }

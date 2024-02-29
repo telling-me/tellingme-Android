@@ -4,8 +4,20 @@ object AuthDestinations {
     const val ROUTE = "authRoute"
 
     const val SPLASH = "splash"
-    const val LOGIN = "login"
-    const val SIGNUP = "signup"
+
+    object Login {
+        const val ROUTE = "loginRoute"
+
+        const val LOGIN = "login"
+
+    }
+
+    object Signup {
+        const val ROUTE = "signupRoute"
+
+        const val SIGNUP_NICKNAME = "signupNickname"
+        const val SIGNUP_BIRTH_GENDER = "signupBirthGender"
+    }
 
 }
 

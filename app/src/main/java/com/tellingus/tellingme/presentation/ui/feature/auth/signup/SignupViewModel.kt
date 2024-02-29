@@ -13,12 +13,31 @@ class SignupViewModel @Inject constructor(
 
     fun initLoginInfo(socialId: String, socialLoginType: String) {
         updateState(currentState.copy(
-            socialId = socialId,
-            socialLoginType = socialLoginType
+            joinRequestDto = currentState.joinRequestDto.copy(
+                socialId = socialId,
+                socialLoginType = socialLoginType
+            )
         ))
     }
 
     override fun reduceState(event: SignupContract.Event) {
+        when(event) {
+            is SignupContract.Event.NextButtonClickedInNickname -> {
+                postEffect(SignupContract.Effect.MoveToBirthGender)
+            }
+            is SignupContract.Event.NextButtonClickedInBirthGender -> {
+
+            }
+            is SignupContract.Event.NextButtonClickedInJob -> {
+
+            }
+            is SignupContract.Event.NextButtonClickedInWorry -> {
+
+            }
+        }
+    }
+
+    fun checkNickname(nickname: String) {
 
     }
 
