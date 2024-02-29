@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.auth.navigation
+package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -7,35 +7,30 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
-import com.tellingus.tellingme.presentation.ui.feature.auth.login.LoginScreen
-import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupNickNameScreen
 
-fun NavGraphBuilder.authGraph(
+fun NavGraphBuilder.signupGraph(
     navController: NavController
 ) {
     navigation(
-        route = AuthDestinations.ROUTE,
-        startDestination = AuthDestinations.LOGIN
+        route = AuthDestinations.Signup.ROUTE,
+        startDestination = AuthDestinations.Signup.SIGNUP_NICKNAME
     ) {
-        composable(route = AuthDestinations.SPLASH) {
-//            Splash
-        }
-
-        composable(route = AuthDestinations.LOGIN) {
-            LoginScreen(navController)
-        }
-
         composable(
-            route = "${AuthDestinations.SIGNUP}/{socialId}",
+            route = "${AuthDestinations.Signup.SIGNUP_NICKNAME}/{socialId}",
             arguments = listOf(navArgument("socialId") {
                 type = NavType.StringType
                 defaultValue = "-1"
             })
         ) {
-            SignupNickNameScreen(
+            SignupNicknameScreen(
                 navController = navController,
                 socialId = it.arguments?.getString("socialId")!!
             )
         }
+
+        composable(route = AuthDestinations.Signup.SIGNUP_BIRTH_GENDER) {
+            SignupBirthGenderScreen()
+        }
+
     }
 }

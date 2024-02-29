@@ -13,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +34,7 @@ import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestination
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MySpaceDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
-import com.tellingus.tellingme.presentation.ui.feature.auth.navigation.authGraph
+import com.tellingus.tellingme.presentation.ui.feature.auth.authGraph
 import com.tellingus.tellingme.presentation.ui.feature.home.homeGraph
 import com.tellingus.tellingme.presentation.ui.feature.mypage.myPageGraph
 import com.tellingus.tellingme.presentation.ui.feature.myspace.mySpaceGraph
@@ -45,7 +44,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
-import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api

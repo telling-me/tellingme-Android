@@ -59,7 +59,7 @@ fun LoginScreen(
     viewModel.effect.collectWithLifecycle { effect ->
         when (effect) {
             is LoginContract.Effect.MoveToSignup -> {
-                navController.navigate("${AuthDestinations.SIGNUP}/${effect.socialId}")
+                navController.navigate("${AuthDestinations.Signup.SIGNUP_NICKNAME}/${effect.socialId}")
             }
             is LoginContract.Effect.MoveToHome -> {
                 navController.navigate(HomeDestinations.HOME) {
