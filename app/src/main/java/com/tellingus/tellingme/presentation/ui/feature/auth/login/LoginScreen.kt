@@ -1,6 +1,5 @@
-package com.tellingus.tellingme.presentation.ui.feature.oauth.login
+package com.tellingus.tellingme.presentation.ui.feature.auth.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayou
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
-import com.tellingus.tellingme.util.TAG
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -67,8 +65,9 @@ fun LoginScreen(
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.MoveToSignup -> {
-                    navController.navigate()
-                    Toast.makeText(context, "최초로그인 -> 상세정보 기입 화면 이동",Toast.LENGTH_SHORT).show()
+                    navController.navigate("${AuthDestinations.SIGNUP}/${effect.socialId}")
+//                    navController.navigate("${AuthDestinations.SIGNUP}/{$3}")
+//                    navController.navigate(AuthDestinations.SIGNUP)
                 }
                 is LoginContract.Effect.MoveToHome -> {
                     Toast.makeText(context, "자동로그인 -> 홈 화면 이동", Toast.LENGTH_SHORT).show()
