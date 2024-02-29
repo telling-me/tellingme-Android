@@ -90,8 +90,6 @@ fun SignupNickNameContentScreen(
     var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
 
-    Log.d("taag", isFocused.toString())
-
     Column(
         modifier = modifier
             .fillMaxSize()
