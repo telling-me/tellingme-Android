@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,18 +26,20 @@ import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
     MainLayout(
         content = {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -47,7 +50,7 @@ fun LoginScreen(
                         viewModel.processEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
                     }
                 )
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = modifier.size(20.dp))
                 PrimaryButton(
                     size = ButtonSize.LARGE,
                     text = "홈 화면으로 이동",
@@ -61,7 +64,10 @@ fun LoginScreen(
     )
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(viewModel.effect, lifecycleOwner) {
+    LaunchedEffect(
+        key1 = viewModel.effect,
+        lifecycleOwner
+    ) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.effect.collectLatest { effect ->
                 when (effect) {

@@ -1,10 +1,10 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.style.TextAlign
@@ -43,7 +42,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
-fun SignupScreen(
+fun SignupNickNameScreen(
     navController: NavController,
     socialId: String,
     viewModel: SignupViewModel = hiltViewModel(),
@@ -70,7 +69,7 @@ fun SignupScreen(
             )
         },
         content = {
-            SignupStep1Screen(
+            SignupNickNameContentScreen(
                 navController = navController,
                 viewModel = viewModel,
             )
@@ -82,7 +81,7 @@ fun SignupScreen(
 }
 
 @Composable
-fun SignupStep1Screen(
+fun SignupNickNameContentScreen(
     navController: NavController,
     viewModel: SignupViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
@@ -90,6 +89,8 @@ fun SignupStep1Screen(
     var isEnableUseNickName by remember { mutableStateOf(false) }
     var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
+
+    Log.d("taag", isFocused.toString())
 
     Column(
         modifier = modifier
@@ -180,6 +181,6 @@ fun SignupStep1Screen(
 
 @Preview
 @Composable
-fun SignupScreenPreview() {
-    SignupScreen(navController = rememberNavController(), socialId = "")
+fun SignupNickNameScreenPreview() {
+    SignupNickNameScreen(navController = rememberNavController(), socialId = "")
 }
