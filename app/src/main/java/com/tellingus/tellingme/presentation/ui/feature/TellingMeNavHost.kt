@@ -79,7 +79,7 @@ fun TellingMeNavHost(
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = startDestination
+                startDestination = startDestination,
             ) {
                 authGraph(
                     navController = navController
@@ -96,19 +96,11 @@ fun TellingMeNavHost(
                 myPageGraph(
                     navController = navController
                 )
+
             }
         }
     }
 
-    LaunchedEffect(key1 = viewModel.tellingMeUiEffect) {
-        viewModel.tellingMeUiEffect.collectLatest { tellingMeUiEffect ->
-            when (tellingMeUiEffect) {
-                is TellingMeUiEffect.MoveToLogin -> {
-
-                }
-            }
-        }
-    }
 }
 
 @Composable

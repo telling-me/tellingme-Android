@@ -37,6 +37,9 @@ class LoginViewModel @Inject constructor(
                 is LoginContract.Event.KakaoLoginButtonClicked -> {
                     kakaoLogin(event.context)
                 }
+                is LoginContract.Event.MoveToHomeButtonClicked -> {
+                    postEffect(LoginContract.Effect.MoveToHome)
+                }
             }
         }
     }
@@ -79,6 +82,7 @@ class LoginViewModel @Inject constructor(
 
     private fun loginFromKakao(oauthToken: String) {
         viewModelScope.launch {
+            postEffect(LoginContract.Effect.MoveToSignup(socialId = "1"))
             updateState(currentState.copy(isLoading = true))
             loginUseCase(
                 oauthToken = oauthToken,
@@ -100,7 +104,7 @@ class LoginViewModel @Inject constructor(
 
                             // 소셜로그인 결과 404라면 추가정보 기입 화면으로 이동
                             dataStoreRepository.setUserSocialId(socialId)
-                            postEffect(LoginContract.Effect.MoveToSignup(socialId))
+                            postEffect(LoginContract.Effect.MoveToSignup(socialId = socialId))
                         }
                         1000 -> {
                             Log.d(TAG, code.toString())
@@ -112,7 +116,7 @@ class LoginViewModel @Inject constructor(
                     }
                 }
                 .onNetworkError {
-
+                    Log.e(TAG, "Network Error")
                 }
         }
     }

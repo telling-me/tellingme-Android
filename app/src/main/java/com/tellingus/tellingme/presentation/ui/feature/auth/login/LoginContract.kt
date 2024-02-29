@@ -14,6 +14,8 @@ class LoginContract {
         data class KakaoLoginButtonClicked(
             val context: Context
         ): Event()
+
+        object MoveToHomeButtonClicked: Event()
     }
 
     sealed class Effect: UiEffect {
