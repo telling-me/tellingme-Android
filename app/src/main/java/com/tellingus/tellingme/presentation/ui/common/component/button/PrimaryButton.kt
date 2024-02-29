@@ -17,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.theme.Base0
+import com.tellingus.tellingme.presentation.ui.theme.Gray300
+import com.tellingus.tellingme.presentation.ui.theme.Gray50
 import com.tellingus.tellingme.presentation.ui.theme.Primary100
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.Primary500
@@ -38,7 +40,7 @@ fun PrimaryButton(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Primary400,
                 contentColor = Base0,
-                disabledContainerColor = Primary100,
+                disabledContainerColor = Gray50,
                 disabledContentColor = Base0
             ),
             contentPadding = when(size) {
@@ -63,7 +65,8 @@ fun PrimaryButton(
                     ButtonSize.LARGE -> TellingmeTheme.typography.body1Bold
                     ButtonSize.MEDIUM -> TellingmeTheme.typography.body2Bold
                     ButtonSize.SMALL -> TellingmeTheme.typography.caption1Bold
-                }
+                },
+                color = if (enable) Base0 else Gray300
             )
         }
     }
