@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.login
+package com.tellingus.tellingme.presentation.ui.feature.oauth.login
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

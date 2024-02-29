@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.login
+package com.tellingus.tellingme.presentation.ui.feature.oauth.login
 
 import android.util.Log
 import android.widget.Toast
@@ -66,7 +66,8 @@ fun LoginScreen(
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is LoginContract.Effect.MoveToOauthJoin -> {
+                is LoginContract.Effect.MoveToSignup -> {
+                    navController.navigate()
                     Toast.makeText(context, "최초로그인 -> 상세정보 기입 화면 이동",Toast.LENGTH_SHORT).show()
                 }
                 is LoginContract.Effect.MoveToHome -> {
