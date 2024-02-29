@@ -5,22 +5,14 @@ object AuthDestinations {
 
     const val SPLASH = "splash"
     const val LOGIN = "login"
+    const val SIGNUP = "signup"
 
-    object SignUp {
-        const val ROUTE = "signUpRoute"
-
-        const val PHONE = "signUpPhone"
-        const val AUTHENTICATION = "signUpAuthentication"
-        const val FAVORITE_TASTE = "signUpFavoriteTaste"
-        const val COMPLETE = "signUpComplete"
-    }
 }
 
 object HomeDestinations {
     const val ROUTE = "homeRoute"
 
     const val HOME = "home"
-
     const val RECORD = "record"
 }
 
