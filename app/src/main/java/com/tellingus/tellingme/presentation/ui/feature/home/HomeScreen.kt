@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.home
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,7 +13,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
@@ -34,13 +31,9 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSect
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
-import com.tellingus.tellingme.presentation.ui.feature.login.LoginContract
-import com.tellingus.tellingme.presentation.ui.feature.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import com.tellingus.tellingme.util.TAG
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(

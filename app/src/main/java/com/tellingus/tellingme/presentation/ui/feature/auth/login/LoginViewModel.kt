@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.login
+package com.tellingus.tellingme.presentation.ui.feature.auth.login
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.tellingus.tellingme.data.model.oauth.dto.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
@@ -100,7 +100,7 @@ class LoginViewModel @Inject constructor(
 
                             // 소셜로그인 결과 404라면 추가정보 기입 화면으로 이동
                             dataStoreRepository.setUserSocialId(socialId)
-                            postEffect(LoginContract.Effect.MoveToOauthJoin(socialId))
+                            postEffect(LoginContract.Effect.MoveToSignup(socialId))
                         }
                         1000 -> {
                             Log.d(TAG, code.toString())

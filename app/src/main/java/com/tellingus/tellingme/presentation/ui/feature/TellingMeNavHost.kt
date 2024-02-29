@@ -35,8 +35,8 @@ import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestination
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MySpaceDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
+import com.tellingus.tellingme.presentation.ui.feature.auth.navigation.authGraph
 import com.tellingus.tellingme.presentation.ui.feature.home.homeGraph
-import com.tellingus.tellingme.presentation.ui.feature.login.loginGraph
 import com.tellingus.tellingme.presentation.ui.feature.mypage.myPageGraph
 import com.tellingus.tellingme.presentation.ui.feature.myspace.mySpaceGraph
 import com.tellingus.tellingme.presentation.ui.feature.otherspace.otherSpaceGraph
@@ -81,7 +81,7 @@ fun TellingMeNavHost(
                 navController = navController,
                 startDestination = startDestination
             ) {
-                loginGraph(
+                authGraph(
                     navController = navController
                 )
                 homeGraph(
