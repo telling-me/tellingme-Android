@@ -8,7 +8,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.feature.auth.login.LoginScreen
-import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupScreen
+import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupNickNameScreen
 
 fun NavGraphBuilder.authGraph(
     navController: NavController
@@ -32,7 +32,7 @@ fun NavGraphBuilder.authGraph(
                 defaultValue = "-1"
             })
         ) {
-            SignupScreen(
+            SignupNickNameScreen(
                 navController = navController,
                 socialId = it.arguments?.getString("socialId")!!
             )
