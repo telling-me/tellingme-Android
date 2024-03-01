@@ -1,11 +1,13 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
 import android.util.Log
+import android.widget.CheckBox
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,6 +41,7 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
 import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
@@ -255,6 +258,10 @@ fun SignupTermsBottomSheet(
     onClickNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var termAll by remember { mutableStateOf(false) }
+    var term1 by remember { mutableStateOf(false) }
+    var term2 by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .background(
@@ -279,9 +286,35 @@ fun SignupTermsBottomSheet(
         ) {
             SelectBox(
                 text = "전체 동의",
-                textStyle = TellingmeTheme.typography.body1Bold
+                textStyle = TellingmeTheme.typography.body1Bold,
+                isSelected = term1 && term2,
+                onClick = {
+                    if (term1 && term2) {
+                        term1 = false
+                        term2 = false
+                    } else {
+                        term1 = true
+                        term2 = true
+                    }
+                }
             )
-
+            Spacer(modifier = modifier.size(4.dp))
+            CheckBox(
+                text = "[필수] 서비스 이용 약관 동의",
+                showRightIcon = true,
+                isSelected = term1,
+                onClick = {
+                    term1 = !term1
+                }
+            )
+            CheckBox(
+                text = "[필수] 개인정보 수집 및 이용 동의",
+                showRightIcon = true,
+                isSelected = term2,
+                onClick = {
+                    term2 = !term2
+                }
+            )
             Spacer(modifier = modifier.size(12.dp))
             PrimaryButton(
                 modifier = modifier
@@ -292,6 +325,10 @@ fun SignupTermsBottomSheet(
                 onClick = onClickNext
             )
         }
+
+        Row {
+
+        }
     }
 
 }
@@ -300,4 +337,12 @@ fun SignupTermsBottomSheet(
 @Composable
 fun SignupNicknameScreenPreview() {
     SignupNicknameScreen(navController = rememberNavController(), socialId = "")
+}
+
+@Preview
+@Composable
+fun SignupTermsBottomSheetPreview() {
+    SignupTermsBottomSheet(
+        onClickNext = {}
+    )
 }
