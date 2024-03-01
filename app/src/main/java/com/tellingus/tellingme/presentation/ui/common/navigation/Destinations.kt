@@ -17,6 +17,7 @@ object AuthDestinations {
 
         const val SIGNUP_NICKNAME = "signupNickname"
         const val SIGNUP_BIRTH_GENDER = "signupBirthGender"
+        const val SIGNUP_JOB = "signupJob"
     }
 
 }

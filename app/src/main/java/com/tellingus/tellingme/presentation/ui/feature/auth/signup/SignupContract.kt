@@ -13,7 +13,10 @@ class SignupContract {
 
     sealed class Event: UiEvent {
         object NextButtonClickedInNickname: Event()
-        object NextButtonClickedInBirthGender: Event()
+        data class NextButtonClickedInBirthGender(
+            val birth: String,
+            val gender: String
+        ): Event()
         object NextButtonClickedInJob: Event()
         object NextButtonClickedInWorry: Event()
 

@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -98,8 +99,9 @@ fun SignupNicknameContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var isEnableUseNickname by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
+
+    Log.d("taag nick", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier

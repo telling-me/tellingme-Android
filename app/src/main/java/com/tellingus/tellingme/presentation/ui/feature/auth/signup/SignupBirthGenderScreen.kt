@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -81,7 +83,14 @@ fun SignupBirthGenderScreen(
                             .padding(end = 10.dp),
                         size = ButtonSize.MEDIUM,
                         text = "건너뛰기",
-                        onClick = {  }
+                        onClick = {
+                            viewModel.processEvent(
+                                SignupContract.Event.NextButtonClickedInBirthGender(
+                                    birth = "",
+                                    gender = ""
+                                )
+                            )
+                        }
                     )
                 }
             )
@@ -106,10 +115,11 @@ fun SignupBirthGenderContentScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var isEnableUseNickname by remember { mutableStateOf(false) }
-    var nickname by remember { mutableStateOf("") }
+    var birth by remember { mutableStateOf(uiState.joinRequestDto.birthDate) }
+    var gender by remember { mutableStateOf(uiState.joinRequestDto.gender) }
     var isFocused by remember { mutableStateOf(false) }
 
-    Log.d("taag birthgender", uiState.joinRequestDto.toString())
+    Log.d("taag birth", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier
@@ -134,10 +144,10 @@ fun SignupBirthGenderContentScreen(
                     .onFocusChanged {
                         isFocused = it.isFocused
                     },
-                value = nickname,
+                value = birth,
                 onValueChange = {
                     if (it.length <=4) {
-                        nickname = it
+                        birth = it
 
                     }
                 },
@@ -147,6 +157,9 @@ fun SignupBirthGenderContentScreen(
                 ),
                 maxLines = 1,
                 singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
                 decorationBox = { innerTextField ->
                     Column {
                         Box {
@@ -156,7 +169,7 @@ fun SignupBirthGenderContentScreen(
                             ) {
                                 innerTextField()
                                 Text(
-                                    text = if (nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
+                                    text = if (birth.isBlank()) "출생연도 4자리" else " ",
                                     style = TellingmeTheme.typography.body1Regular.copy(
                                         color = Gray300
                                     )
@@ -168,7 +181,7 @@ fun SignupBirthGenderContentScreen(
                                             interactionSource = remember { MutableInteractionSource() },
                                             indication = null,
                                             onClick = {
-                                                nickname = ""
+                                                birth = ""
                                             }
                                         ),
                                     imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
@@ -192,7 +205,7 @@ fun SignupBirthGenderContentScreen(
                                     enabled = false,
                                     onClick = {}
                                 ),
-                            text = "한글만 입력가능합니다.",
+                            text = if (birth.length == 4 && birth.toInt() > 2024) "올바른 형식으로 다시 입력해주세요." else " ",
                             style = TellingmeTheme.typography.caption1Regular.copy(
                                 color = Error600
                             )
@@ -200,22 +213,46 @@ fun SignupBirthGenderContentScreen(
                     }
                 }
             )
-            Spacer(modifier = modifier.size(48.dp))
+            Spacer(modifier = modifier.size(26.dp))
 
             Row(
                 modifier = modifier.fillMaxWidth()
             ) {
-                SelectBox(
-                    text = "남성",
-                    isSelected = false,
-                    modifier = modifier.weight(1f)
-                )
+                Box(
+                    modifier = modifier
+                        .clickable(
+                            onClick = {
+                                gender = Gender.MALE.name
+                            },
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        )
+                        .weight(1f)
+                ) {
+                    SelectBox(
+                        text = "남성",
+                        textStyle = TellingmeTheme.typography.body1Regular,
+                        isSelected = gender == Gender.MALE.name,
+                    )
+                }
                 Spacer(modifier = modifier.size(11.dp))
-                SelectBox(
-                    text = "여성",
-                    isSelected = false,
-                    modifier = modifier.weight(1f)
-                )
+                Box(
+                    modifier = modifier
+                        .clickable(
+                            onClick = {
+                                gender = Gender.FEMALE.name
+                            },
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        )
+                        .weight(1f)
+                ) {
+                    SelectBox(
+                        text = "여성",
+                        textStyle = TellingmeTheme.typography.body1Regular,
+                        isSelected = gender == Gender.FEMALE.name,
+                    )
+                }
             }
         }
         PrimaryButton(
@@ -223,9 +260,14 @@ fun SignupBirthGenderContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-//            enable = isEnableUseNickname,
+            enable = gender.isNotBlank() && birth.length==4 && birth.toInt()<2024,
             onClick = {
-                viewModel.processEvent(SignupContract.Event.NextButtonClickedInBirthGender)
+                viewModel.processEvent(
+                    SignupContract.Event.NextButtonClickedInBirthGender(
+                        birth = birth,
+                        gender = gender
+                    )
+                )
             }
         )
     }
@@ -233,11 +275,18 @@ fun SignupBirthGenderContentScreen(
     viewModel.effect.collectWithLifecycle { effect ->
         when(effect) {
             is SignupContract.Effect.MoveToJob -> {
-                navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
+                navController.navigate(AuthDestinations.Signup.SIGNUP_JOB)
             }
             else -> {}
         }
     }
+
+
+}
+
+enum class Gender(name: String) {
+    MALE("MALE"),
+    FEMALE("FAMALE")
 }
 
 @Preview

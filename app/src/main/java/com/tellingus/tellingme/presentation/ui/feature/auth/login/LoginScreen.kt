@@ -32,8 +32,6 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
 
-    Log.d("taag login", "login")
-
     MainLayout(
         content = {
             Column(
