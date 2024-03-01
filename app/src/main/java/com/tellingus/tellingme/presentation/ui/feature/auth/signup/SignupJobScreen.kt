@@ -137,8 +137,11 @@ fun SignupJobContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-//            enable = isEnableUseNickname,
+            enable = selectedJob != -1,
             onClick = {
+                viewModel.processEvent(
+                    SignupContract.Event.NextButtonClickedInJob(job = selectedJob)
+                )
             }
         )
     }

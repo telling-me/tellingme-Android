@@ -34,7 +34,8 @@ class SignupViewModel @Inject constructor(
                 postEffect(SignupContract.Effect.MoveToJob)
             }
             is SignupContract.Event.NextButtonClickedInJob -> {
-
+                updateJob(job = event.job)
+                postEffect(SignupContract.Effect.MoveToWorry)
             }
             is SignupContract.Event.NextButtonClickedInWorry -> {
 
@@ -67,6 +68,18 @@ class SignupViewModel @Inject constructor(
                     joinRequestDto = currentState.joinRequestDto.copy(
                         birthDate = birth,
                         gender = gender
+                    )
+                )
+            )
+        }
+    }
+
+    private fun updateJob(job: Int) {
+        viewModelScope.launch {
+            updateState(
+                currentState.copy(
+                    joinRequestDto = currentState.joinRequestDto.copy(
+                        job = job
                     )
                 )
             )
