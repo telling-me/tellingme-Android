@@ -321,16 +321,11 @@ fun SignupTermsBottomSheet(
                     .fillMaxWidth(),
                 size = ButtonSize.LARGE,
                 text = "다음",
-//            enable = isEnableUseNickname,
+                enable = term1 && term2,
                 onClick = onClickNext
             )
         }
-
-        Row {
-
-        }
     }
-
 }
 
 @Preview
