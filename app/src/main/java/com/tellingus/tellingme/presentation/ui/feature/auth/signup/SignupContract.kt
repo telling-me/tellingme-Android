@@ -8,7 +8,7 @@ import com.tellingus.tellingme.presentation.ui.common.base.UiState
 class SignupContract {
     data class State(
         val joinRequestDto: JoinRequestDto = JoinRequestDto(),
-        val nicknameErrorState: String = ""
+        val nicknameErrorState: String? = null
     ): UiState
 
     sealed class Event: UiEvent {
