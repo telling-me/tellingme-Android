@@ -1,5 +1,7 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -29,7 +31,13 @@ fun NavGraphBuilder.signupGraph(
         }
 
         composable(route = AuthDestinations.Signup.SIGNUP_BIRTH_GENDER) {
-            SignupBirthGenderScreen()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(AuthDestinations.Signup.ROUTE)
+            }
+            SignupBirthGenderScreen(
+                navController = navController,
+                viewModel = hiltViewModel(parentEntry)
+            )
         }
 
     }
