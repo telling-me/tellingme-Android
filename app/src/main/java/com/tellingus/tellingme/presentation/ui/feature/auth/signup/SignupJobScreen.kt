@@ -118,7 +118,9 @@ fun SignupJobContentScreen(
         LazyColumn() {
             itemsIndexed(
                 items = jobList,
-//                key = jobList.is
+//                key = { _, item ->
+//                    item.isSelected.hashCode()
+//                }
             ) { index, item ->
                 SelectBox(
                     text = item.text,
