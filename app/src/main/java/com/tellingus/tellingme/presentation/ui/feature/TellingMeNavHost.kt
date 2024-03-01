@@ -136,7 +136,6 @@ fun TellingMeBottomNavigationBar(
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true    // 최상위 아이템은 백스택에 쌓지 않기
                         }
-                        launchSingleTop = true    // 동일한 항목에 대한 중복 X
                         restoreState = true    // 이전 아이템 클릭 시 상태 복원
                     }
                 }

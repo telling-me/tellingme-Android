@@ -32,7 +32,7 @@ fun NavGraphBuilder.signupGraph(
 
         composable(route = AuthDestinations.Signup.SIGNUP_BIRTH_GENDER) {
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(AuthDestinations.Signup.ROUTE)
+                navController.getBackStackEntry("${AuthDestinations.Signup.SIGNUP_NICKNAME}/{socialId}")
             }
             SignupBirthGenderScreen(
                 navController = navController,
