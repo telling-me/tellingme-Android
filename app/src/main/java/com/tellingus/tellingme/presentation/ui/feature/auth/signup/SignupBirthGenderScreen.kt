@@ -1,8 +1,8 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.component.button.SingleBlackButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
@@ -50,14 +51,11 @@ import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
 
 @Composable
-fun SignupNicknameScreen(
+fun SignupBirthGenderScreen(
     navController: NavController,
-    socialId: String,
     viewModel: SignupViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    viewModel.initLoginInfo(socialId = socialId, socialLoginType = "kakao")
-
     MainLayout(
         header = {
             BasicAppBar(
@@ -66,7 +64,7 @@ fun SignupNicknameScreen(
                 leftSlot = {
                     TellingmeIconButton(
                         modifier = modifier
-                            .padding(12.dp),
+                            .padding(all = 12.dp),
                         iconRes = R.drawable.icon_caret_left,
                         size = ButtonSize.MEDIUM,
                         color = Gray500,
@@ -74,11 +72,20 @@ fun SignupNicknameScreen(
                             navController.popBackStack()
                         }
                     )
+                },
+                rightSlot = {
+                    SingleBlackButton(
+                        modifier = modifier
+                            .padding(end = 10.dp),
+                        size = ButtonSize.MEDIUM,
+                        text = "건너뛰기",
+                        onClick = {  }
+                    )
                 }
             )
         },
         content = {
-            SignupNicknameContentScreen(
+            SignupBirthGenderContentScreen(
                 navController = navController,
                 viewModel = viewModel
             )
@@ -90,7 +97,7 @@ fun SignupNicknameScreen(
 }
 
 @Composable
-fun SignupNicknameContentScreen(
+fun SignupBirthGenderContentScreen(
     navController: NavController,
     viewModel: SignupViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
@@ -99,6 +106,15 @@ fun SignupNicknameContentScreen(
     var isEnableUseNickname by remember { mutableStateOf(false) }
     var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
+
+    viewModel.effect.collectWithLifecycle { effect ->
+        when(effect) {
+            is SignupContract.Effect.MoveToJob -> {
+                navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
+            }
+            else -> {}
+        }
+    }
 
     Column(
         modifier = modifier
@@ -111,17 +127,11 @@ fun SignupNicknameContentScreen(
                 .weight(1f)
         ) {
             Text(
-                text = "닉네임을 입력해주세요",
+                text = "출생연도와 성별을 알려주세요",
                 style = TellingmeTheme.typography.head2Bold,
                 color = Gray600
             )
-            Spacer(modifier = Modifier.size(4.dp))
-            Text(
-                text = "닉네임은 이후에도 변경 가능해요",
-                style = TellingmeTheme.typography.body2Regular,
-                color = Gray600
-            )
-            Spacer(modifier = Modifier.size(30.dp))
+            Spacer(modifier = Modifier.size(55.dp))
 
             BasicTextField(
                 modifier = modifier
@@ -131,9 +141,8 @@ fun SignupNicknameContentScreen(
                     },
                 value = nickname,
                 onValueChange = {
-                    if (it.length <=8) {
+                    if (it.length <=4) {
                         nickname = it
-                        // 닉네임 관련 API 쏘기
 
                     }
                 },
@@ -204,23 +213,14 @@ fun SignupNicknameContentScreen(
             text = "다음",
 //            enable = isEnableUseNickname,
             onClick = {
-                viewModel.processEvent(SignupContract.Event.NextButtonClickedInNickname)
+                viewModel.processEvent(SignupContract.Event.NextButtonClickedInBirthGender)
             }
         )
-    }
-
-    viewModel.effect.collectWithLifecycle { effect ->
-        when(effect) {
-            is SignupContract.Effect.MoveToBirthGender -> {
-                navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
-            }
-            else -> {}
-        }
     }
 }
 
 @Preview
 @Composable
-fun SignupNicknameScreenPreview() {
-    SignupNicknameScreen(navController = rememberNavController(), socialId = "")
+fun SignupBirthGenderScreenPreview() {
+    SignupBirthGenderScreen(navController = rememberNavController())
 }
