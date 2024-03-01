@@ -3,6 +3,8 @@ package com.tellingus.tellingme.presentation.ui.common.component.box
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,6 +34,7 @@ fun SelectBox(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     text: String,
+    onClick : () -> Unit = {},
     textStyle: TextStyle = TellingmeTheme.typography.body1Regular,
     @DrawableRes icon: Int? = null
 ) {
@@ -42,7 +46,12 @@ fun SelectBox(
                 color = if (isSelected) Primary400 else Gray200,
                 shape = RoundedCornerShape(12.dp)
             )
-            .padding(horizontal = 14.dp, vertical = 16.dp),
+            .padding(horizontal = 14.dp, vertical = 16.dp)
+            .clickable(
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
