@@ -40,5 +40,14 @@ fun NavGraphBuilder.signupGraph(
             )
         }
 
+        composable(route = AuthDestinations.Signup.SIGNUP_JOB) {
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry("${AuthDestinations.Signup.SIGNUP_NICKNAME}/{socialId}")
+            }
+            SignupJobScreen(
+                navController = navController,
+                viewModel = hiltViewModel(parentEntry)
+            )
+        }
     }
 }
