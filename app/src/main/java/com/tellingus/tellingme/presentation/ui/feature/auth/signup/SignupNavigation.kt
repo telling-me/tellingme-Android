@@ -54,7 +54,7 @@ fun NavGraphBuilder.signupGraph(
             val parentEntry = remember(it) {
                 navController.getBackStackEntry("${AuthDestinations.Signup.SIGNUP_NICKNAME}/{socialId}")
             }
-            SignupJobScreen(
+            SignupWorryScreen(
                 navController = navController,
                 viewModel = hiltViewModel(parentEntry)
             )
