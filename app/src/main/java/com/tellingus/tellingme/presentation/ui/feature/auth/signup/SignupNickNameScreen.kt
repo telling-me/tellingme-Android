@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -33,8 +34,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
+import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
+import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
@@ -100,6 +105,7 @@ fun SignupNicknameContentScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var isFocused by remember { mutableStateOf(false) }
+    var showTermsBottomSheet by remember { mutableStateOf(false) }
 
     Log.d("taag nick", uiState.joinRequestDto.toString())
 
@@ -203,6 +209,25 @@ fun SignupNicknameContentScreen(
                 }
             )
         }
+
+        if (showTermsBottomSheet) {
+            BottomSheetDialog(
+                onDismissRequest = { showTermsBottomSheet = false },
+                properties = BottomSheetDialogProperties(
+                    behaviorProperties = BottomSheetBehaviorProperties(
+                        isDraggable = true
+                    )
+                )
+            ) {
+                SignupTermsBottomSheet(
+                    onClickNext = {
+                        showTermsBottomSheet = false
+                        viewModel.processEvent(SignupContract.Event.NextButtonClickedInNickname)
+                    }
+                )
+            }
+        }
+
         PrimaryButton(
             modifier = modifier
                 .fillMaxWidth(),
@@ -210,7 +235,7 @@ fun SignupNicknameContentScreen(
             text = "다음",
 //            enable = isEnableUseNickname,
             onClick = {
-                viewModel.processEvent(SignupContract.Event.NextButtonClickedInNickname)
+                showTermsBottomSheet = true
             }
         )
     }
@@ -223,6 +248,52 @@ fun SignupNicknameContentScreen(
             else -> {}
         }
     }
+}
+
+@Composable
+fun SignupTermsBottomSheet(
+    onClickNext: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .background(
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                color = Base0
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(modifier = modifier.padding(vertical = 16.dp)) {
+            Box(
+                modifier = modifier
+                    .background(
+                        color = Gray300,
+                        shape = RoundedCornerShape(100.dp)
+                    )
+                    .size(width = 32.dp, height = 4.dp)
+            )
+        }
+        Column(
+            modifier = modifier
+                .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)
+        ) {
+            SelectBox(
+                text = "전체 동의",
+                textStyle = TellingmeTheme.typography.body1Bold
+            )
+
+            Spacer(modifier = modifier.size(12.dp))
+            PrimaryButton(
+                modifier = modifier
+                    .fillMaxWidth(),
+                size = ButtonSize.LARGE,
+                text = "다음",
+//            enable = isEnableUseNickname,
+                onClick = onClickNext
+            )
+        }
+    }
+
 }
 
 @Preview
