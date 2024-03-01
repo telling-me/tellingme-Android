@@ -218,41 +218,25 @@ fun SignupBirthGenderContentScreen(
             Row(
                 modifier = modifier.fillMaxWidth()
             ) {
-                Box(
-                    modifier = modifier
-                        .clickable(
-                            onClick = {
-                                gender = Gender.MALE.name
-                            },
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        )
-                        .weight(1f)
-                ) {
-                    SelectBox(
-                        text = "남성",
-                        textStyle = TellingmeTheme.typography.body1Regular,
-                        isSelected = gender == Gender.MALE.name,
-                    )
-                }
+                SelectBox(
+                    modifier = modifier.weight(1f),
+                    text = "남성",
+                    textStyle = TellingmeTheme.typography.body1Regular,
+                    isSelected = gender == Gender.MALE.name,
+                    onClick = {
+                        gender = Gender.MALE.name
+                    }
+                )
                 Spacer(modifier = modifier.size(11.dp))
-                Box(
-                    modifier = modifier
-                        .clickable(
-                            onClick = {
-                                gender = Gender.FEMALE.name
-                            },
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        )
-                        .weight(1f)
-                ) {
-                    SelectBox(
-                        text = "여성",
-                        textStyle = TellingmeTheme.typography.body1Regular,
-                        isSelected = gender == Gender.FEMALE.name,
-                    )
-                }
+                SelectBox(
+                    modifier = modifier.weight(1f),
+                    text = "여성",
+                    textStyle = TellingmeTheme.typography.body1Regular,
+                    isSelected = gender == Gender.FEMALE.name,
+                    onClick = {
+                        gender = Gender.FEMALE.name
+                    }
+                )
             }
         }
         PrimaryButton(
