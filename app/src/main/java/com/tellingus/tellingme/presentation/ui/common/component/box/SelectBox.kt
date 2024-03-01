@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,7 +55,7 @@ fun SelectBox(
     ) {
         Image(
             imageVector = ImageVector.vectorResource(
-                id = if (isSelected) R.drawable.icon_check_selected else R.drawable.icon_check_unselected
+                id = if (isSelected) R.drawable.icon_check_circle_on else R.drawable.icon_check_circle_off
             ),
             contentDescription = null
         )
