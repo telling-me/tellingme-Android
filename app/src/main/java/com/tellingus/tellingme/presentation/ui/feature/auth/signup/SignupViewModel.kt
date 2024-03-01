@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
+import android.util.Log
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

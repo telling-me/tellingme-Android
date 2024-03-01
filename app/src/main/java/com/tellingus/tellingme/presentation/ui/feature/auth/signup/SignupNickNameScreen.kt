@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +49,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignupNicknameScreen(
@@ -56,7 +58,9 @@ fun SignupNicknameScreen(
     viewModel: SignupViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    viewModel.initLoginInfo(socialId = socialId, socialLoginType = "kakao")
+    LaunchedEffect(key1 = Unit) {
+        viewModel.initLoginInfo(socialId = socialId, socialLoginType = "kakao")
+    }
 
     MainLayout(
         header = {
@@ -99,6 +103,8 @@ fun SignupNicknameContentScreen(
     var isEnableUseNickname by remember { mutableStateOf(false) }
     var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
+
+    Log.d("taag nickname", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier

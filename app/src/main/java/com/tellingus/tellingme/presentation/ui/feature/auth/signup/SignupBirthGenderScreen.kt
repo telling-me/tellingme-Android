@@ -1,11 +1,12 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +35,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.SingleBlackButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
@@ -107,14 +109,7 @@ fun SignupBirthGenderContentScreen(
     var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
 
-    viewModel.effect.collectWithLifecycle { effect ->
-        when(effect) {
-            is SignupContract.Effect.MoveToJob -> {
-                navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
-            }
-            else -> {}
-        }
-    }
+    Log.d("taag birthgender", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier
@@ -205,6 +200,23 @@ fun SignupBirthGenderContentScreen(
                     }
                 }
             )
+            Spacer(modifier = modifier.size(48.dp))
+
+            Row(
+                modifier = modifier.fillMaxWidth()
+            ) {
+                SelectBox(
+                    text = "남성",
+                    isSelected = false,
+                    modifier = modifier.weight(1f)
+                )
+                Spacer(modifier = modifier.size(11.dp))
+                SelectBox(
+                    text = "여성",
+                    isSelected = false,
+                    modifier = modifier.weight(1f)
+                )
+            }
         }
         PrimaryButton(
             modifier = modifier
@@ -216,6 +228,15 @@ fun SignupBirthGenderContentScreen(
                 viewModel.processEvent(SignupContract.Event.NextButtonClickedInBirthGender)
             }
         )
+    }
+
+    viewModel.effect.collectWithLifecycle { effect ->
+        when(effect) {
+            is SignupContract.Effect.MoveToJob -> {
+                navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
+            }
+            else -> {}
+        }
     }
 }
 
