@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -49,7 +48,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignupNicknameScreen(
@@ -101,10 +99,7 @@ fun SignupNicknameContentScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var isEnableUseNickname by remember { mutableStateOf(false) }
-    var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
-
-    Log.d("taag nickname", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier
@@ -135,10 +130,10 @@ fun SignupNicknameContentScreen(
                     .onFocusChanged {
                         isFocused = it.isFocused
                     },
-                value = nickname,
+                value = uiState.joinRequestDto.nickname,
                 onValueChange = {
                     if (it.length <=8) {
-                        nickname = it
+                        viewModel.updateNickname(it)
                         // 닉네임 관련 API 쏘기
 
                     }
@@ -158,7 +153,7 @@ fun SignupNicknameContentScreen(
                             ) {
                                 innerTextField()
                                 Text(
-                                    text = if (nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
+                                    text = if (uiState.joinRequestDto.nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
                                     style = TellingmeTheme.typography.body1Regular.copy(
                                         color = Gray300
                                     )
@@ -170,7 +165,7 @@ fun SignupNicknameContentScreen(
                                             interactionSource = remember { MutableInteractionSource() },
                                             indication = null,
                                             onClick = {
-                                                nickname = ""
+                                                viewModel.updateNickname("")
                                             }
                                         ),
                                     imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
@@ -188,17 +183,20 @@ fun SignupNicknameContentScreen(
 
                         )
                         Spacer(modifier = modifier.size(8.dp))
-                        Text(
-                            modifier = modifier
-                                .clickable(
-                                    enabled = false,
-                                    onClick = {}
-                                ),
-                            text = "한글만 입력가능합니다.",
-                            style = TellingmeTheme.typography.caption1Regular.copy(
-                                color = Error600
+                        uiState.nicknameErrorState?.let {
+                            Text(
+                                modifier = modifier
+                                    .clickable(
+                                        enabled = false,
+                                        onClick = {}
+                                    ),
+                                text = it,
+                                style = TellingmeTheme.typography.caption1Regular.copy(
+                                    color = Error600
+                                )
                             )
-                        )
+                        }
+
                     }
                 }
             )
