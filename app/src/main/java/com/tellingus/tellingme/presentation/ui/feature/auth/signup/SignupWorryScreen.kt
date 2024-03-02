@@ -128,11 +128,15 @@ fun SignupWorryContentScreen(
                     icon = item.icon,
                     isSelected = selectedWorry.contains(index),
                     onClick = {
-                        if (selectedWorry.size<2) {
-                            selectedWorry.add(index)
+                        if (selectedWorry.contains(index)) {
+                            selectedWorry.remove(index)
                         } else {
-                            selectedWorry.removeAt(0)
-                            selectedWorry.add(index)
+                            if (selectedWorry.size<2) {
+                                selectedWorry.add(index)
+                            } else {
+                                selectedWorry.removeAt(0)
+                                selectedWorry.add(index)
+                            }
                         }
                     }
                 )
