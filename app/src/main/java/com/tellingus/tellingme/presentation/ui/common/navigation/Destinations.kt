@@ -4,23 +4,29 @@ object AuthDestinations {
     const val ROUTE = "authRoute"
 
     const val SPLASH = "splash"
-    const val LOGIN = "login"
 
-    object SignUp {
-        const val ROUTE = "signUpRoute"
+    object Login {
+        const val ROUTE = "loginRoute"
 
-        const val PHONE = "signUpPhone"
-        const val AUTHENTICATION = "signUpAuthentication"
-        const val FAVORITE_TASTE = "signUpFavoriteTaste"
-        const val COMPLETE = "signUpComplete"
+        const val LOGIN = "login"
+
     }
+
+    object Signup {
+        const val ROUTE = "signupRoute"
+
+        const val SIGNUP_NICKNAME = "signupNickname"
+        const val SIGNUP_BIRTH_GENDER = "signupBirthGender"
+        const val SIGNUP_JOB = "signupJob"
+        const val SIGNUP_WORRY = "signupWorry"
+    }
+
 }
 
 object HomeDestinations {
     const val ROUTE = "homeRoute"
 
     const val HOME = "home"
-
     const val RECORD = "record"
 }
 

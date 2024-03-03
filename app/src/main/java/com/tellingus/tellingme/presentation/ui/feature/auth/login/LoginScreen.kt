@@ -1,7 +1,6 @@
-package com.tellingus.tellingme.presentation.ui.feature.login
+package com.tellingus.tellingme.presentation.ui.feature.auth.login
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,20 +21,21 @@ import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayou
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
-import com.tellingus.tellingme.util.TAG
+import com.tellingus.tellingme.util.collectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
     MainLayout(
         content = {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -46,16 +46,12 @@ fun LoginScreen(
                         viewModel.processEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
                     }
                 )
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = modifier.size(20.dp))
                 PrimaryButton(
                     size = ButtonSize.LARGE,
                     text = "홈 화면으로 이동",
                     onClick = {
-                        navController.navigate(HomeDestinations.HOME) {
-                            popUpTo(AuthDestinations.ROUTE) {
-                                inclusive = true
-                            }
-                        }
+                        viewModel.processEvent(LoginContract.Event.MoveToHomeButtonClicked)
                     }
                 )
             }
@@ -63,14 +59,16 @@ fun LoginScreen(
         isScrollable = false
     )
 
-    LaunchedEffect(key1 = viewModel.effect) {
-        viewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is LoginContract.Effect.MoveToOauthJoin -> {
-                    Toast.makeText(context, "최초로그인 -> 상세정보 기입 화면 이동",Toast.LENGTH_SHORT).show()
-                }
-                is LoginContract.Effect.MoveToHome -> {
-                    Toast.makeText(context, "자동로그인 -> 홈 화면 이동", Toast.LENGTH_SHORT).show()
+    viewModel.effect.collectWithLifecycle { effect ->
+        when (effect) {
+            is LoginContract.Effect.MoveToSignup -> {
+                navController.navigate("${AuthDestinations.Signup.SIGNUP_NICKNAME}/${effect.socialId}")
+            }
+            is LoginContract.Effect.MoveToHome -> {
+                navController.navigate(HomeDestinations.HOME) {
+                    popUpTo(AuthDestinations.ROUTE) {
+                        inclusive = true
+                    }
                 }
             }
         }

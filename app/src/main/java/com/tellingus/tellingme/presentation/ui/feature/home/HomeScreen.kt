@@ -40,7 +40,9 @@ fun HomeScreen(
     navController: NavController,
 ) {
     MainLayout(
-        header = { HomeScreenHeader() },
+        header = {
+            HomeScreenHeader()
+        },
         content = {
             HomeScreenContent(
                 navController = navController

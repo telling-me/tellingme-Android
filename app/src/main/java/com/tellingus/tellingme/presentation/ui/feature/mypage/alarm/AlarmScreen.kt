@@ -50,7 +50,7 @@ import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary100
-import com.tellingus.tellingme.presentation.ui.theme.Red600
+import com.tellingus.tellingme.presentation.ui.theme.Error600
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -154,7 +154,7 @@ fun AlarmCard(
                 modifier = Modifier
                     .width(80.dp)
                     .fillMaxHeight()
-                    .background(Red600),
+                    .background(Error600),
                 onClick = {
                     coroutineScope.launch {
                         swipeableState.animateTo(0, tween(600, 0))

@@ -1,7 +1,7 @@
 package com.tellingus.tellingme.domain.usecase
 
-import com.tellingus.tellingme.data.model.oauth.dto.OauthRequestDto
-import com.tellingus.tellingme.data.model.oauth.response.TokenDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.TokenDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.LoginRepository
 import javax.inject.Inject

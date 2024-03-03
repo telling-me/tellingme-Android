@@ -15,7 +15,7 @@ import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
-import com.tellingus.tellingme.presentation.ui.theme.Red500
+import com.tellingus.tellingme.presentation.ui.theme.Error500
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
@@ -34,7 +34,7 @@ fun HeartButton(
             contentDescription = "",
             colorFilter = ColorFilter.tint(
                 when(buttonState) {
-                    ButtonState.ENABLED, ButtonState.SELECTED -> Red500
+                    ButtonState.ENABLED, ButtonState.SELECTED -> Error500
                     ButtonState.DISABLED -> Gray200
                 }
             )

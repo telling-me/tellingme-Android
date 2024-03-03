@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.feature.login
+package com.tellingus.tellingme.presentation.ui.feature.auth.login
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,14 +10,12 @@ fun NavGraphBuilder.loginGraph(
     navController: NavController
 ) {
     navigation(
-        route = AuthDestinations.ROUTE,
-        startDestination = AuthDestinations.LOGIN
+        route = AuthDestinations.Login.ROUTE,
+        startDestination = AuthDestinations.Login.LOGIN
     ) {
-        composable(route = AuthDestinations.SPLASH) {
-//            Splash
-        }
-        composable(route = AuthDestinations.LOGIN) {
+        composable(route = AuthDestinations.Login.LOGIN) {
             LoginScreen(navController)
         }
+
     }
 }

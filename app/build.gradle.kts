@@ -42,6 +42,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -111,6 +112,12 @@ dependencies {
 
     // Compose base
     implementation("androidx.compose.foundation:foundation:1.6.2")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+
+    // BottomSheet
+    implementation("com.holix.android:bottomsheetdialog-compose:1.2.3")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
