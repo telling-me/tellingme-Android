@@ -29,9 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -57,6 +60,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
+import kotlinx.coroutines.delay
 
 @Composable
 fun SignupNicknameScreen(
@@ -125,7 +129,7 @@ fun SignupNicknameContentScreen(
             Text(
                 text = "닉네임을 입력해주세요",
                 style = TellingmeTheme.typography.head2Bold,
-                color = Gray600
+                color = Gray600,
             )
             Spacer(modifier = Modifier.size(4.dp))
             Text(
@@ -169,20 +173,22 @@ fun SignupNicknameContentScreen(
                                         color = Gray300
                                     )
                                 )
-                                Icon(
-                                    modifier = modifier
-                                        .align(Alignment.CenterEnd)
-                                        .clickable(
-                                            interactionSource = remember { MutableInteractionSource() },
-                                            indication = null,
-                                            onClick = {
-                                                viewModel.updateNickname("")
-                                            }
-                                        ),
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
-                                    contentDescription = null,
-                                    tint = Gray300
-                                )
+                                if (uiState.joinRequestDto.nickname.isNotBlank()) {
+                                    Icon(
+                                        modifier = modifier
+                                            .align(Alignment.CenterEnd)
+                                            .clickable(
+                                                interactionSource = remember { MutableInteractionSource() },
+                                                indication = null,
+                                                onClick = {
+                                                    viewModel.updateNickname("")
+                                                }
+                                            ),
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
+                                        contentDescription = null,
+                                        tint = Gray300
+                                    )
+                                }
                             }
                         }
                         Spacer(modifier = modifier.size(8.dp))
@@ -213,6 +219,15 @@ fun SignupNicknameContentScreen(
             )
         }
 
+        LaunchedEffect(key1 = uiState.joinRequestDto.nickname) {
+            if (uiState.joinRequestDto.nickname.isNotBlank()) {
+
+                delay(1000)
+
+                Log.d("taag", uiState.joinRequestDto.nickname)
+            }
+        }
+
         if (showTermsBottomSheet) {
             BottomSheetDialog(
                 onDismissRequest = { showTermsBottomSheet = false },
@@ -236,7 +251,7 @@ fun SignupNicknameContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-//            enable = isEnableUseNickname,
+            enable = uiState.joinRequestDto.nickname.length>5,
             onClick = {
                 showTermsBottomSheet = true
             }
