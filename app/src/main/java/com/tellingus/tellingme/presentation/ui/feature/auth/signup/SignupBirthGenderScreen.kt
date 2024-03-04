@@ -114,7 +114,6 @@ fun SignupBirthGenderContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var isEnableUseNickname by remember { mutableStateOf(false) }
     var birth by remember { mutableStateOf(uiState.joinRequestDto.birthDate) }
     var gender by remember { mutableStateOf(uiState.joinRequestDto.gender) }
     var isFocused by remember { mutableStateOf(false) }
@@ -174,20 +173,22 @@ fun SignupBirthGenderContentScreen(
                                         color = Gray300
                                     )
                                 )
-                                Icon(
-                                    modifier = modifier
-                                        .align(Alignment.CenterEnd)
-                                        .clickable(
-                                            interactionSource = remember { MutableInteractionSource() },
-                                            indication = null,
-                                            onClick = {
-                                                birth = ""
-                                            }
-                                        ),
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
-                                    contentDescription = null,
-                                    tint = Gray300
-                                )
+                                if (birth.isNotBlank()) {
+                                    Icon(
+                                        modifier = modifier
+                                            .align(Alignment.CenterEnd)
+                                            .clickable(
+                                                interactionSource = remember { MutableInteractionSource() },
+                                                indication = null,
+                                                onClick = {
+                                                    birth = ""
+                                                }
+                                            ),
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
+                                        contentDescription = null,
+                                        tint = Gray300
+                                    )
+                                }
                             }
                         }
                         Spacer(modifier = modifier.size(8.dp))
