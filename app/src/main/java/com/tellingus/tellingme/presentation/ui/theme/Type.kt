@@ -1,10 +1,13 @@
 package com.tellingus.tellingme.presentation.ui.theme
 
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tellingus.tellingme.R
 import javax.annotation.concurrent.Immutable
@@ -19,97 +22,129 @@ internal val Typography = TellingmeTypography(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
-        lineHeight = 48.sp
+        lineHeight = 48.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     display2Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 28.sp,
-        lineHeight = 42.sp
+        lineHeight = 42.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     head1Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
-        lineHeight = 36.sp
+        lineHeight = 36.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     head1Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp,
-        lineHeight = 36.sp
+        lineHeight = 36.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     head2Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
-        lineHeight = 30.sp
+        lineHeight = 30.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     head2Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
-        lineHeight = 30.sp
+        lineHeight = 30.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     head3Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
-        lineHeight = 27.sp
+        lineHeight = 27.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     head3Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
-        lineHeight = 27.sp
+        lineHeight = 27.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     body1Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 24.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     body1Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 24.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     body2Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
-        lineHeight = 21.sp
+        lineHeight = 21.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     body2Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        lineHeight = 21.sp
+        lineHeight = 21.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     caption1Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
-        lineHeight = 18.sp
+        lineHeight = 18.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     caption1Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        lineHeight = 18.sp
+        lineHeight = 18.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     caption2Bold = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Bold,
         fontSize = 10.sp,
-        lineHeight = 15.sp
+        lineHeight = 15.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     ),
     caption2Regular = TextStyle(
         fontFamily = nanumSquareRoundStyle,
         fontWeight = FontWeight.Normal,
         fontSize = 10.sp,
-        lineHeight = 15.sp
+        lineHeight = 15.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false),
+        lineHeightStyle = LineHeightStyle(alignment = LineHeightStyle.Alignment.Center, trim = LineHeightStyle.Trim.None)
     )
 )
 
