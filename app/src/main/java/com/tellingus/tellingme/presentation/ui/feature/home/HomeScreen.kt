@@ -31,6 +31,8 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSect
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
+import com.tellingus.tellingme.presentation.ui.theme.Background100
+import com.tellingus.tellingme.presentation.ui.theme.Gray100
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
@@ -55,7 +57,7 @@ fun HomeScreen(
 fun HomeScreenHeader() {
     BasicAppBar(
         modifier = Modifier
-            .background(Color.White)
+            .background(Background100)
             .height(48.dp)
             .padding(start = 20.dp, end = 20.dp)
             .fillMaxWidth(),
