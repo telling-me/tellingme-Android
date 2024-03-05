@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.otherspace
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.card.CommunityCard
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
@@ -58,7 +60,12 @@ fun OtherSpaceScreenContent(navController: NavController) {
                     id = it.id,
                     title = it.title,
                     date = it.date,
-                    commentCount = it.commentCount
+                    commentCount = it.commentCount,
+                    onClickButton = { id ->
+                        Log.d("로그", "CommunityCard id: $id")
+                        navController.navigate("${OtherSpaceDestinations.OTHER_SPACE}/${id}")
+                    }
+
                 )
             }
         }

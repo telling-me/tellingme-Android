@@ -33,7 +33,8 @@ fun CommunityCard(
     id: String,
     title: String,
     date: String,
-    commentCount: Int
+    commentCount: Int,
+    onClickButton: (id: String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -73,7 +74,7 @@ fun CommunityCard(
             }
 
             EntranceButton(onClick = {
-                Log.d("로그", "CommunityCard: $id")
+                onClickButton(id)
             })
         }
     }

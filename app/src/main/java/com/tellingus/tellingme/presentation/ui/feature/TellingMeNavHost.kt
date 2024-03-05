@@ -57,6 +57,7 @@ fun TellingMeNavHost(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
+    // bottomNav 포함 하는 화면 목록
     val bottomNavNotIncludeList = listOf(
         HomeDestinations.HOME,
         MySpaceDestinations.MY_SPACE,
