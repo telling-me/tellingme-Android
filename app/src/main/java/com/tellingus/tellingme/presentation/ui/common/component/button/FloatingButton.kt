@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.common.component.button
 
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.LocalRippleTheme
@@ -26,7 +27,8 @@ fun FloatingButton(
 ) {
     CompositionLocalProvider(LocalRippleTheme provides FloatingButtonRippleTheme) {
         FloatingActionButton(
-            modifier = modifier.size(48.dp),
+            modifier = modifier
+                .size(48.dp),
             onClick = onClick,
             containerColor = Primary400,
             shape = CircleShape,
