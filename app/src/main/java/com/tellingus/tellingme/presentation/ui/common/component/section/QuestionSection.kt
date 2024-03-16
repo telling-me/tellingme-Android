@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
+import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Gray50
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
@@ -28,13 +29,15 @@ fun QuestionSection(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    onClickButton: () -> Unit = {}
+    onClickButton: () -> Unit = {},
+    isButtonVisible: Boolean = true,
+    bgColor: Color = Color.White
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 208.dp)
-            .background(Color.White)
+            .background(bgColor)
     ) {
         Column(
             modifier = Modifier
@@ -72,12 +75,14 @@ fun QuestionSection(
                 textAlign = TextAlign.Center
             )
 
-            PrimaryButton(
-                modifier = Modifier.padding(top = 28.dp),
-                size = ButtonSize.MEDIUM,
-                text = "기록하기",
-                onClick = onClickButton
-            )
+            if (isButtonVisible) {
+                PrimaryButton(
+                    modifier = Modifier.padding(top = 28.dp),
+                    size = ButtonSize.MEDIUM,
+                    text = "기록하기",
+                    onClick = onClickButton
+                )
+            }
 
         }
     }
@@ -88,5 +93,6 @@ fun QuestionSection(
 fun QuestionSectionPreview() {
     Column {
         QuestionSection(title = "제목을 입력해주세요", description = "내용을 입력해주세요", onClickButton = {})
+        QuestionSection(title = "제목을 입력해주세요", description = "내용을 입력해주세요", isButtonVisible = false, bgColor = Background100)
     }
 }
