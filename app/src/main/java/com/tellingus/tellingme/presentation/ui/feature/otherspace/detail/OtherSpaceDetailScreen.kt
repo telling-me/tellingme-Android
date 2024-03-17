@@ -1,6 +1,7 @@
 package com.tellingus.tellingme.presentation.ui.feature.otherspace.detail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +34,7 @@ import com.tellingus.tellingme.presentation.ui.common.component.button.FloatingB
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.component.chip.ChoiceChip
-import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.component.layout.OtherSpaceLayout
 import com.tellingus.tellingme.presentation.ui.common.component.section.QuestionSection
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
@@ -43,11 +46,11 @@ fun OtherSpaceDetailScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
 ) {
-    MainLayout(
+    OtherSpaceLayout(
         header = {
             BasicAppBar(modifier = modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp, top = 12.dp, bottom = 0.dp, end = 12.dp), leftSlot = {
+                .padding(start = 12.dp, top = 12.dp, bottom = 12.dp, end = 12.dp), leftSlot = {
                 TellingmeIconButton(iconRes = R.drawable.icon_caret_left,
                     size = ButtonSize.MEDIUM,
                     color = Gray500,
@@ -72,20 +75,19 @@ fun OtherSpaceDetailScreenContent(navController: NavController) {
 
     Column(
         modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 0.dp)
             .fillMaxHeight()
     ) {
         FloatingButton(
             modifier = Modifier
-                .offset(screenWidth - 90.dp, screenHeight - 120.dp)
+                .offset(screenWidth - 90.dp, screenHeight - 90.dp)
                 .zIndex(1f)
         ) {}
 
         LazyColumn(
-            modifier = Modifier.padding(top = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             contentPadding = PaddingValues(
-                top = 24.dp, bottom = 24.dp
+                top = 0.dp, bottom = 24.dp
             )
         ) {
             item {
@@ -97,7 +99,7 @@ fun OtherSpaceDetailScreenContent(navController: NavController) {
                 )
             }
             stickyHeader {
-                Row(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
+                Row(modifier = Modifier.padding(top = 0.dp, bottom = 16.dp)) {
                     ChoiceChip(selected = isSelected == "recently", text = "최신순", onClick = {
                         isSelected = "recently"
                     })
