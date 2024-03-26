@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +35,7 @@ fun QuestionSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 208.dp)
+            .padding(bottom = 50.dp)
             .background(bgColor)
     ) {
         Column(
@@ -93,6 +92,11 @@ fun QuestionSection(
 fun QuestionSectionPreview() {
     Column {
         QuestionSection(title = "제목을 입력해주세요", description = "내용을 입력해주세요", onClickButton = {})
-        QuestionSection(title = "제목을 입력해주세요", description = "내용을 입력해주세요", isButtonVisible = false, bgColor = Background100)
+        QuestionSection(
+            title = "제목을 입력해주세요",
+            description = "내용을 입력해주세요",
+            isButtonVisible = false,
+            bgColor = Background100
+        )
     }
 }
