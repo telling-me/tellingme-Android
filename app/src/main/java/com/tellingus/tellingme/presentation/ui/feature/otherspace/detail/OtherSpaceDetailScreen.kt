@@ -3,6 +3,7 @@ package com.tellingus.tellingme.presentation.ui.feature.otherspace.detail
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -73,14 +75,15 @@ fun OtherSpaceDetailScreenContent(navController: NavController) {
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
 
-    Column(
+    Box(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 0.dp)
             .fillMaxHeight()
     ) {
         FloatingButton(
             modifier = Modifier
-                .offset(screenWidth - 90.dp, screenHeight - 90.dp)
+                .align(Alignment.BottomEnd)
+                .padding(end = 0.dp, bottom = 20.dp)
                 .zIndex(1f)
         ) {}
 
