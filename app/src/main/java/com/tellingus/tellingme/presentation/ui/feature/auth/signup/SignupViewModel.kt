@@ -50,31 +50,44 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun verifyNickname(nickname: String) {
+        if (nickname.isEmpty()) {
+            updateState(currentState.copy(nicknameErrorState = " "))
+        } else if (nickname.length < 2) {
+            updateState(currentState.copy(nicknameErrorState = "닉네임은 2~8글자여야 합니다."))
+        } else if (" " in nickname) {
+            updateState(currentState.copy(nicknameErrorState = "닉네임에 띄어쓰기가 포함될 수 없습니다."))
+        } else if (!"^[가-힣]*$".toRegex().matches(nickname)) {
+            updateState(currentState.copy(nicknameErrorState = "닉네임은 한글만 가능합니다. 영문과 숫자, 특수기호는 들어갈 수 없습니다."))
+        } else {
+            updateState(currentState.copy(nicknameErrorState = null))
+        }
+    }
+
     fun updateNickname(nickname: String) {
         viewModelScope.launch {
             updateState(currentState.copy(isLoading = true))
 
             verifyNicknameUseCase(
                 nicknameRequestDto = NicknameRequestDto(nickname = nickname)
-            )
-                .onSuccess {
-                    updateState(
-                        currentState.copy(
-                            isLoading = false,
-                            nicknameErrorState = it.message
-                        )
+            ).onSuccess {
+                updateState(
+                    currentState.copy(
+                        isLoading = false,
+                        nicknameErrorState = it.message
                     )
+                )
 
-                    if (it == null) {
-                        Log.d("taag", "tjdrhd")
-                    }
-                    Log.d("taag", it.toString())
-                }.onFailure { message, code ->
-                    Log.d("taag", message)
-                    Log.d("taag", code.toString())
-                }.onNetworkError {
-
+                if (it == null) {
+                    Log.d("taag", "tjdrhd")
                 }
+                Log.d("taag", it.toString())
+            }.onFailure { message, code ->
+                Log.d("taag", message)
+                Log.d("taag", code.toString())
+            }.onNetworkError {
+
+            }
 
             updateState(
                 currentState.copy(

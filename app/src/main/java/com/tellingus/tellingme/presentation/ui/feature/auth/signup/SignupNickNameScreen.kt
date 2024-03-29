@@ -217,11 +217,7 @@ fun SignupNicknameContentScreen(
         }
 
         LaunchedEffect(key1 = nickname) {
-            if (nickname.isNotBlank()) {
-                delay(1000)
-
-                viewModel.updateNickname(nickname)
-            }
+            viewModel.verifyNickname(nickname)
         }
 
         if (showTermsBottomSheet) {
@@ -247,7 +243,7 @@ fun SignupNicknameContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-            enable = nickname.length>5,
+            enable = (uiState.nicknameErrorState == null),
             onClick = {
                 showTermsBottomSheet = true
             }
