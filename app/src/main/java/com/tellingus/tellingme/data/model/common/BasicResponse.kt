@@ -1,6 +1,6 @@
 package com.tellingus.tellingme.data.model.common
 
-data class ErrorResponse(
+data class BasicResponse(
     val status: Int = 0,
     val code: String = "",
     val message: String = "",

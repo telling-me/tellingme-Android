@@ -3,7 +3,6 @@ package com.tellingus.tellingme.data.network.ssl
 import android.content.Context
 import com.tellingus.tellingme.R
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.OkHttpClient
 import java.io.IOException
 import java.io.InputStream
 import java.security.KeyManagementException
@@ -18,7 +17,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 @Singleton
 class SelfSigningHelper @Inject constructor(
