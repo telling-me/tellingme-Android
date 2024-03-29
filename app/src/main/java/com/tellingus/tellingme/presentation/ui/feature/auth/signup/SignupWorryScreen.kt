@@ -83,8 +83,6 @@ fun SignupWorryContentScreen(
 //    var selectedWorry by remember { mutableStateOf(emptyList<Int>()) }
     var selectedWorry = remember { mutableStateListOf<Int>() }
 
-    Log.d("taag worry", uiState.joinRequestDto.toString())
-
     val worryList = listOf<Worry>(
         Worry(R.drawable.icon_pen, "학업/진로"),
         Worry(R.drawable.icon_handshake, "대인관계"),
@@ -154,11 +152,12 @@ fun SignupWorryContentScreen(
             text = "다음",
             enable = selectedWorry.size != 0,
             onClick = {
-//                viewModel.processEvent()
+                viewModel.processEvent(
+                    SignupContract.Event.NextButtonClickedInWorry(worry = selectedWorry.toList())
+                )
             }
         )
     }
-
 }
 
 data class Worry(

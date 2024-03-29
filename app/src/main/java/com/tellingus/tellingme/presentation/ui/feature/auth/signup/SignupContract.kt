@@ -24,7 +24,9 @@ class SignupContract {
             val job: Int
         ): Event()
 
-        object NextButtonClickedInWorry: Event()
+        data class NextButtonClickedInWorry(
+            val worry: List<Int>
+        ): Event()
 
     }
 

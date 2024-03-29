@@ -86,8 +86,6 @@ fun SignupJobContentScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var selectedJob by remember { mutableStateOf(-1) }
 
-    Log.d("taag job", uiState.joinRequestDto.toString())
-
     val jobList = listOf<Job>(
         Job(R.drawable.icon_bagpack, "중·고등학생"),
         Job(R.drawable.icon_graduationcap, "대학(원)생"),

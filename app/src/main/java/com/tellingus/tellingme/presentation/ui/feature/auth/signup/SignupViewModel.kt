@@ -45,6 +45,7 @@ class SignupViewModel @Inject constructor(
                 postEffect(SignupContract.Effect.MoveToWorry)
             }
             is SignupContract.Event.NextButtonClickedInWorry -> {
+                updateWorry(worry = event.worry)
 
             }
         }
@@ -124,5 +125,17 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    private fun updateWorry(worry: List<Int>) {
+        viewModelScope.launch {
+            updateState(
+                currentState.copy(
+                    joinRequestDto = currentState.joinRequestDto.copy(
+                        purpose = worry.toString()
+                    )
+                )
+            )
 
+            Log.d("taag", currentState.joinRequestDto.toString())
+        }
+    }
 }
