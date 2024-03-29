@@ -29,12 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -60,7 +57,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
-import kotlinx.coroutines.delay
 
 @Composable
 fun SignupNicknameScreen(
