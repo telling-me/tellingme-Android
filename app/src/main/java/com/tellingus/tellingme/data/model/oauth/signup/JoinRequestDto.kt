@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.data.model.oauth.login
+package com.tellingus.tellingme.data.model.oauth.signup
 
 data class JoinRequestDto(
     val socialId: String = "",

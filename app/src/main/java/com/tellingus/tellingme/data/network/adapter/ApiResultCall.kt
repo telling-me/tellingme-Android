@@ -1,6 +1,6 @@
 package com.tellingus.tellingme.data.network.adapter
 
-import com.tellingus.tellingme.data.model.common.ErrorResponse
+import com.tellingus.tellingme.data.model.common.BasicResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -22,7 +22,7 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                             )
                         )
                     } else {
-                        val errorBody = ErrorResponse(
+                        val errorBody = BasicResponse(
                                 status = response.code(),
                                 message = response.errorBody()?.let {
                                     response.errorBody()!!.string()

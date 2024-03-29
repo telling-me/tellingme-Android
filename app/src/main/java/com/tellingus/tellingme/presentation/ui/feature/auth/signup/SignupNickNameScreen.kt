@@ -111,10 +111,9 @@ fun SignupNicknameContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     var showTermsBottomSheet by remember { mutableStateOf(false) }
-
-    Log.d("taag nick", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier
@@ -145,12 +144,10 @@ fun SignupNicknameContentScreen(
                     .onFocusChanged {
                         isFocused = it.isFocused
                     },
-                value = uiState.joinRequestDto.nickname,
+                value = nickname,
                 onValueChange = {
                     if (it.length <=8) {
-                        viewModel.updateNickname(it)
-                        // 닉네임 관련 API 쏘기
-
+                        nickname = it
                     }
                 },
                 textStyle = TellingmeTheme.typography.body1Regular.copy(
@@ -168,12 +165,12 @@ fun SignupNicknameContentScreen(
                             ) {
                                 innerTextField()
                                 Text(
-                                    text = if (uiState.joinRequestDto.nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
+                                    text = if (nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
                                     style = TellingmeTheme.typography.body1Regular.copy(
                                         color = Gray300
                                     )
                                 )
-                                if (uiState.joinRequestDto.nickname.isNotBlank()) {
+                                if (nickname.isNotBlank()) {
                                     Icon(
                                         modifier = modifier
                                             .align(Alignment.CenterEnd)
@@ -219,12 +216,11 @@ fun SignupNicknameContentScreen(
             )
         }
 
-        LaunchedEffect(key1 = uiState.joinRequestDto.nickname) {
-            if (uiState.joinRequestDto.nickname.isNotBlank()) {
-
+        LaunchedEffect(key1 = nickname) {
+            if (nickname.isNotBlank()) {
                 delay(1000)
 
-                Log.d("taag", uiState.joinRequestDto.nickname)
+                viewModel.updateNickname(nickname)
             }
         }
 
@@ -251,7 +247,7 @@ fun SignupNicknameContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-            enable = uiState.joinRequestDto.nickname.length>5,
+            enable = nickname.length>5,
             onClick = {
                 showTermsBottomSheet = true
             }

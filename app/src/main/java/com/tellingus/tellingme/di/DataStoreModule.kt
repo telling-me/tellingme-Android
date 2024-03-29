@@ -29,5 +29,4 @@ class DataStoreModule {
             produceFile = { context.preferencesDataStoreFile(BuildConfig.APPLICATION_ID) }
         )
     }
-
 }

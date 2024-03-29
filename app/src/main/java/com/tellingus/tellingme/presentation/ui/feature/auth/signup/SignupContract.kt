@@ -1,12 +1,13 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import com.tellingus.tellingme.data.model.oauth.login.JoinRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.presentation.ui.common.base.UiEffect
 import com.tellingus.tellingme.presentation.ui.common.base.UiEvent
 import com.tellingus.tellingme.presentation.ui.common.base.UiState
 
 class SignupContract {
     data class State(
+        val isLoading: Boolean = false,
         val joinRequestDto: JoinRequestDto = JoinRequestDto(),
         val nicknameErrorState: String? = null
     ): UiState
