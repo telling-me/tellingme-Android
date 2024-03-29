@@ -107,7 +107,7 @@ fun SignupNicknameContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var nickname by remember { mutableStateOf("") }
+    var nickname by remember { mutableStateOf(uiState.joinRequestDto.nickname) }
     var isFocused by remember { mutableStateOf(false) }
     var showTermsBottomSheet by remember { mutableStateOf(false) }
 

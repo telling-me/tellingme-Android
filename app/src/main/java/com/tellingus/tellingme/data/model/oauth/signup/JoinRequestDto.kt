@@ -7,6 +7,6 @@ data class JoinRequestDto(
     val gender: String = "",
     val birthDate: String = "",
     val purpose: String = "",
-    val job: Int = 0,
+    val job: Int = -1,
     val jobInfo: String = "",
 )
