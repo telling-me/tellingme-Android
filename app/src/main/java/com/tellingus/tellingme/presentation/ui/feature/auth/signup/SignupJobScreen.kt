@@ -143,7 +143,9 @@ fun SignupJobContentScreen(
             enable = selectedJob != -1,
             onClick = {
                 viewModel.processEvent(
-                    SignupContract.Event.NextButtonClickedInJob(job = selectedJob)
+                    SignupContract.Event.NextButtonClickedInJob(
+                        job = selectedJob
+                    )
                 )
             }
         )

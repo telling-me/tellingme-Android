@@ -13,7 +13,9 @@ class SignupContract {
     ): UiState
 
     sealed class Event: UiEvent {
-        object NextButtonClickedInNickname: Event()
+        data class NextButtonClickedInNickname(
+            val nickname: String
+        ): Event()
 
         data class NextButtonClickedInBirthGender(
             val birth: String,

@@ -2,11 +2,13 @@ package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
 import com.tellingus.tellingme.domain.repository.AuthRepository
+import com.tellingus.tellingme.domain.usecase.JoinUserUseCase
 import com.tellingus.tellingme.domain.usecase.VerifyNicknameUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val verifyNicknameUseCase: VerifyNicknameUseCase
+    private val verifyNicknameUseCase: VerifyNicknameUseCase,
+    private val joinUserUseCase: JoinUserUseCase
 ): BaseViewModel<SignupContract.State, SignupContract.Event, SignupContract.Effect>(
     initialState = SignupContract.State()
 ) {
@@ -34,6 +37,7 @@ class SignupViewModel @Inject constructor(
     override fun reduceState(event: SignupContract.Event) {
         when(event) {
             is SignupContract.Event.NextButtonClickedInNickname -> {
+                updateNickname(nickname = event.nickname)
                 postEffect(SignupContract.Effect.MoveToBirthGender)
             }
             is SignupContract.Event.NextButtonClickedInBirthGender -> {
@@ -46,7 +50,19 @@ class SignupViewModel @Inject constructor(
             }
             is SignupContract.Event.NextButtonClickedInWorry -> {
                 updateWorry(worry = event.worry)
+                joinUser(currentState.joinRequestDto)
+            }
+        }
+    }
 
+    fun joinUser(joinRequestDto: JoinRequestDto) {
+        viewModelScope.launch {
+            joinUserUseCase(
+                joinRequestDto = joinRequestDto
+            ).onSuccess {
+                Log.d("taag", it.toString())
+            }.onFailure { message, code ->
+                Log.d("taag", message)
             }
         }
     }
@@ -80,12 +96,9 @@ class SignupViewModel @Inject constructor(
                 )
 
                 if (it == null) {
-                    Log.d("taag", "tjdrhd")
                 }
-                Log.d("taag", it.toString())
             }.onFailure { message, code ->
-                Log.d("taag", message)
-                Log.d("taag", code.toString())
+
             }.onNetworkError {
 
             }

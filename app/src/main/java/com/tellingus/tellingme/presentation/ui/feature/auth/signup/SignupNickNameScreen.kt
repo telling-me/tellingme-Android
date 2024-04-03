@@ -228,7 +228,11 @@ fun SignupNicknameContentScreen(
                 SignupTermsBottomSheet(
                     onClickNext = {
                         showTermsBottomSheet = false
-                        viewModel.processEvent(SignupContract.Event.NextButtonClickedInNickname)
+                        viewModel.processEvent(
+                            SignupContract.Event.NextButtonClickedInNickname(
+                                nickname = nickname
+                            )
+                        )
                     }
                 )
             }
