@@ -35,7 +35,6 @@ fun QuestionSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 50.dp)
             .background(bgColor)
     ) {
         Column(
