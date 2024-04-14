@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.tellingus.tellingme.presentation.ui.common.navigation.OtherSpaceDestinations
 import com.tellingus.tellingme.presentation.ui.feature.otherspace.detail.OtherSpaceDetailScreen
+import com.tellingus.tellingme.presentation.ui.feature.otherspace.list.OtherSpaceListScreen
 
 fun NavGraphBuilder.otherSpaceGraph(
     navController: NavController
@@ -19,18 +20,24 @@ fun NavGraphBuilder.otherSpaceGraph(
         composable(route = OtherSpaceDestinations.OTHER_SPACE) {
             OtherSpaceScreen(navController = navController)
         }
-
         composable(
-            route = "${OtherSpaceDestinations.OTHER_SPACE}/{$KEY_ID}",
+            route = "${OtherSpaceDestinations.OTHER_SPACE}/list/{$KEY_ID}",
             arguments = listOf(
                 navArgument(KEY_ID) {
                     type = NavType.StringType
                 }
             )
         ) {
-            OtherSpaceDetailScreen(
-                navController = navController
+            OtherSpaceListScreen(navController = navController)
+        }
+        composable(route = "${OtherSpaceDestinations.OTHER_SPACE}/detail/{$KEY_ID}",
+            arguments = listOf(
+                navArgument(KEY_ID) {
+                    type = NavType.StringType
+                }
             )
+        ) {
+            OtherSpaceDetailScreen(navController = navController)
         }
     }
 }
