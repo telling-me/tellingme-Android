@@ -61,11 +61,10 @@ fun OtherSpaceScreenContent(navController: NavController) {
                     title = it.title,
                     date = it.date,
                     commentCount = it.commentCount,
-                    onClickButton = { id ->
+                    onClickCard = { id ->
                         Log.d("로그", "CommunityCard id: $id")
                         navController.navigate("${OtherSpaceDestinations.OTHER_SPACE}/list/${id}")
                     }
-
                 )
             }
         }
