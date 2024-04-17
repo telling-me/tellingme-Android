@@ -1,18 +1,21 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import com.tellingus.tellingme.data.model.oauth.login.JoinRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.presentation.ui.common.base.UiEffect
 import com.tellingus.tellingme.presentation.ui.common.base.UiEvent
 import com.tellingus.tellingme.presentation.ui.common.base.UiState
 
 class SignupContract {
     data class State(
+        val isLoading: Boolean = false,
         val joinRequestDto: JoinRequestDto = JoinRequestDto(),
         val nicknameErrorState: String? = null
     ): UiState
 
     sealed class Event: UiEvent {
-        object NextButtonClickedInNickname: Event()
+        data class NextButtonClickedInNickname(
+            val nickname: String
+        ): Event()
 
         data class NextButtonClickedInBirthGender(
             val birth: String,
@@ -23,7 +26,9 @@ class SignupContract {
             val job: Int
         ): Event()
 
-        object NextButtonClickedInWorry: Event()
+        data class NextButtonClickedInWorry(
+            val worry: List<Int>
+        ): Event()
 
     }
 

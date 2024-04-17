@@ -84,9 +84,7 @@ fun SignupJobContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var selectedJob by remember { mutableStateOf(-1) }
-
-    Log.d("taag job", uiState.joinRequestDto.toString())
+    var selectedJob by remember { mutableStateOf(uiState.joinRequestDto.job) }
 
     val jobList = listOf<Job>(
         Job(R.drawable.icon_bagpack, "중·고등학생"),
@@ -145,7 +143,9 @@ fun SignupJobContentScreen(
             enable = selectedJob != -1,
             onClick = {
                 viewModel.processEvent(
-                    SignupContract.Event.NextButtonClickedInJob(job = selectedJob)
+                    SignupContract.Event.NextButtonClickedInJob(
+                        job = selectedJob
+                    )
                 )
             }
         )

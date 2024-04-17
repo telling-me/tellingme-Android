@@ -118,8 +118,6 @@ fun SignupBirthGenderContentScreen(
     var gender by remember { mutableStateOf(uiState.joinRequestDto.gender) }
     var isFocused by remember { mutableStateOf(false) }
 
-    Log.d("taag birth", uiState.joinRequestDto.toString())
-
     Column(
         modifier = modifier
             .fillMaxSize()

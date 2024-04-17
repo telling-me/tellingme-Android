@@ -1,7 +1,10 @@
 package com.tellingus.tellingme.data.network
 
+import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenDto
+import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -19,5 +22,15 @@ interface NetworkService {
         @Body oauthRequestDto: OauthRequestDto
     ): ApiResult<TokenDto>
 
+    // 닉네임 유효성 검사 API
+    @POST("/api/oauth/nickname")
+    suspend fun verifyNickname(
+        @Body nicknameRequestDto: NicknameRequestDto
+    ): ApiResult<BasicResponse>
 
+    // 추가 정보 기입 API
+    @POST("/api/oauth/join")
+    suspend fun joinUser(
+        @Body joinRequestDto: JoinRequestDto
+    ): ApiResult<BasicResponse>
 }

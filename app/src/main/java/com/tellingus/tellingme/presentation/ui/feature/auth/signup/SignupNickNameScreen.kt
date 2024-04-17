@@ -29,12 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -60,7 +57,6 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
-import kotlinx.coroutines.delay
 
 @Composable
 fun SignupNicknameScreen(
@@ -111,10 +107,9 @@ fun SignupNicknameContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var nickname by remember { mutableStateOf(uiState.joinRequestDto.nickname) }
     var isFocused by remember { mutableStateOf(false) }
     var showTermsBottomSheet by remember { mutableStateOf(false) }
-
-    Log.d("taag nick", uiState.joinRequestDto.toString())
 
     Column(
         modifier = modifier
@@ -145,12 +140,10 @@ fun SignupNicknameContentScreen(
                     .onFocusChanged {
                         isFocused = it.isFocused
                     },
-                value = uiState.joinRequestDto.nickname,
+                value = nickname,
                 onValueChange = {
                     if (it.length <=8) {
-                        viewModel.updateNickname(it)
-                        // 닉네임 관련 API 쏘기
-
+                        nickname = it
                     }
                 },
                 textStyle = TellingmeTheme.typography.body1Regular.copy(
@@ -168,12 +161,12 @@ fun SignupNicknameContentScreen(
                             ) {
                                 innerTextField()
                                 Text(
-                                    text = if (uiState.joinRequestDto.nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
+                                    text = if (nickname.isBlank()) "2-8자 이내 (영문, 숫자, 특수문자 제외)" else " ",
                                     style = TellingmeTheme.typography.body1Regular.copy(
                                         color = Gray300
                                     )
                                 )
-                                if (uiState.joinRequestDto.nickname.isNotBlank()) {
+                                if (nickname.isNotBlank()) {
                                     Icon(
                                         modifier = modifier
                                             .align(Alignment.CenterEnd)
@@ -219,13 +212,8 @@ fun SignupNicknameContentScreen(
             )
         }
 
-        LaunchedEffect(key1 = uiState.joinRequestDto.nickname) {
-            if (uiState.joinRequestDto.nickname.isNotBlank()) {
-
-                delay(1000)
-
-                Log.d("taag", uiState.joinRequestDto.nickname)
-            }
+        LaunchedEffect(key1 = nickname) {
+            viewModel.verifyNickname(nickname)
         }
 
         if (showTermsBottomSheet) {
@@ -240,7 +228,11 @@ fun SignupNicknameContentScreen(
                 SignupTermsBottomSheet(
                     onClickNext = {
                         showTermsBottomSheet = false
-                        viewModel.processEvent(SignupContract.Event.NextButtonClickedInNickname)
+                        viewModel.processEvent(
+                            SignupContract.Event.NextButtonClickedInNickname(
+                                nickname = nickname
+                            )
+                        )
                     }
                 )
             }
@@ -251,7 +243,7 @@ fun SignupNicknameContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-            enable = uiState.joinRequestDto.nickname.length>5,
+            enable = (uiState.nicknameErrorState == null),
             onClick = {
                 showTermsBottomSheet = true
             }
