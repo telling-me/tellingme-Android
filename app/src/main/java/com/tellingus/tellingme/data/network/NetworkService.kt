@@ -1,7 +1,7 @@
 package com.tellingus.tellingme.data.network
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
-import com.tellingus.tellingme.data.model.notice.NoticeDto
+import com.tellingus.tellingme.data.model.notice.NoticeResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
@@ -40,5 +40,5 @@ interface NetworkService {
     ): ApiResult<BasicResponse>
 
     @GET("${END_POINT}/notice")
-    suspend fun getNotice(): ApiResult<List<NoticeDto>>
+    suspend fun loadNotice(): ApiResult<List<NoticeResponse>>
 }
