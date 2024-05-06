@@ -243,7 +243,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                         modifier = modifier.fillMaxWidth(),
                         value = recordText,
                         onValueChange = {
-                            if (it.length <= 300) {
+                            if (it.length <= 500) {
                                 recordText = it
                             }
                         },
@@ -294,7 +294,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = modifier.weight(1f))
             Text(
-                text = "${recordText.length} / 300",
+                text = "${recordText.length} / 500",
                 style = TellingmeTheme.typography.caption1Bold,
                 color = Gray600
             )
