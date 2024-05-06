@@ -8,6 +8,7 @@ import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
 import com.tellingus.tellingme.domain.repository.AuthRepository
+import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.JoinUserUseCase
 import com.tellingus.tellingme.domain.usecase.VerifyNicknameUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val verifyNicknameUseCase: VerifyNicknameUseCase,
-    private val joinUserUseCase: JoinUserUseCase
+    private val joinUserUseCase: JoinUserUseCase,
 ): BaseViewModel<SignupContract.State, SignupContract.Event, SignupContract.Effect>(
     initialState = SignupContract.State()
 ) {
@@ -55,14 +56,15 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    fun joinUser(joinRequestDto: JoinRequestDto) {
+    private fun joinUser(joinRequestDto: JoinRequestDto) {
         viewModelScope.launch {
             joinUserUseCase(
                 joinRequestDto = joinRequestDto
             ).onSuccess {
-                Log.d("taag", it.toString())
+                Log.d("taag joinUser", it.toString())
+                postEffect(SignupContract.Effect.MoveToHome)
             }.onFailure { message, code ->
-                Log.d("taag", message)
+                Log.d("taag joinUser", message)
             }
         }
     }
@@ -78,6 +80,18 @@ class SignupViewModel @Inject constructor(
             updateState(currentState.copy(nicknameErrorState = "닉네임은 한글만 가능합니다. 영문과 숫자, 특수기호는 들어갈 수 없습니다."))
         } else {
             updateState(currentState.copy(nicknameErrorState = null))
+        }
+    }
+
+    fun updateJobInfo(jobInfo: String) {
+        viewModelScope.launch {
+            updateState(
+                currentState.copy(
+                    joinRequestDto = currentState.joinRequestDto.copy(
+                        jobInfo = jobInfo
+                    )
+                )
+            )
         }
     }
 
@@ -107,10 +121,10 @@ class SignupViewModel @Inject constructor(
                 currentState.copy(
                     joinRequestDto = currentState.joinRequestDto.copy(
                         nickname = nickname
-                    ))
+                    )
+                )
             )
         }
-
     }
 
     private fun updateBirthGender(birth: String, gender: String) {
@@ -147,8 +161,6 @@ class SignupViewModel @Inject constructor(
                     )
                 )
             )
-
-            Log.d("taag", currentState.joinRequestDto.toString())
         }
     }
 }

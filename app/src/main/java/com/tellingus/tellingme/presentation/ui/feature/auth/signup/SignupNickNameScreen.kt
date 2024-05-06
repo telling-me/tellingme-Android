@@ -39,6 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
+import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
@@ -124,7 +125,7 @@ fun SignupNicknameContentScreen(
             Text(
                 text = "닉네임을 입력해주세요",
                 style = TellingmeTheme.typography.head2Bold,
-                color = Gray600,
+                color = Gray600
             )
             Spacer(modifier = Modifier.size(4.dp))
             Text(
@@ -220,9 +221,9 @@ fun SignupNicknameContentScreen(
             BottomSheetDialog(
                 onDismissRequest = { showTermsBottomSheet = false },
                 properties = BottomSheetDialogProperties(
-                    behaviorProperties = BottomSheetBehaviorProperties(
-                        isDraggable = true
-                    )
+                    navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),  /** 하단 시스템 내비게이션과 중첩되는 이슈 해결 **/
+                    dismissOnClickOutside = false,
+                    behaviorProperties = BottomSheetBehaviorProperties(isDraggable = true)
                 )
             ) {
                 SignupTermsBottomSheet(
