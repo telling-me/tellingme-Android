@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
@@ -57,11 +58,12 @@ import kotlin.math.roundToInt
 
 @Composable
 fun AlarmScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: AlarmViewModel = hiltViewModel(),
 ) {
     MainLayout(
         header = { AlarmScreenHeader { navController.popBackStack() } },
-        content = { AlarmScreenContent() },
+        content = { AlarmScreenContent(viewModel = viewModel) },
         isScrollable = false,
         background = Color.White
     )
@@ -83,10 +85,13 @@ fun AlarmScreenHeader(navigateToPreviousScreen: () -> Unit) {
 }
 
 @Composable
-fun AlarmScreenContent() {
+fun AlarmScreenContent(
+    viewModel: AlarmViewModel = hiltViewModel(),
+) {
+
+
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
@@ -96,7 +101,9 @@ fun AlarmScreenContent() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "알림")
-            ActionChip(onClick = { /*TODO*/ }, text = "전체 읽음", hasArrow = false)
+            ActionChip(onClick = {
+                viewModel.processEvent(AlarmContract.Event.OnClickTotalRead)
+            }, text = "전체 읽음", hasArrow = false)
         }
         LazyColumn() {
             items(items = dummyList) {
@@ -117,11 +124,7 @@ fun AlarmScreenContent() {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun AlarmCard(
-    alarmType: String,
-    title: String,
-    content: String = "",
-    date: String,
-    isRead: Boolean = false
+    alarmType: String, title: String, content: String = "", date: String, isRead: Boolean = false
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -146,14 +149,12 @@ fun AlarmCard(
             )
     ) {
         Box(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
+            modifier = Modifier.align(Alignment.CenterEnd)
         ) {
-            TextButton(
-                modifier = Modifier
-                    .width(80.dp)
-                    .fillMaxHeight()
-                    .background(Error600),
+            TextButton(modifier = Modifier
+                .width(80.dp)
+                .fillMaxHeight()
+                .background(Error600),
                 onClick = {
                     coroutineScope.launch {
                         swipeableState.animateTo(0, tween(600, 0))
@@ -164,17 +165,15 @@ fun AlarmCard(
         }
 
 
-        Box(
-            modifier = Modifier
-                .offset {
-                    IntOffset(
-                        swipeableState.offset.value.roundToInt(),
-                        0
-                    )
-                }
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(Color.White)
+        Box(modifier = Modifier
+            .offset {
+                IntOffset(
+                    swipeableState.offset.value.roundToInt(), 0
+                )
+            }
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(Color.White)
 
         ) {
             Column(
@@ -185,8 +184,7 @@ fun AlarmCard(
                     .clickable(
                         interactionSource = interactionSource,
                         indication = null,
-                        onClick = {}
-                    )
+                        onClick = {})
             ) {
                 Text(
                     text = getAlarmCardTypeText(alarmType),
@@ -221,9 +219,7 @@ fun AlarmCard(
 
 fun getAlarmCardTypeText(alarmType: String): String {
     val value = mapOf(
-        "alarm" to "알림",
-        "event" to "이벤트",
-        "notice" to "공지"
+        "alarm" to "알림", "event" to "이벤트", "notice" to "공지"
     )
     return value[alarmType] ?: alarmType
 }
@@ -275,8 +271,7 @@ val dummyList = listOf(
         "2023.08.15"
     ),
     AlarmItem(
-        id = 7,
-        "alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.20"
+        id = 7, "alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.20"
     ),
     AlarmItem(
         id = 8,
@@ -286,8 +281,7 @@ val dummyList = listOf(
         "2023.09.15"
     ),
     AlarmItem(
-        id = 9,
-        "alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.13"
+        id = 9, "alarm", title = "지난 달 서재가 완성되었어요!", date = "2023.09.13"
     ),
     AlarmItem(
         id = 10,
