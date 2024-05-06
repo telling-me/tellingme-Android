@@ -37,5 +37,6 @@ class SignupContract {
         object MoveToBirthGender : Effect()
         object MoveToJob : Effect()
         object MoveToWorry : Effect()
+        object MoveToHome : Effect()
     }
 }

@@ -14,12 +14,14 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
@@ -31,6 +33,7 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSect
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
+import com.tellingus.tellingme.presentation.ui.feature.auth.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Gray100
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
@@ -40,6 +43,7 @@ import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 @Composable
 fun HomeScreen(
     navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     MainLayout(
         header = {
@@ -51,6 +55,10 @@ fun HomeScreen(
             )
         }
     )
+
+    LaunchedEffect(key1 = false) {
+        viewModel.getNotice()
+    }
 }
 
 @Composable
