@@ -50,6 +50,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
+import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
+import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
+import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
@@ -239,7 +243,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                         modifier = modifier.fillMaxWidth(),
                         value = recordText,
                         onValueChange = {
-                            if (it.length <= 300) {
+                            if (it.length <= 500) {
                                 recordText = it
                             }
                         },
@@ -290,7 +294,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = modifier.weight(1f))
             Text(
-                text = "${recordText.length} / 300",
+                text = "${recordText.length} / 500",
                 style = TellingmeTheme.typography.caption1Bold,
                 color = Gray600
             )
@@ -310,7 +314,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
 @Composable
 fun EmotionBottomSheet(
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit = {},
+    onDismiss: () -> Unit,
     onClickCancel: () -> Unit,
     onClickConfirm: () -> Unit,
 ) {
@@ -328,21 +332,22 @@ fun EmotionBottomSheet(
         Emotion(R.drawable.emotion_lonely_large, "외로워요"),
         Emotion(R.drawable.emotion_complicated_large, "복잡해요"),
     )
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
     var selectedEmotion by remember { mutableStateOf(-1) }
-    val scope = rememberCoroutineScope()
 
-    ModalBottomSheet(
+    BottomSheetDialog(
         onDismissRequest = onDismiss,
-        sheetState = sheetState,
-        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        containerColor = Background100,
-        dragHandle = null
+        properties = BottomSheetDialogProperties(
+            navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),  /** 하단 시스템 내비게이션과 중첩되는 이슈 해결 **/
+            dismissOnClickOutside = false,
+            behaviorProperties = BottomSheetBehaviorProperties(isDraggable = false)
+        )
     ) {
         Column(
             modifier = modifier
+                .background(
+                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+                    color = Background100
+                )
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
         ) {
             Text(

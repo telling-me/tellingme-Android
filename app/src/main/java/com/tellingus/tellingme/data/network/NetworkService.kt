@@ -2,6 +2,8 @@ package com.tellingus.tellingme.data.network
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.notice.NoticeResponse
+import com.tellingus.tellingme.data.model.home.NoticeResponse
+import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
@@ -41,4 +43,15 @@ interface NetworkService {
 
     @GET("${END_POINT}/notice")
     suspend fun loadNotice(): ApiResult<List<NoticeResponse>>
+  
+    // 알림 조회 API
+    @GET("/api/notice")
+    suspend fun getNotice(): ApiResult<NoticeResponse>
+
+    // 토큰 갱신 API
+    @POST("/api/token")
+    suspend fun refreshAccessToken(
+        @Header("accessToken") accessToken: String,
+        @Header("refreshToken") refreshToken: String
+    ): ApiResult<JwtTokenBody>
 }

@@ -32,11 +32,14 @@ import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryBu
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
+import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
+import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.util.collectWithLifecycle
 
 @Composable
 fun SignupWorryScreen(
@@ -71,6 +74,19 @@ fun SignupWorryScreen(
         isScrollable = false,
         background = Base0
     )
+
+    viewModel.effect.collectWithLifecycle { effect ->
+        when(effect) {
+            is SignupContract.Effect.MoveToHome -> {
+                navController.navigate(HomeDestinations.HOME) {
+                    popUpTo(AuthDestinations.ROUTE) {
+                        inclusive = true
+                    }
+                }
+            }
+            else -> {}
+        }
+    }
 }
 
 @Composable
