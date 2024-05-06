@@ -1,6 +1,7 @@
 package com.tellingus.tellingme.data.network
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
+import com.tellingus.tellingme.data.model.notice.NoticeResponse
 import com.tellingus.tellingme.data.model.home.NoticeResponse
 import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
@@ -14,10 +15,13 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
+
+const val END_POINT: String = "/api"
+
 interface NetworkService {
 
     // 소셜로그인 API
-    @POST("/api/oauth/{loginType}/{isAuto}")
+    @POST("${END_POINT}/oauth/{loginType}/{isAuto}")
     suspend fun loginFromKakao(
         @Header("oauthToken") oauthToken: String,
         @Path("loginType") loginType: String,
@@ -26,17 +30,20 @@ interface NetworkService {
     ): ApiResult<TokenDto>
 
     // 닉네임 유효성 검사 API
-    @POST("/api/oauth/nickname")
+    @POST("${END_POINT}/oauth/nickname")
     suspend fun verifyNickname(
         @Body nicknameRequestDto: NicknameRequestDto
     ): ApiResult<BasicResponse>
 
     // 추가 정보 기입 API
-    @POST("/api/oauth/join")
+    @POST("${END_POINT}/oauth/join")
     suspend fun joinUser(
         @Body joinRequestDto: JoinRequestDto
     ): ApiResult<BasicResponse>
 
+    @GET("${END_POINT}/notice")
+    suspend fun loadNotice(): ApiResult<List<NoticeResponse>>
+  
     // 알림 조회 API
     @GET("/api/notice")
     suspend fun getNotice(): ApiResult<NoticeResponse>

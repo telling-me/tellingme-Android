@@ -2,6 +2,7 @@ package com.tellingus.tellingme.presentation.ui.feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,12 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
@@ -33,9 +34,9 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSect
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWidget
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
+import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.feature.auth.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Background100
-import com.tellingus.tellingme.presentation.ui.theme.Gray100
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
@@ -47,7 +48,7 @@ fun HomeScreen(
 ) {
     MainLayout(
         header = {
-            HomeScreenHeader()
+            HomeScreenHeader(navController)
         },
         content = {
             HomeScreenContent(
@@ -62,7 +63,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeScreenHeader() {
+fun HomeScreenHeader(navController: NavController) {
     BasicAppBar(
         modifier = Modifier
             .background(Background100)
@@ -80,7 +81,9 @@ fun HomeScreenHeader() {
             Icon(
                 painter = painterResource(R.drawable.icon_notice),
                 contentDescription = "icon_notice",
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable(onClick = { navController.navigate(MyPageDestinations.ALARM) }),
                 tint = Gray200
             )
         }
@@ -171,12 +174,12 @@ fun HomeScreenContent(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenHeaderPreview() {
-    HomeScreenHeader()
+    HomeScreenHeader(navController = rememberNavController())
 }
 
 @Preview
 @Composable
 fun HomeScreenPreview() {
-//    HomeScreen(navigateToRecordScreen = { /*TODO*/ }, navigateToOtherSpace = {})
+    HomeScreen(navController = rememberNavController())
 }
 

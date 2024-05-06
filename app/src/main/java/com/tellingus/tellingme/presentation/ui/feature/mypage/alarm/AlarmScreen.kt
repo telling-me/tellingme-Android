@@ -69,7 +69,6 @@ fun AlarmScreen(
 
 @Composable
 fun AlarmScreenHeader(navigateToPreviousScreen: () -> Unit) {
-
     BasicAppBar(
         modifier = Modifier
             .fillMaxWidth()
