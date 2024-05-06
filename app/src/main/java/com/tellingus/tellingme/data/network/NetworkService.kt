@@ -1,12 +1,15 @@
 package com.tellingus.tellingme.data.network
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
+import com.tellingus.tellingme.data.model.home.NoticeResponse
+import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -33,4 +36,15 @@ interface NetworkService {
     suspend fun joinUser(
         @Body joinRequestDto: JoinRequestDto
     ): ApiResult<BasicResponse>
+
+    // 알림 조회 API
+    @GET("/api/notice")
+    suspend fun getNotice(): ApiResult<NoticeResponse>
+
+    // 토큰 갱신 API
+    @POST("/api/token")
+    suspend fun refreshAccessToken(
+        @Header("accessToken") accessToken: String,
+        @Header("refreshToken") refreshToken: String
+    ): ApiResult<JwtTokenBody>
 }
