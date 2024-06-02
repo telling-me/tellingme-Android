@@ -45,13 +45,15 @@ interface NetworkService {
     suspend fun loadNotice(): ApiResult<List<LoadNoticeResponse>>
 
     // 알림 조회 API
-    @GET("/api/notice")
+    @GET("${END_POINT}/notice")
     suspend fun getNotice(): ApiResult<NoticeResponse>
 
     // 토큰 갱신 API
-    @POST("/api/token")
+    @POST("${END_POINT}/token")
     suspend fun refreshAccessToken(
         @Header("accessToken") accessToken: String,
         @Header("refreshToken") refreshToken: String
-    ): ApiResult<JwtTokenBody>
+    ): ApiResult<TokenDto>
+
+
 }

@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.BottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,6 +57,8 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
+import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.SingleButton
@@ -86,6 +89,7 @@ fun RecordScreen(
 ) {
     val context = LocalContext.current
     var showDialogState by remember { mutableStateOf(false) }
+    var showTodayQuestionChangeBottomSheet by remember { mutableStateOf(false) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     MainLayout(
@@ -105,11 +109,18 @@ fun RecordScreen(
                     )
                 },
                 rightSlot = {
-                    SingleButton(
-                        size = ButtonSize.LARGE,
-                        text = "완료",
-                        onClick = { showDialogState = !showDialogState }
-                    )
+                    Row {
+                        SingleButton(
+                            size = ButtonSize.LARGE,
+                            text = "질문바꾸기",
+                            onClick = { showTodayQuestionChangeBottomSheet = true }
+                        )
+                        SingleButton(
+                            size = ButtonSize.LARGE,
+                            text = "완료",
+                            onClick = { showDialogState = true }
+                        )
+                    }
                 }
             )
         },
@@ -145,13 +156,14 @@ fun RecordScreen(
         )
     }
 
-//    LaunchedEffect(Unit) {
-//        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-//            loginViewModel.testValue.collectLatest {
-//                Log.d("taag", it.toString())
-//            }
-//        }
-//    }
+    if (showTodayQuestionChangeBottomSheet) {
+        TodayQuestionChangeBottomSheet(
+            onDismiss = { showTodayQuestionChangeBottomSheet = false },
+            onClickCancel = { showTodayQuestionChangeBottomSheet = false },
+            onClickConfirm = { showTodayQuestionChangeBottomSheet = false }
+        )
+    }
+
 }
 
 @Composable
@@ -414,6 +426,125 @@ fun EmotionBottomSheet(
             }
         }
     }
+}
+
+@Composable
+fun TodayQuestionChangeBottomSheet(
+    onDismiss: () -> Unit,
+    onClickCancel: () -> Unit,
+    onClickConfirm: () -> Unit,
+    bottomSheetState: QuestionState = QuestionState.ORIGINAL,
+    modifier: Modifier = Modifier
+) {
+
+    BottomSheetDialog(
+        onDismissRequest = onDismiss,
+        properties = BottomSheetDialogProperties(
+            navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),  /** 하단 시스템 내비게이션과 중첩되는 이슈 해결 **/
+            dismissOnClickOutside = false,
+            behaviorProperties = BottomSheetBehaviorProperties(isDraggable = true)
+        )
+    ) {
+        Column(
+            modifier = modifier
+                .background(
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                    color = Base0
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(modifier = modifier.padding(vertical = 16.dp)) {
+                Box(
+                    modifier = modifier
+                        .background(
+                            color = Gray300,
+                            shape = RoundedCornerShape(100.dp)
+                        )
+                        .size(width = 32.dp, height = 4.dp)
+                )
+            }
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)
+            ) {
+                Text(
+                    text = "오늘의 질문을 바꿀 수 있어요!",
+                    style = TellingmeTheme.typography.head3Bold,
+                    color = Gray600
+                )
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(
+                    text = "단, 스페셜 질문은 모두의 공간에 공개할 수 없어요.",
+                    style = TellingmeTheme.typography.body2Regular,
+                    color = Gray600
+                )
+                Spacer(modifier = Modifier.size(12.dp))
+
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(
+                            shape = RoundedCornerShape(8.dp),
+                            color = Background100
+                        )
+                        .padding(vertical = 16.dp, horizontal = 12.dp)
+                ) {
+                    Box(
+                        modifier = modifier
+                            .background(
+                                shape = RoundedCornerShape(8.dp),
+                                color = Base0
+                            )
+                            .padding(vertical = 6.dp, horizontal = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "스페셜 질문",
+                            style = TellingmeTheme.typography.caption1Bold,
+                            color = Gray600
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(12.dp))
+
+                    Text(
+                        text = "텔링미를 사용하실 때\n어떤 기분과 생각을 하시나요?",
+                        style = TellingmeTheme.typography.body1Regular,
+                        color = Gray700
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Text(
+                        text = "하루 한번 질문에 답변하며 나를 깨닫는 시간",
+                        style = TellingmeTheme.typography.body2Regular,
+                        color = Gray500
+                    )
+                }
+                Spacer(modifier = modifier.size(16.dp))
+
+                Row {
+                    PrimaryLightButton(
+                        modifier = modifier.weight(1f),
+                        size = ButtonSize.LARGE,
+                        text = "취소",
+                        onClick = onClickCancel
+                    )
+                    Spacer(modifier = modifier.size(8.dp))
+                    PrimaryButton(
+                        modifier = modifier.weight(1f),
+                        size = ButtonSize.LARGE,
+                        text = "바꾸기",
+                        onClick = onClickConfirm
+                    )
+                }
+            }
+
+        }
+
+    }
+}
+
+enum class QuestionState {
+    ORIGINAL, NEW
 }
 
 data class Emotion(

@@ -1,5 +1,7 @@
 package com.tellingus.tellingme.domain.repository
 
+import com.tellingus.tellingme.data.model.oauth.login.TokenDto
+import com.tellingus.tellingme.data.network.adapter.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 
@@ -16,5 +18,4 @@ interface DataStoreRepository {
     suspend fun getRefreshToken(): Flow<String>
 
     suspend fun deleteTokens()
-
 }
