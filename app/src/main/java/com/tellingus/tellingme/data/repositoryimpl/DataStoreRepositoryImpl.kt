@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
+import com.tellingus.tellingme.data.model.oauth.login.TokenDto
 import com.tellingus.tellingme.data.network.NetworkService
+import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.di.AuthNetworkService
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +20,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DataStoreRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>,
+    private val dataStore: DataStore<Preferences>
 ): DataStoreRepository {
     override suspend fun setUserSocialId(socialId: String) {
         dataStore.edit {

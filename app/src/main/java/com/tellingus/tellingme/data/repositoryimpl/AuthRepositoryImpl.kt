@@ -32,4 +32,11 @@ class AuthRepositoryImpl @Inject constructor(
         return service.joinUser(joinRequestDto)
     }
 
+    override suspend fun refreshAccessToken(
+        accessToken: String,
+        refreshToken: String
+    ): ApiResult<TokenDto> {
+        return service.refreshAccessToken(accessToken, refreshToken)
+    }
+
 }

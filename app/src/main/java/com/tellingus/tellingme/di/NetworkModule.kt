@@ -4,6 +4,7 @@ import com.tellingus.tellingme.BuildConfig
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResultCallAdapterFactory
 import com.tellingus.tellingme.data.network.ssl.SelfSigningHelper
+import com.tellingus.tellingme.data.network.token.TokenAuthenticator
 import com.tellingus.tellingme.data.network.token.TokenInterceptor
 import dagger.Module
 import dagger.Provides
@@ -46,7 +47,7 @@ object NetworkModule {
     fun provideOkHttpClient(
         selfSigningHelper: SelfSigningHelper,
         tokenInterceptor: TokenInterceptor,
-//        tokenAuthenticator: TokenAuthenticator,
+        tokenAuthenticator: TokenAuthenticator,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -56,7 +57,7 @@ object NetworkModule {
             )
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(tokenInterceptor)
-//            .authenticator(tokenAuthenticator)
+            .authenticator(tokenAuthenticator)
             .build()
     }
 

@@ -21,6 +21,10 @@ interface AuthRepository {
 
     suspend fun joinUser(
         joinRequestDto: JoinRequestDto
-    ): ApiResult<BasicResponse
-            >
+    ): ApiResult<BasicResponse>
+
+    suspend fun refreshAccessToken(
+        accessToken: String,
+        refreshToken: String
+    ): ApiResult<TokenDto>
 }
