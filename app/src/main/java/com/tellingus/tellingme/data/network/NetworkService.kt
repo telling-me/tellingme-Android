@@ -6,6 +6,7 @@ import com.tellingus.tellingme.data.model.notice.LoadNoticeResponse
 import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenDto
+import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
 import com.tellingus.tellingme.data.network.adapter.ApiResult
@@ -55,5 +56,11 @@ interface NetworkService {
         @Header("refreshToken") refreshToken: String
     ): ApiResult<TokenDto>
 
+    // 회원 탈퇴 API
+    @POST("${END_POINT}/oauth/withdraw/{deviceType}")
+    suspend fun signOutUser(
+        @Path("deviceType") deviceType: String = "app",
+        @Body withdrawDto: WithdrawDto
+    ): ApiResult<BasicResponse>
 
 }

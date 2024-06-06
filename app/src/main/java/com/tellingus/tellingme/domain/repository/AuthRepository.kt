@@ -27,4 +27,6 @@ interface AuthRepository {
         accessToken: String,
         refreshToken: String
     ): ApiResult<TokenDto>
+
+    suspend fun signOutUser(): ApiResult<BasicResponse>
 }
