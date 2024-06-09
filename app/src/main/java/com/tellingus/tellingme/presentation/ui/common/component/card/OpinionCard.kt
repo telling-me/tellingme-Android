@@ -123,7 +123,7 @@ fun FullCard(
                 Image(
                     painter = painterResource(R.drawable.emotion_happy_medium),
                     contentDescription = "",
-                    modifier = Modifier.size(44.dp),
+                    modifier = Modifier.size(52.dp),
                 )
                 EmotionChip(modifier = Modifier.padding(top = 9.5.dp), feeling = feeling)
 
