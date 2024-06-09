@@ -75,9 +75,9 @@ fun DefaultCard(
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(R.drawable.emoji_success),
+                    painter = painterResource(R.drawable.emotion_happy_medium),
                     contentDescription = "",
-                    modifier = Modifier.size(44.dp),
+                    modifier = Modifier.size(52.dp),
                 )
             }
             Column() {
@@ -121,7 +121,7 @@ fun FullCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(R.drawable.emoji_success),
+                    painter = painterResource(R.drawable.emotion_happy_medium),
                     contentDescription = "",
                     modifier = Modifier.size(44.dp),
                 )
