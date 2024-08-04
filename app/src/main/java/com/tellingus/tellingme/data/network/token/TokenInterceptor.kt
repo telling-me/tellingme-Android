@@ -25,7 +25,7 @@ class TokenInterceptor @Inject constructor(
         }
 
         val request = chain.request().newBuilder().apply {
-            header("Authorization", "Bearer $accessToken")
+            header("Authorization", accessToken)
         }
         return chain.proceed(request.build())
     }

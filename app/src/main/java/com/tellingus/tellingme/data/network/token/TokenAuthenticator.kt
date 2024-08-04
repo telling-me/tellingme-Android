@@ -22,15 +22,20 @@ class TokenAuthenticator @Inject constructor(
     @AuthNetworkService private val networkService: NetworkService
 ): Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
+        Log.d("taag", "authti")
         val accessToken = runBlocking { dataStoreRepository.getAccessToken().firstOrNull() }
         val refreshToken = runBlocking { dataStoreRepository.getRefreshToken().firstOrNull() }
 
+        Log.d("taag", response.code.toString())
         if (accessToken == null || refreshToken == null) {
             return null
         }
 
         return runBlocking {
-            val apiResult = networkService.refreshAccessToken(accessToken = accessToken, refreshToken = refreshToken)
+            val apiResult = networkService.refreshAccessToken(
+                accessToken = accessToken,
+                refreshToken = refreshToken
+            )
 
             apiResult.onSuccess {
                 dataStoreRepository.setJwtTokens(accessToken = it.accessToken, refreshToken = it.refreshToken)
@@ -40,9 +45,10 @@ class TokenAuthenticator @Inject constructor(
                 return@runBlocking null
             }
             val newAccessToken = dataStoreRepository.getAccessToken().firstOrNull()
+            Log.d("taag", newAccessToken.toString())
 
             response.request.newBuilder()
-                .header("Authorization", "Bearer $newAccessToken")
+                .header("Authorization", "$newAccessToken")
                 .build()
         }
     }

@@ -191,7 +191,6 @@ fun SignupNicknameContentScreen(
                                 .fillMaxWidth()
                                 .background(if (isFocused) Primary400 else Gray200)
                                 .height(1.dp)
-
                         )
                         Spacer(modifier = modifier.size(8.dp))
                         uiState.nicknameErrorState?.let {
