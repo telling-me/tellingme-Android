@@ -3,6 +3,7 @@ package com.tellingus.tellingme.presentation.ui.feature.mypage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +37,9 @@ import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayou
 import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.theme.Background100
+import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
+import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
@@ -40,13 +47,10 @@ import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 fun MyPageScreen(
     navController: NavController, viewModel: MyPageViewModel = hiltViewModel()
 ) {
-    MainLayout(
-        header = {
-            MyPageScreenHeader(navController)
-        },
-        content = {
-            MyPageScreenContent(navController)
-            /*
+    MainLayout(header = {
+        MyPageScreenHeader(navController)
+    }, content = {
+        MyPageScreenContent(navController)/*
             Button(
                 onClick = {
                     viewModel.signOutUser()
@@ -55,7 +59,7 @@ fun MyPageScreen(
                 Text(text = "유저 탈퇴하기")
             }
              */
-        })
+    })
 }
 
 @Composable
@@ -107,19 +111,147 @@ fun MyPageScreenContent(navController: NavController) {
             LevelSection(level = 1, percent = 50)
         }
 
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp, start = 20.dp, end = 20.dp)
+                .height(100.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(Base0),
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 20.dp, end = 20.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround // Spacing between columns
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.icon_cheese), contentDescription = ""
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 10.dp),
+                        text = "치즈",
+                        color = Gray600,
+                        style = TellingmeTheme.typography.caption2Regular
+                    )
+                    Text(
+                        text = "378", color = Gray600, style = TellingmeTheme.typography.body2Bold
+                    )
+                }
+
+                Divider(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(54.dp)
+                        .background(Gray200)
+                )
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.icon_decoration),
+                        contentDescription = ""
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 10.dp),
+                        text = "배지",
+                        color = Gray600,
+                        style = TellingmeTheme.typography.caption2Regular
+                    )
+                    Text(
+                        text = "24", color = Gray600, style = TellingmeTheme.typography.body2Bold
+                    )
+                }
+
+                Divider(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(54.dp)
+                        .background(Gray200)
+                )
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.icon_cheese), contentDescription = ""
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 10.dp),
+                        text = "작성글수",
+                        color = Gray600,
+                        style = TellingmeTheme.typography.caption2Regular
+                    )
+                    Text(
+                        text = "346", color = Gray600, style = TellingmeTheme.typography.body2Bold
+                    )
+                }
+            }
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp, start = 20.dp, end = 20.dp)
+                .height(78.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(Color(0xFF93A0FF)),
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 20.dp, start = 16.dp, end = 13.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row {
+                    Image(
+                        painter = painterResource(R.drawable.tellingme_plus_circle),
+                        contentDescription = "",
+                        modifier = Modifier.size(42.dp)
+                    )
+                    Column(modifier = Modifier.padding(start = 12.dp)) {
+                        Text(
+                            text = "텔링미 구독 서비스",
+                            color = Base0,
+                            style = TellingmeTheme.typography.caption2Regular
+                        )
+                        Text(
+                            text = "PLUS 라운지 입장하기",
+                            color = Base0,
+                            style = TellingmeTheme.typography.body2Bold
+                        )
+                    }
+                }
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_caret_right),
+                    contentDescription = "",
+                    tint = Base0
+                )
+            }
+        }
+
         Column {
             Image(painter = painterResource(R.drawable.icon_bell), contentDescription = "")
             Image(painter = painterResource(R.drawable.icon_call), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_cheese), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_decoration), contentDescription = "")
+
+
             Image(painter = painterResource(R.drawable.icon_disk), contentDescription = "")
             Image(painter = painterResource(R.drawable.icon_report), contentDescription = "")
             Image(painter = painterResource(R.drawable.icon_subtract), contentDescription = "")
+            Image(painter = painterResource(R.drawable.icon_heart), contentDescription = "")
+            Icon(
+                painter = painterResource(id = R.drawable.icon_caret_right),
+                contentDescription = "",
+                modifier = Modifier.size(20.dp)
+            )
         }
-
     }
-
-
 }
 
 @Preview
