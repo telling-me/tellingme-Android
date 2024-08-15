@@ -27,8 +27,9 @@ import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 @Composable
 fun ActionChip(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
     text: String,
+    onClick: () -> Unit,
+    outline: Boolean = true,
     enable: Boolean = true,
     hasArrow: Boolean = true,
 ) {
