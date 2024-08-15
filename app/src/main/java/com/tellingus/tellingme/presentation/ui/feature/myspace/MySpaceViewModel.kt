@@ -18,7 +18,20 @@ class MySpaceViewModel @Inject constructor(
     }
 
     override fun reduceState(event: MySpaceContract.Event) {
+        when(event) {
+            is MySpaceContract.Event.OnClickTodayButton -> {
+                postEffect(MySpaceContract.Effect.ScrollToToday)
+            }
 
+            is MySpaceContract.Event.UpdateCurrentDate -> {
+                updateState(
+                    currentState.copy(
+                        currentDate = currentState.currentDate.plusMonths(event.swipe)
+                    )
+                )
+            }
+
+        }
     }
 
 

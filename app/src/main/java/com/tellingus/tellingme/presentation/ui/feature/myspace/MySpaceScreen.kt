@@ -2,6 +2,7 @@ package com.tellingus.tellingme.presentation.ui.feature.myspace
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -58,7 +59,10 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.util.collectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
+import java.util.Calendar
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("NewApi")
@@ -74,13 +78,12 @@ fun MySpaceScreen(
     val initialPage = (uiState.today.year - CALENDAR_RANGE.startYear) * 12 + uiState.today.monthValue - 1
     val pageCount = (CALENDAR_RANGE.lastYear - CALENDAR_RANGE.startYear) * 12
     val calendarPagerState = rememberPagerState(pageCount = {pageCount}, initialPage = initialPage)
-    var currentDate by remember { mutableStateOf(uiState.today) }
     var currentPage by remember { mutableIntStateOf(initialPage) }
 
     LaunchedEffect(key1 = calendarPagerState.currentPage) {
         val swipe = (calendarPagerState.currentPage - currentPage).toLong()
-        currentDate = currentDate.plusMonths(swipe)
         currentPage = calendarPagerState.currentPage
+        viewModel.processEvent(MySpaceContract.Event.UpdateCurrentDate(swipe))
     }
 
     Box(
@@ -97,7 +100,7 @@ fun MySpaceScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${currentDate.year}년",
+                        text = "${uiState.currentDate.year}년",
                         style = TellingmeTheme.typography.head3Bold.copy(
                             color = Gray500,
                             fontSize = 18.sp
@@ -122,6 +125,10 @@ fun MySpaceScreen(
                         .padding(horizontal = 16.dp, vertical = 7.5.dp)
                 ) {
                     Text(
+                        modifier = modifier
+                            .clickable {
+                                viewModel.processEvent(MySpaceContract.Event.OnClickTodayButton)
+                            },
                         text = "오늘",
                         style = TellingmeTheme.typography.body2Bold.copy(
                             color = Gray600,
@@ -137,7 +144,7 @@ fun MySpaceScreen(
                 contentAlignment = Alignment.CenterStart
             ) {
                 Text(
-                    text = "${currentDate.monthValue}월",
+                    text = "${uiState.currentDate.monthValue}월",
                     style = TellingmeTheme.typography.head2Bold.copy(
                         color = Gray600,
                         fontSize = 20.sp
@@ -253,8 +260,17 @@ fun MySpaceScreen(
         }
     }
 
+    viewModel.effect.collectWithLifecycle { effect ->
+        when(effect) {
+            is MySpaceContract.Effect.ScrollToToday -> {
+                calendarPagerState.animateScrollToPage(
+                    page = (uiState.today.year - CALENDAR_RANGE.startYear) * 12 + uiState.today.monthValue - 1,
+                    animationSpec = spring(stiffness = 1000f)
+                )
+            }
+        }
+    }
 }
-
 
 object CALENDAR_RANGE {
     const val startYear = 2000

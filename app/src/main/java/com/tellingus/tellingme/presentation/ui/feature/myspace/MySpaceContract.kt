@@ -10,20 +10,18 @@ class MySpaceContract {
     data class State(
         val isLoading: Boolean = false,
         val today: LocalDate = LocalDate.now(),
-
-        ): UiState
+        val currentDate: LocalDate = LocalDate.now(),
+    ): UiState
 
     sealed class Event: UiEvent {
-        data class KakaoLoginButtonClicked(
-            val context: Context
+        object OnClickTodayButton: Event()
+        data class UpdateCurrentDate(
+            val swipe: Long
         ): Event()
 
     }
 
     sealed class Effect: UiEffect {
-        data class MoveToSignup(
-            val socialId: String
-        ): Effect()
-        object MoveToHome : Effect()
+        object ScrollToToday: Effect()
     }
 }
