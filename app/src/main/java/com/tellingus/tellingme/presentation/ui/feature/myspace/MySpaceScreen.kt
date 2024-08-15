@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -45,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
@@ -67,12 +69,12 @@ fun MySpaceScreen(
     viewModel: MySpaceViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val today = LocalDate.now()
-    val initialPage = (today.year - CALENDAR_RANGE.startYear) * 12 + today.monthValue - 1
+    val initialPage = (uiState.today.year - CALENDAR_RANGE.startYear) * 12 + uiState.today.monthValue - 1
     val pageCount = (CALENDAR_RANGE.lastYear - CALENDAR_RANGE.startYear) * 12
     val calendarPagerState = rememberPagerState(pageCount = {pageCount}, initialPage = initialPage)
-    var currentDate by remember { mutableStateOf(today) }
+    var currentDate by remember { mutableStateOf(uiState.today) }
     var currentPage by remember { mutableIntStateOf(initialPage) }
 
     LaunchedEffect(key1 = calendarPagerState.currentPage) {
@@ -95,7 +97,7 @@ fun MySpaceScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "2024년",
+                        text = "${currentDate.year}년",
                         style = TellingmeTheme.typography.head3Bold.copy(
                             color = Gray500,
                             fontSize = 18.sp
@@ -184,11 +186,12 @@ fun MySpaceScreen(
                         LazyVerticalGrid(
                             modifier = modifier.fillMaxWidth(),
                             columns = GridCells.Fixed(7),
-                            verticalArrangement = Arrangement.spacedBy(24.dp)
+//                            verticalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
                             var emptyCount = 0
                             // 1일이 시작하는 요일 전까지 공백 생성, 일요일부터 시작할 수 있도록 +1
                             for (i in 1 until firstDayOfWeek +1) {
+                                Log.d("taag", "1")
                                 item {
                                     Box(modifier = Modifier.fillMaxWidth())
                                 }
@@ -200,10 +203,11 @@ fun MySpaceScreen(
 
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
                                 ) {
-                                    if (date.monthValue == today.monthValue
-                                        && date.dayOfMonth == today.dayOfMonth) {
+                                    if (date.monthValue == uiState.today.monthValue
+                                        && date.dayOfMonth == uiState.today.dayOfMonth) {
                                         Box(
                                             modifier = modifier
                                                 .background(
@@ -214,16 +218,21 @@ fun MySpaceScreen(
                                                 .align(Alignment.TopCenter)
                                         )
                                     }
-                                    Text(
-                                        modifier = modifier
-                                            .align(Alignment.Center)
-                                            .padding(vertical = 13.dp),
-                                        text = date.dayOfMonth.toString(),
-                                        style = TellingmeTheme.typography.body1Bold.copy(
-                                            color = if ((index + emptyCount) % 7 == 0) Error400 else Gray500,
-                                            fontSize = 16.sp
+
+                                    Column {
+                                        Text(
+                                            modifier = modifier
+                                                .padding(vertical = 13.dp),
+                                            text = date.dayOfMonth.toString(),
+                                            style = TellingmeTheme.typography.body1Bold.copy(
+                                                color = if ((index + emptyCount) % 7 == 0) Error400 else Gray500,
+                                                fontSize = 16.sp
+                                            ),
+                                            textAlign = TextAlign.Center
                                         )
-                                    )
+
+                                        Spacer(modifier = Modifier.height(24.dp))
+                                    }
                                 }
                             }
                         }

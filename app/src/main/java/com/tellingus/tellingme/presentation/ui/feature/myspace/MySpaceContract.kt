@@ -4,13 +4,14 @@ import android.content.Context
 import com.tellingus.tellingme.presentation.ui.common.base.UiEffect
 import com.tellingus.tellingme.presentation.ui.common.base.UiEvent
 import com.tellingus.tellingme.presentation.ui.common.base.UiState
+import java.time.LocalDate
 
 class MySpaceContract {
     data class State(
         val isLoading: Boolean = false,
-        val today: String = "",
+        val today: LocalDate = LocalDate.now(),
 
-    ): UiState
+        ): UiState
 
     sealed class Event: UiEvent {
         data class KakaoLoginButtonClicked(
