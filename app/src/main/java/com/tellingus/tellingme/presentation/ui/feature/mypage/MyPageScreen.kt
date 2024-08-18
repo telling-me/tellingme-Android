@@ -1,5 +1,7 @@
 package com.tellingus.tellingme.presentation.ui.feature.mypage
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,9 +24,12 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +44,7 @@ import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinati
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
+import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
@@ -84,10 +90,48 @@ fun MyPageScreenHeader(navController: NavController) {
 
 @Composable
 fun MyPageScreenContent(navController: NavController) {
+    val items = remember {
+        mutableStateOf(
+            listOf(
+                IconTextItem(
+                    iconResId = R.drawable.icon_subtract,
+                    text = "이용 약관",
+                    actionType = ActionType.OPEN_URL,
+                    destination = "https://doana.notion.site/f42ec05972a545ce95231f8144705eae?pvs=4"
+                ),
+                IconTextItem(
+                    iconResId = R.drawable.icon_report,
+                    text = "개인정보 처리방침",
+                    actionType = ActionType.OPEN_URL,
+                    destination = "https://doana.notion.site/7cdab221ee6d436781f930442040d556?pvs=4"
+                ),
+                IconTextItem(
+                    iconResId = R.drawable.icon_call,
+                    text = "고객센터",
+                    actionType = ActionType.SEND_EMAIL,
+                    destination = "Email"
+                ),
+                IconTextItem(
+                    iconResId = R.drawable.icon_disk,
+                    text = "텔링미에 대해서",
+                    actionType = ActionType.NAVIGATE_SCREEN,
+                    destination = "TellingMeScreen"
+                ),
+                IconTextItem(
+                    iconResId = R.drawable.icon_heart,
+                    text = "텔링미 인스타그램",
+                    actionType = ActionType.OPEN_URL,
+                    destination = "https://www.instagram.com/tellingme.io/"
+                ),
+            )
+        )
+    }
+
+
     Column(
-        modifier = Modifier.padding()
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp)
     ) {
-        Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
+        Row {
             Image(
                 painter = painterResource(R.drawable.icon_connexion),
                 contentDescription = "",
@@ -107,21 +151,21 @@ fun MyPageScreenContent(navController: NavController) {
                 )
             }
         }
-        Box(modifier = Modifier.padding(top = 10.dp, start = 20.dp, end = 20.dp)) {
+        Box(modifier = Modifier.padding(top = 10.dp)) {
             LevelSection(level = 1, percent = 50)
         }
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp, start = 20.dp, end = 20.dp)
+                .padding(top = 12.dp)
                 .height(100.dp),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(Base0),
         ) {
             Row(
                 modifier = Modifier
-                    .padding(top = 16.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = 16.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround // Spacing between columns
@@ -197,7 +241,7 @@ fun MyPageScreenContent(navController: NavController) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp, start = 20.dp, end = 20.dp)
+                .padding(top = 40.dp)
                 .height(78.dp),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(Color(0xFF93A0FF)),
@@ -236,11 +280,139 @@ fun MyPageScreenContent(navController: NavController) {
             }
         }
 
+
+        Row(modifier = Modifier.padding(top = 12.dp)) {
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(74.dp)
+                    .background(Color.White, RoundedCornerShape(12.dp)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.icon_bell),
+                    contentDescription = "",
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+                Text(text = "듀이의 질문\n" + "제작소")
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_caret_right),
+                    contentDescription = "",
+                    tint = Gray500,
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(11.dp))
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(74.dp)
+                    .background(Color.White, RoundedCornerShape(12.dp)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.icon_bell),
+                    contentDescription = "",
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+                Text(text = "자주 묻는\n" + "질문")
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_caret_right),
+                    contentDescription = "",
+                    tint = Gray500,
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 40.dp)
+                .background(Color.White)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(53.dp)
+                        .padding(horizontal = 12.dp)
+                        .background(Color.White)
+                        .clickable { }
+                ) {
+
+                    Row {
+                        Image(
+                            painter = painterResource(R.drawable.icon_bell),
+                            contentDescription = ""
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "푸시 알림 받기")
+                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_caret_right),
+                        contentDescription = "",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+
+                val context = LocalContext.current
+
+                items.value.forEach { item ->
+                    Row(verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(53.dp)
+                            .padding(horizontal = 12.dp)
+                            .background(Color.White)
+                            .clickable {
+                                when (item.actionType) {
+                                    ActionType.OPEN_URL -> {
+                                        val intent =
+                                            Intent(Intent.ACTION_VIEW, Uri.parse(item.destination))
+                                        context.startActivity(intent)
+                                    }
+
+                                    ActionType.NAVIGATE_SCREEN -> {
+                                        // navController.navigate(item.destination)
+                                    }
+
+                                    ActionType.SEND_EMAIL -> {}
+                                }
+                            }) {
+                        Row {
+                            Image(
+                                painter = painterResource(id = item.iconResId),
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp)
+
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = item.text)
+                        }
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_caret_right),
+                            contentDescription = "",
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            }
+        }
+
         Column {
             Image(painter = painterResource(R.drawable.icon_bell), contentDescription = "")
             Image(painter = painterResource(R.drawable.icon_call), contentDescription = "")
-
-
             Image(painter = painterResource(R.drawable.icon_disk), contentDescription = "")
             Image(painter = painterResource(R.drawable.icon_report), contentDescription = "")
             Image(painter = painterResource(R.drawable.icon_subtract), contentDescription = "")
@@ -253,6 +425,14 @@ fun MyPageScreenContent(navController: NavController) {
         }
     }
 }
+
+enum class ActionType {
+    OPEN_URL, NAVIGATE_SCREEN, SEND_EMAIL
+}
+
+data class IconTextItem(
+    val iconResId: Int, val text: String, val actionType: ActionType, val destination: String
+)
 
 @Preview
 @Composable
