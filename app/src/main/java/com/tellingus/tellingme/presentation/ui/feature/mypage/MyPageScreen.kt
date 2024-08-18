@@ -22,10 +22,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -127,6 +130,7 @@ fun MyPageScreenContent(navController: NavController) {
         )
     }
 
+    var checked by remember { mutableStateOf(true) }
 
     Column(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp)
@@ -347,9 +351,7 @@ fun MyPageScreenContent(navController: NavController) {
                         .height(53.dp)
                         .padding(horizontal = 12.dp)
                         .background(Color.White)
-                        .clickable { }
                 ) {
-
                     Row {
                         Image(
                             painter = painterResource(R.drawable.icon_bell),
@@ -358,10 +360,12 @@ fun MyPageScreenContent(navController: NavController) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "푸시 알림 받기")
                     }
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_caret_right),
-                        contentDescription = "",
-                        modifier = Modifier.size(20.dp)
+
+                    Switch(
+                        checked = checked,
+                        onCheckedChange = {
+                            checked = it
+                        }
                     )
                 }
 
@@ -408,20 +412,6 @@ fun MyPageScreenContent(navController: NavController) {
                     }
                 }
             }
-        }
-
-        Column {
-            Image(painter = painterResource(R.drawable.icon_bell), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_call), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_disk), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_report), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_subtract), contentDescription = "")
-            Image(painter = painterResource(R.drawable.icon_heart), contentDescription = "")
-            Icon(
-                painter = painterResource(id = R.drawable.icon_caret_right),
-                contentDescription = "",
-                modifier = Modifier.size(20.dp)
-            )
         }
     }
 }
