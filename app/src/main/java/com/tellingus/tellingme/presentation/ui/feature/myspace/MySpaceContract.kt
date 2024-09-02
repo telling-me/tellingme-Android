@@ -10,7 +10,7 @@ class MySpaceContract {
     data class State(
         val isLoading: Boolean = false,
         val today: LocalDate = LocalDate.now(),
-        val currentDate: LocalDate = LocalDate.now(),
+        val currentDate: LocalDate = LocalDate.now()
     ): UiState
 
     sealed class Event: UiEvent {

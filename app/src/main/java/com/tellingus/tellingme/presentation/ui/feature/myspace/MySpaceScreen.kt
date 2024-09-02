@@ -50,11 +50,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
+import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
+import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
+import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
+import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
+import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.FloatingButton
+import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
+import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupContract
+import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupTermsBottomSheet
 import com.tellingus.tellingme.presentation.ui.theme.Background200
+import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Error400
+import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
@@ -80,6 +92,9 @@ fun MySpaceScreen(
     val calendarPagerState = rememberPagerState(pageCount = {pageCount}, initialPage = initialPage)
     var currentPage by remember { mutableIntStateOf(initialPage) }
 
+    var isShowDatePicker by remember { mutableStateOf(false) }
+
+
     LaunchedEffect(key1 = calendarPagerState.currentPage) {
         val swipe = (calendarPagerState.currentPage - currentPage).toLong()
         currentPage = calendarPagerState.currentPage
@@ -97,6 +112,14 @@ fun MySpaceScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
+                    modifier = modifier
+                        .clickable(
+                            onClick = {
+                                isShowDatePicker = !isShowDatePicker
+                            },
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
@@ -153,13 +176,12 @@ fun MySpaceScreen(
             }
             Spacer(modifier = Modifier.size(4.dp))
 
-            Column(
-                modifier = modifier
-                    .padding(horizontal = 12.5.dp)
-            ) {
-                VerticalPager(
-                    state = calendarPagerState
-                ) { page ->
+            HorizontalPager(
+                state = calendarPagerState
+            ) { page ->
+                Column(
+                    modifier = modifier.padding(horizontal = 12.5.dp)
+                ) {
                     Row(modifier) {
                         val dayOfWeek = listOf("일","월","화","수","목","금","토")
                         dayOfWeek.forEach { day ->
@@ -198,7 +220,6 @@ fun MySpaceScreen(
                             var emptyCount = 0
                             // 1일이 시작하는 요일 전까지 공백 생성, 일요일부터 시작할 수 있도록 +1
                             for (i in 1 until firstDayOfWeek +1) {
-                                Log.d("taag", "1")
                                 item {
                                     Box(modifier = Modifier.fillMaxWidth())
                                 }
@@ -226,7 +247,9 @@ fun MySpaceScreen(
                                         )
                                     }
 
-                                    Column {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
                                         Text(
                                             modifier = modifier
                                                 .padding(vertical = 13.dp),
@@ -237,6 +260,11 @@ fun MySpaceScreen(
                                             ),
                                             textAlign = TextAlign.Center
                                         )
+//                                        Image(
+//                                            modifier = modifier.size(50.dp),
+//                                            imageVector = ImageVector.vectorResource(R.drawable.emotion_angry_medium),
+//                                            contentDescription = null
+//                                        )
 
                                         Spacer(modifier = Modifier.height(24.dp))
                                     }
@@ -256,6 +284,51 @@ fun MySpaceScreen(
         ) {
             FloatingButton {
                 navController.navigate(HomeDestinations.RECORD)
+            }
+        }
+    }
+
+    if (isShowDatePicker) {
+        BottomSheetDialog(
+            onDismissRequest = { isShowDatePicker = false },
+            properties = BottomSheetDialogProperties(
+                navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),
+                dismissOnClickOutside = false,
+                behaviorProperties = BottomSheetBehaviorProperties(isDraggable = true)
+            )
+        ) {
+            Column(
+                modifier = modifier
+                    .background(
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                        color = Base0
+                    )
+                    .padding(bottom = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(modifier = modifier.padding(vertical = 16.dp)) {
+                    Box(
+                        modifier = modifier
+                            .background(
+                                color = Gray300,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .size(width = 32.dp, height = 4.dp)
+                    )
+                }
+
+                
+                Spacer(modifier = Modifier.size(8.dp))
+                PrimaryButton(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    size = ButtonSize.LARGE,
+                    text = "완료",
+                    onClick = {
+                        isShowDatePicker = false
+                    }
+                )
             }
         }
     }
