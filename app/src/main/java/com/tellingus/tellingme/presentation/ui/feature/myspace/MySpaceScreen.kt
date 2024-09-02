@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -27,6 +29,7 @@ import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +49,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -59,6 +64,8 @@ import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
 import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.FloatingButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.component.card.CalendarCardView
+import com.tellingus.tellingme.presentation.ui.common.component.dialog.DoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupContract
@@ -93,6 +100,7 @@ fun MySpaceScreen(
     var currentPage by remember { mutableIntStateOf(initialPage) }
 
     var isShowDatePicker by remember { mutableStateOf(false) }
+    var isShowCardViewDialog by remember { mutableStateOf(false) }
 
 
     LaunchedEffect(key1 = calendarPagerState.currentPage) {
@@ -231,7 +239,14 @@ fun MySpaceScreen(
 
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxWidth(),
+                                        .fillMaxWidth()
+                                        .clickable(
+                                            onClick = {
+                                                isShowCardViewDialog = true
+                                            },
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = null
+                                        ),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     if (date.monthValue == uiState.today.monthValue
@@ -329,6 +344,59 @@ fun MySpaceScreen(
                         isShowDatePicker = false
                     }
                 )
+            }
+        }
+    }
+
+    if (isShowCardViewDialog) {
+        Dialog(
+            onDismissRequest = {
+                isShowCardViewDialog = false
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true,
+                usePlatformDefaultWidth = false
+            )
+        ) {
+            Box(
+                modifier = modifier
+                    .clickable(
+                        onClick = { isShowCardViewDialog = false},
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    )
+            ) {
+                Column(
+                    modifier = modifier
+                        .padding(top = 130.dp, bottom = 88.dp, start = 25.dp, end = 25.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CalendarCardView(
+                        modifier = modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.size(16.dp))
+
+                    Row(
+                        modifier = modifier
+                            .background(shape = RoundedCornerShape(100.dp), color = Gray500)
+                            .padding(vertical = 16.dp, horizontal = 9.5.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = modifier.padding(end = 4.dp),
+                            text = "공유하기",
+                            style = TellingmeTheme.typography.body2Bold.copy(
+                                color = Color.White,
+                                fontSize = 14.sp
+                            )
+                        )
+                        Image(
+                            imageVector = ImageVector.vectorResource(R.drawable.icon_share),
+                            contentDescription = null
+                        )
+                    }
+                }
             }
         }
     }

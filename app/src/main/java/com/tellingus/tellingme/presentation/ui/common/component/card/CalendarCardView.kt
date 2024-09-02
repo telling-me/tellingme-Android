@@ -33,15 +33,15 @@ fun CalendarCardView(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
             .background(
                 shape = RoundedCornerShape(12.dp),
                 color = Color.White
             )
-            .padding(start = 20.dp, end = 20.dp, top = 32.dp, bottom = 20.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 32.dp, bottom = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .background(
                     shape = RoundedCornerShape(6.dp),
                     color = Gray50
@@ -59,7 +59,7 @@ fun CalendarCardView(
         }
 
         Text(
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 10.dp),
             text = "소속된 집단에서 내가 주로 맡는 역할은?",
             style = TellingmeTheme.typography.body1Regular.copy(
@@ -70,9 +70,9 @@ fun CalendarCardView(
         )
 
         Text(
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 7.dp),
-            text = "Q",
+            text = "그 역할이 나의 성향을 반영할 수 있어요.",
             style = TellingmeTheme.typography.body1Regular.copy(
                 color = Gray600,
                 fontSize = 12.sp
@@ -81,7 +81,7 @@ fun CalendarCardView(
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 10.dp)
         ) {
             Image(
@@ -90,7 +90,7 @@ fun CalendarCardView(
             )
             Spacer(modifier = Modifier.size(4.dp))
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .background(
                         shape = RoundedCornerShape(4.dp),
                         color = Gray50
@@ -110,7 +110,7 @@ fun CalendarCardView(
         Spacer(modifier = Modifier.size(20.dp))
 
         Text(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             text = "2023.08.26",
             style = TellingmeTheme.typography.body1Regular.copy(
                 color = Gray600,
@@ -121,7 +121,7 @@ fun CalendarCardView(
         Spacer(modifier = Modifier.size(8.dp))
 
         Text(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             text = "첫 직장에 입사했을 때인 것 같아. 대학 다니면서는 알지 못했던 새로운 분야도 많이 알게 되고 시야도 그 시점에 많이 넓어졌어. 동료들과 어울리고 조직 문화에 적응하면서 업무에 대해 이해하는 시간을 갖느라 긴장하면서 열심히 다녔어.",
             style = TellingmeTheme.typography.body1Regular.copy(
                 color = Gray600,
