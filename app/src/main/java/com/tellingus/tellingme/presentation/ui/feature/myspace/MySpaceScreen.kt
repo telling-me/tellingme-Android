@@ -101,6 +101,7 @@ fun MySpaceScreen(
 
     var isShowDatePicker by remember { mutableStateOf(false) }
     var isShowCardViewDialog by remember { mutableStateOf(false) }
+    var isShowShareBottomSheet by remember { mutableStateOf(false) }
 
 
     LaunchedEffect(key1 = calendarPagerState.currentPage) {
@@ -380,7 +381,14 @@ fun MySpaceScreen(
                     Row(
                         modifier = modifier
                             .background(shape = RoundedCornerShape(100.dp), color = Gray500)
-                            .padding(vertical = 16.dp, horizontal = 9.5.dp),
+                            .padding(vertical = 16.dp, horizontal = 9.5.dp)
+                            .clickable(
+                                onClick = {
+                                    isShowShareBottomSheet = true
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -396,6 +404,69 @@ fun MySpaceScreen(
                             contentDescription = null
                         )
                     }
+                }
+            }
+        }
+    }
+
+    if (isShowShareBottomSheet) {
+        BottomSheetDialog(
+            onDismissRequest = { isShowShareBottomSheet = false },
+            properties = BottomSheetDialogProperties(
+                navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),
+                dismissOnClickOutside = false,
+                behaviorProperties = BottomSheetBehaviorProperties(isDraggable = true)
+            )
+        ) {
+            Column(
+                modifier = modifier
+                    .background(
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                        color = Base0
+                    )
+                    .padding(bottom = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(modifier = modifier.padding(vertical = 16.dp)) {
+                    Box(
+                        modifier = modifier
+                            .background(
+                                color = Gray300,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .size(width = 32.dp, height = 4.dp)
+                    )
+                }
+
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp, start = 4.dp, end = 4.dp, bottom = 8.dp)
+                ) {
+                    Text(
+                        modifier = modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                        text = "이미지로 저장하기",
+                        style = TellingmeTheme.typography.body2Regular.copy(
+                            color = Gray600,
+                            fontSize = 14.sp
+                        )
+                    )
+                    Text(
+                        modifier = modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                        text = "인스타그램 스토리로 공유하기",
+                        style = TellingmeTheme.typography.body2Regular.copy(
+                            color = Gray600,
+                            fontSize = 14.sp
+                        )
+                    )
+                    Text(
+                        modifier = modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                        text = "다른 방법으로 공유하기",
+                        style = TellingmeTheme.typography.body2Regular.copy(
+                            color = Gray600,
+                            fontSize = 14.sp
+                        )
+                    )
                 }
             }
         }
