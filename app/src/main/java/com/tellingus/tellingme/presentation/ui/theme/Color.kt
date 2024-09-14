@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 val Base100 = Color(0xFF000000)
 val Base0 = Color(0xFFFFFFFF)
 val Background100 = Color(0xFFF8F8F9)
+val Background200 = Color(0xFFEFEFF2)
 
 val Primary50 = Color(0xFFD7F3F2)
 val Primary100 = Color(0xFF99E0DD)

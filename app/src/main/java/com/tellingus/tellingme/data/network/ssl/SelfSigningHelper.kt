@@ -28,13 +28,12 @@ class SelfSigningHelper @Inject constructor(
     init {
         val cf: CertificateFactory
         val ca: Certificate
-
         val caInput: InputStream
 
         try {
             cf = CertificateFactory.getInstance("X.509")
 
-            caInput = context.resources.openRawResource(R.raw.tellingme_store)
+            caInput = context.resources.openRawResource(R.raw.tellingme_shop)
 
             ca = cf.generateCertificate(caInput)
             println("ca = ${(ca as X509Certificate).subjectDN}")

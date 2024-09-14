@@ -13,7 +13,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepositoryImpl: HomeRepositoryImpl
-) : BaseViewModel<HomeContract.State, HomeContract.Event, HomeContract.Effect>(initialState = HomeContract.State()) {
+) : BaseViewModel<HomeContract.State, HomeContract.Event, HomeContract.Effect>(
+    initialState = HomeContract.State()
+) {
     val state = HomeContract.State(
         isLoading = false,
         todayQuestionCardInfo = HomeContract.State.TodayQuestionCardInfo("", "")
