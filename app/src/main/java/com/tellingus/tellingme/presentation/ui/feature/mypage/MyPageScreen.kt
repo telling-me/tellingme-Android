@@ -1,7 +1,9 @@
 package com.tellingus.tellingme.presentation.ui.feature.mypage
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,12 +14,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -43,14 +44,14 @@ import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
-import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
-import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
+import com.tellingus.tellingme.util.AppUtils
+
 
 @Composable
 fun MyPageScreen(
@@ -94,6 +95,8 @@ fun MyPageScreenHeader(navController: NavController) {
 
 @Composable
 fun MyPageScreenContent(navController: NavController) {
+    val context = LocalContext.current
+
     val items = remember {
         mutableStateOf(
             listOf(
@@ -392,7 +395,25 @@ fun MyPageScreenContent(navController: NavController) {
                                         // navController.navigate(item.destination)
                                     }
 
-                                    ActionType.SEND_EMAIL -> {}
+                                    ActionType.SEND_EMAIL -> {
+                                        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                                            data = Uri.parse("mailto:")
+                                            putExtra(
+                                                Intent.EXTRA_EMAIL,
+                                                arrayOf("tellingmetime@gmail.com")
+                                            )
+                                            putExtra(
+                                                Intent.EXTRA_CC, arrayOf("crin1224@icloud.com")
+                                            )
+                                            putExtra(Intent.EXTRA_SUBJECT, "[텔링미 고객센터] 전달사항이 있어요!")
+                                            putExtra(Intent.EXTRA_TEXT, getEmailBody(context))
+                                        }
+                                        context.startActivity(
+                                            Intent.createChooser(
+                                                emailIntent, "[텔링미 고객센터] 전달사항이 있어요!"
+                                            )
+                                        )
+                                    }
                                 }
                             }) {
                         Row {
@@ -421,6 +442,12 @@ fun MyPageScreenContent(navController: NavController) {
             }
         }
     }
+}
+
+
+fun getEmailBody(context: Context): String {
+    val appVersion = AppUtils.getAppVersion(context)
+    return "안녕하세요, 텔링미입니다.\n어떤 내용을 텔링미에게 전달하고 싶으신가요? 자유롭게 작성해주시면 확인 후 답변드리겠습니다. 감사합니다.😃\n📲 쓰고 있는 핸드폰 기종 (예:아이폰 12) : \n\n🧭 앱 버전 : ${appVersion}\n🧗 닉네임 : \n\n⚠️ 오류를 발견하셨을 경우 ⚠️\n📍발견한 오류 : \n📷 오류 화면 (캡쳐 혹은 화면녹화) : \n"
 }
 
 enum class ActionType {
