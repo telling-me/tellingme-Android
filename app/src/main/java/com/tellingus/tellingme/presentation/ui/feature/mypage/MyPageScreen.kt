@@ -96,6 +96,7 @@ fun MyPageScreenHeader(navController: NavController) {
 @Composable
 fun MyPageScreenContent(navController: NavController) {
     val context = LocalContext.current
+    val appVersion = AppUtils.getAppVersion(context)
 
     val items = remember {
         mutableStateOf(
@@ -406,7 +407,7 @@ fun MyPageScreenContent(navController: NavController) {
                                                 Intent.EXTRA_CC, arrayOf("crin1224@icloud.com")
                                             )
                                             putExtra(Intent.EXTRA_SUBJECT, "[텔링미 고객센터] 전달사항이 있어요!")
-                                            putExtra(Intent.EXTRA_TEXT, getEmailBody(context))
+                                            putExtra(Intent.EXTRA_TEXT, getEmailBody(appVersion))
                                         }
                                         context.startActivity(
                                             Intent.createChooser(
@@ -429,7 +430,7 @@ fun MyPageScreenContent(navController: NavController) {
 
                         Row {
                             if (item.id === "tellingme_introduce") {
-                                Text(text = "v. 1.3.7", style = TellingmeTheme.typography.body2Bold)
+                                Text(text = "v. $appVersion", style = TellingmeTheme.typography.body2Bold)
                             }
                             Icon(
                                 painter = painterResource(id = R.drawable.icon_caret_right),
@@ -445,8 +446,7 @@ fun MyPageScreenContent(navController: NavController) {
 }
 
 
-fun getEmailBody(context: Context): String {
-    val appVersion = AppUtils.getAppVersion(context)
+fun getEmailBody(appVersion: String): String {
     return "안녕하세요, 텔링미입니다.\n어떤 내용을 텔링미에게 전달하고 싶으신가요? 자유롭게 작성해주시면 확인 후 답변드리겠습니다. 감사합니다.😃\n📲 쓰고 있는 핸드폰 기종 (예:아이폰 12) : \n\n🧭 앱 버전 : ${appVersion}\n🧗 닉네임 : \n\n⚠️ 오류를 발견하셨을 경우 ⚠️\n📍발견한 오류 : \n📷 오류 화면 (캡쳐 혹은 화면녹화) : \n"
 }
 
