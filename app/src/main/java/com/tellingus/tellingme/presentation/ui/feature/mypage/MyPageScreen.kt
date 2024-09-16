@@ -79,12 +79,13 @@ fun MyPageScreenHeader(navController: NavController) {
         .padding(start = 20.dp, end = 20.dp)
         .fillMaxWidth(), rightSlot = {
         Icon(
-            painter = painterResource(R.drawable.icon_notice),
+            painter = painterResource(R.drawable.icon_setting),
             contentDescription = "icon_notice",
             modifier = Modifier
                 .size(24.dp)
                 .clickable(onClick = {
-                    navController.navigate(MyPageDestinations.ALARM)
+//                    navController.navigate(MyPageDestinations.설정)
+//                    [5-2. 설정] 이동
                 }),
             tint = Gray200
         )
@@ -97,31 +98,36 @@ fun MyPageScreenContent(navController: NavController) {
         mutableStateOf(
             listOf(
                 IconTextItem(
-                    iconResId = R.drawable.icon_subtract,
+                    id = "terms_of_use",
+                    iconResId = R.drawable.icon_terms_of_use,
                     text = "이용 약관",
                     actionType = ActionType.OPEN_URL,
                     destination = "https://doana.notion.site/f42ec05972a545ce95231f8144705eae?pvs=4"
                 ),
                 IconTextItem(
-                    iconResId = R.drawable.icon_report,
+                    id = "privacy_policy",
+                    iconResId = R.drawable.icon_privacy_policy,
                     text = "개인정보 처리방침",
                     actionType = ActionType.OPEN_URL,
                     destination = "https://doana.notion.site/7cdab221ee6d436781f930442040d556?pvs=4"
                 ),
                 IconTextItem(
-                    iconResId = R.drawable.icon_call,
+                    id = "customer_service",
+                    iconResId = R.drawable.icon_customer_service,
                     text = "고객센터",
                     actionType = ActionType.SEND_EMAIL,
                     destination = "Email"
                 ),
                 IconTextItem(
-                    iconResId = R.drawable.icon_disk,
-                    text = "텔링미에 대해서",
+                    id = "tellingme_introduce",
+                    iconResId = R.drawable.icon_planet,
+                    text = "텔링미를 소개해요",
                     actionType = ActionType.NAVIGATE_SCREEN,
                     destination = "TellingMeScreen"
                 ),
                 IconTextItem(
-                    iconResId = R.drawable.icon_heart,
+                    id = "tellingme_instagram",
+                    iconResId = R.drawable.icon_instagram,
                     text = "텔링미 인스타그램",
                     actionType = ActionType.OPEN_URL,
                     destination = "https://www.instagram.com/tellingme.io/"
@@ -202,8 +208,7 @@ fun MyPageScreenContent(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.icon_decoration),
-                        contentDescription = ""
+                        painter = painterResource(R.drawable.icon_badge), contentDescription = ""
                     )
                     Text(
                         modifier = Modifier.padding(top = 10.dp),
@@ -227,7 +232,7 @@ fun MyPageScreenContent(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.icon_cheese), contentDescription = ""
+                        painter = painterResource(R.drawable.icon_pencil), contentDescription = ""
                     )
                     Text(
                         modifier = Modifier.padding(top = 10.dp),
@@ -295,7 +300,7 @@ fun MyPageScreenContent(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Image(
-                    painter = painterResource(R.drawable.icon_bell),
+                    painter = painterResource(R.drawable.icon_question_factory),
                     contentDescription = "",
                     modifier = Modifier.padding(start = 16.dp)
                 )
@@ -317,7 +322,7 @@ fun MyPageScreenContent(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Image(
-                    painter = painterResource(R.drawable.icon_bell),
+                    painter = painterResource(R.drawable.icon_faq),
                     contentDescription = "",
                     modifier = Modifier.padding(start = 16.dp)
                 )
@@ -354,19 +359,15 @@ fun MyPageScreenContent(navController: NavController) {
                 ) {
                     Row {
                         Image(
-                            painter = painterResource(R.drawable.icon_bell),
-                            contentDescription = ""
+                            painter = painterResource(R.drawable.icon_bell), contentDescription = ""
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "푸시 알림 받기")
                     }
 
-                    Switch(
-                        checked = checked,
-                        onCheckedChange = {
-                            checked = it
-                        }
-                    )
+                    Switch(checked = checked, onCheckedChange = {
+                        checked = it
+                    })
                 }
 
                 val context = LocalContext.current
@@ -402,13 +403,19 @@ fun MyPageScreenContent(navController: NavController) {
 
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = item.text)
+                            Text(text = item.text, style = TellingmeTheme.typography.body2Regular)
                         }
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_caret_right),
-                            contentDescription = "",
-                            modifier = Modifier.size(20.dp)
-                        )
+
+                        Row {
+                            if (item.id === "tellingme_introduce") {
+                                Text(text = "v. 1.3.7", style = TellingmeTheme.typography.body2Bold)
+                            }
+                            Icon(
+                                painter = painterResource(id = R.drawable.icon_caret_right),
+                                contentDescription = "",
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -421,7 +428,11 @@ enum class ActionType {
 }
 
 data class IconTextItem(
-    val iconResId: Int, val text: String, val actionType: ActionType, val destination: String
+    val id: String,
+    val iconResId: Int,
+    val text: String,
+    val actionType: ActionType,
+    val destination: String
 )
 
 @Preview
