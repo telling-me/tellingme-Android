@@ -1,7 +1,11 @@
 package com.tellingus.tellingme.util
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -21,4 +25,14 @@ inline fun <reified T> Flow<T>.collectWithLifecycle(
             this@collectWithLifecycle.collectLatest { action(it) }
         }
     }
+}
+
+// 리플 효과를 없애는 클릭
+@Composable
+fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier {
+    return this.clickable(
+        indication = null, // 리플 효과 제거
+        interactionSource = remember { MutableInteractionSource() }, // 상호작용 상태 관리
+        onClick = onClick
+    )
 }

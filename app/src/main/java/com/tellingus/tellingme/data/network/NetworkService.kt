@@ -3,9 +3,8 @@ package com.tellingus.tellingme.data.network
 import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.home.NoticeResponse
 import com.tellingus.tellingme.data.model.notice.LoadNoticeResponse
-import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
+import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
 import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
@@ -28,7 +27,7 @@ interface NetworkService {
         @Path("loginType") loginType: String,
         @Path("isAuto") isAuto: String,
         @Body oauthRequestDto: OauthRequestDto
-    ): ApiResult<TokenDto>
+    ): ApiResult<TokenResponse>
 
     // 닉네임 유효성 검사 API
     @POST("${END_POINT}/oauth/nickname")
@@ -43,7 +42,7 @@ interface NetworkService {
     ): ApiResult<BasicResponse>
 
     @GET("${END_POINT}/notice")
-    suspend fun loadNotice(): ApiResult<List<LoadNoticeResponse>>
+    suspend fun loadNotice(): ApiResult<LoadNoticeResponse>
 
     // 알림 조회 API
     @GET("${END_POINT}/notice")
@@ -54,7 +53,7 @@ interface NetworkService {
     suspend fun refreshAccessToken(
         @Header("accessToken") accessToken: String,
         @Header("refreshToken") refreshToken: String
-    ): ApiResult<TokenDto>
+    ): ApiResult<TokenResponse>
 
     // 회원 탈퇴 API
     @POST("${END_POINT}/oauth/withdraw/{deviceType}")

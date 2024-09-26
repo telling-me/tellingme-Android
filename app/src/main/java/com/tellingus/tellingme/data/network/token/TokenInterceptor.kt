@@ -31,7 +31,7 @@ class TokenInterceptor @Inject constructor(
                 .header("Authorization", "Bearer $accessToken")
                 .build()
         }
-
+        Log.d("taag accessToken", accessToken.toString())
         // 첫 번째 응답을 진행
         val response = chain.proceed(request)
 
@@ -52,9 +52,9 @@ class TokenInterceptor @Inject constructor(
 
                 apiResult.onSuccess {
                     request = request.newBuilder()
-                        .header("Authorization", "Bearer ${it.refreshToken}")
+                        .header("Authorization", "Bearer ${it.data.refreshToken}")
                         .build()
-                    dataStoreRepository.setJwtTokens(accessToken = it.accessToken, refreshToken = it.refreshToken)
+                    dataStoreRepository.setJwtTokens(accessToken = it.data.accessToken, refreshToken = it.data.refreshToken)
                 }.onFailure { m, c ->
                     Log.d("taag tokenInterceptor failure", m)
                     Log.d("taag tokenInterceptor failure", c.toString())

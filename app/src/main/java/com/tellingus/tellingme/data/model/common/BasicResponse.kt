@@ -5,3 +5,9 @@ data class BasicResponse(
     val code: String = "",
     val message: String = "",
 )
+
+//data class BasicResponse2(
+//    val data: T? = null,
+//    val code: String = "",
+//    val message: String = "",
+//)

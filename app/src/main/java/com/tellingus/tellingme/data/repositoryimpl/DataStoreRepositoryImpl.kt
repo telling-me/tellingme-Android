@@ -5,15 +5,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
-import com.tellingus.tellingme.data.network.NetworkService
-import com.tellingus.tellingme.data.network.adapter.ApiResult
-import com.tellingus.tellingme.di.AuthNetworkService
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton

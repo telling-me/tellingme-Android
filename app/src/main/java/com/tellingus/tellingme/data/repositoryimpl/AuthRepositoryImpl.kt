@@ -2,7 +2,7 @@ package com.tellingus.tellingme.data.repositoryimpl
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
+import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
 import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
@@ -21,7 +21,7 @@ class AuthRepositoryImpl @Inject constructor(
         loginType: String,
         isAuto: String,
         oauthRequestDto: OauthRequestDto
-    ): ApiResult<TokenDto> {
+    ): ApiResult<TokenResponse> {
         return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
     }
 
@@ -36,7 +36,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun refreshAccessToken(
         accessToken: String,
         refreshToken: String
-    ): ApiResult<TokenDto> {
+    ): ApiResult<TokenResponse> {
         return service.refreshAccessToken(accessToken, refreshToken)
     }
 

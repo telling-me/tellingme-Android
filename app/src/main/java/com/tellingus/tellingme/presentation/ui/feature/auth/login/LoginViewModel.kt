@@ -94,8 +94,8 @@ class LoginViewModel @Inject constructor(
                 // 자동 로그인인 경우 바로 홈 화면으로 진입
                 updateState(currentState.copy(isLoading = false))
                 dataStoreRepository.setJwtTokens(
-                    accessToken = it.accessToken,
-                    refreshToken = it.refreshToken
+                    accessToken = it.data.accessToken,
+                    refreshToken = it.data.refreshToken
                 )
 
                 postEffect(LoginContract.Effect.MoveToHome)
