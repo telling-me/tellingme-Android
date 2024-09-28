@@ -61,24 +61,25 @@ import com.tellingus.tellingme.util.collectWithLifecycle
 
 @Composable
 fun SignupNicknameScreen(
+    modifier: Modifier = Modifier,
     navController: NavController,
-    socialId: String,
     viewModel: SignupViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    socialId: String
 ) {
-    LaunchedEffect(key1 = Unit) {
-        viewModel.initLoginInfo(socialId = socialId, socialLoginType = "kakao")
+    LaunchedEffect(Unit) {
+        viewModel.initLoginInfo(
+            socialId = socialId,
+            socialLoginType = "kakao"
+        )
     }
 
     MainLayout(
         header = {
             BasicAppBar(
-                modifier = modifier
-                    .fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 leftSlot = {
                     TellingmeIconButton(
-                        modifier = modifier
-                            .padding(12.dp),
+                        modifier = modifier.padding(12.dp),
                         iconRes = R.drawable.icon_caret_left,
                         size = ButtonSize.MEDIUM,
                         color = Gray500,
@@ -103,14 +104,18 @@ fun SignupNicknameScreen(
 
 @Composable
 fun SignupNicknameContentScreen(
+    modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: SignupViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    viewModel: SignupViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var nickname by remember { mutableStateOf(uiState.joinRequestDto.nickname) }
+    var nickname by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     var showTermsBottomSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(nickname) {
+        viewModel.verifyNickname(nickname)
+    }
 
     Column(
         modifier = modifier
@@ -175,7 +180,8 @@ fun SignupNicknameContentScreen(
                                                 interactionSource = remember { MutableInteractionSource() },
                                                 indication = null,
                                                 onClick = {
-                                                    viewModel.updateNickname("")
+                                                    nickname = ""
+                                                    viewModel.updateNickname("")   // 이건 모지
                                                 }
                                             ),
                                         imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
@@ -212,10 +218,6 @@ fun SignupNicknameContentScreen(
             )
         }
 
-        LaunchedEffect(key1 = nickname) {
-            viewModel.verifyNickname(nickname)
-        }
-
         if (showTermsBottomSheet) {
             BottomSheetDialog(
                 onDismissRequest = { showTermsBottomSheet = false },
@@ -239,8 +241,7 @@ fun SignupNicknameContentScreen(
         }
 
         PrimaryButton(
-            modifier = modifier
-                .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
             enable = (uiState.nicknameErrorState == null),

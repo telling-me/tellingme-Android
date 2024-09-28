@@ -31,7 +31,7 @@ class TokenInterceptor @Inject constructor(
                 .header("Authorization", "Bearer $accessToken")
                 .build()
         }
-        Log.d("taag accessToken", accessToken.toString())
+
         // 첫 번째 응답을 진행
         val response = chain.proceed(request)
 

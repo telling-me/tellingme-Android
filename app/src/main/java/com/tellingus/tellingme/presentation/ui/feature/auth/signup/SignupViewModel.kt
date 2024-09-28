@@ -3,12 +3,10 @@ package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
-import com.tellingus.tellingme.domain.repository.AuthRepository
-import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.JoinUserUseCase
 import com.tellingus.tellingme.domain.usecase.VerifyNicknameUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
@@ -23,16 +21,13 @@ class SignupViewModel @Inject constructor(
 ): BaseViewModel<SignupContract.State, SignupContract.Event, SignupContract.Effect>(
     initialState = SignupContract.State()
 ) {
-
     fun initLoginInfo(socialId: String, socialLoginType: String) {
-        viewModelScope.launch {
-            updateState(currentState.copy(
-                joinRequestDto = currentState.joinRequestDto.copy(
-                    socialId = socialId,
-                    socialLoginType = socialLoginType
-                )
-            ))
-        }
+        updateState(currentState.copy(
+            joinRequestDto = currentState.joinRequestDto.copy(
+                socialId = socialId,
+                socialLoginType = socialLoginType
+            )
+        ))
     }
 
     override fun reduceState(event: SignupContract.Event) {
@@ -100,7 +95,7 @@ class SignupViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = true))
 
             verifyNicknameUseCase(
-                nicknameRequestDto = NicknameRequestDto(nickname = nickname)
+                nickname = nickname
             ).onSuccess {
                 updateState(
                     currentState.copy(

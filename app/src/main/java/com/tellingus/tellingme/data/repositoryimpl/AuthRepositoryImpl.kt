@@ -5,7 +5,7 @@ import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
 import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.AuthRepository
@@ -25,8 +25,8 @@ class AuthRepositoryImpl @Inject constructor(
         return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
     }
 
-    override suspend fun verifyNickname(nicknameRequestDto: NicknameRequestDto): ApiResult<BasicResponse> {
-        return service.verifyNickname(nicknameRequestDto)
+    override suspend fun verifyNickname(nickname: String): ApiResult<BasicResponse> {
+        return service.verifyNickname(NicknameRequest(nickname = nickname))
     }
 
     override suspend fun joinUser(joinRequestDto: JoinRequestDto): ApiResult<BasicResponse> {

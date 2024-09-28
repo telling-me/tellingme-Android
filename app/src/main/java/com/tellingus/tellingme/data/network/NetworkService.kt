@@ -7,7 +7,7 @@ import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
 import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,7 +32,7 @@ interface NetworkService {
     // 닉네임 유효성 검사 API
     @POST("${END_POINT}/oauth/nickname")
     suspend fun verifyNickname(
-        @Body nicknameRequestDto: NicknameRequestDto
+        @Body nicknameRequest: NicknameRequest
     ): ApiResult<BasicResponse>
 
     // 추가 정보 기입 API

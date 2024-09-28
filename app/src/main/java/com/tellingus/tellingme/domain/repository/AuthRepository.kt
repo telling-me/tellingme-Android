@@ -4,7 +4,7 @@ import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
 import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 
 interface AuthRepository {
@@ -16,7 +16,7 @@ interface AuthRepository {
     ): ApiResult<TokenResponse>
 
     suspend fun verifyNickname(
-        nicknameRequestDto: NicknameRequestDto
+        nickname: String
     ): ApiResult<BasicResponse>
 
     suspend fun joinUser(

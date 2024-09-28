@@ -16,8 +16,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.bar.TellingmeToast
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
@@ -35,7 +41,6 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWi
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
-import com.tellingus.tellingme.presentation.ui.feature.auth.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
@@ -46,6 +51,9 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    var isShowToast by remember { mutableStateOf(true) }
+
     MainLayout(
         header = {
             HomeScreenHeader(navController)
@@ -59,6 +67,13 @@ fun HomeScreen(
 
     LaunchedEffect(key1 = false) {
         viewModel.getNotice()
+    }
+
+    if (isShowToast) {
+        TellingmeToast(context).showToast(
+            text = "토스트 메세지 문구입니다.",
+            icon = R.drawable.icon_warn
+        )
     }
 }
 
