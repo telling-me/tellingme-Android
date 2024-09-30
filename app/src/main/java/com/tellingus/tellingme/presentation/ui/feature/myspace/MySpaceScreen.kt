@@ -60,8 +60,6 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
-import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
-import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.FloatingButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.card.CalendarCardView

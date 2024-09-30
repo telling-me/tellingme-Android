@@ -1,6 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
+import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
 import com.tellingus.tellingme.presentation.ui.common.base.UiEffect
 import com.tellingus.tellingme.presentation.ui.common.base.UiEvent
 import com.tellingus.tellingme.presentation.ui.common.base.UiState
@@ -8,12 +8,13 @@ import com.tellingus.tellingme.presentation.ui.common.base.UiState
 class SignupContract {
     data class State(
         val isLoading: Boolean = false,
-        val joinRequestDto: JoinRequestDto = JoinRequestDto(),
-        val nicknameErrorState: String? = null
+        val isAvailableNickname: Boolean = false,
+        val signupRequest: SignupRequest = SignupRequest(),
+        val nicknameErrorState: String = ""
     ): UiState
 
     sealed class Event: UiEvent {
-        data class NextButtonClickedInNickname(
+        data class NextButtonClickedInTerms(
             val nickname: String
         ): Event()
 
@@ -33,10 +34,10 @@ class SignupContract {
     }
 
     sealed class Effect: UiEffect {
-//        object MoveToNickname : Effect()    시작이 닉네임
+        object ShowTermsBottomSheet: Effect()
         object MoveToBirthGender : Effect()
         object MoveToJob : Effect()
         object MoveToWorry : Effect()
-        object MoveToHome : Effect()
+        object CompleteSignup : Effect()
     }
 }

@@ -1,13 +1,10 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import android.util.Log
-import android.widget.CheckBox
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -114,7 +111,7 @@ fun SignupNicknameContentScreen(
     var showTermsBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(nickname) {
-        viewModel.verifyNickname(nickname)
+        viewModel.verifyNicknameFormat(nickname)
     }
 
     Column(
@@ -181,7 +178,6 @@ fun SignupNicknameContentScreen(
                                                 indication = null,
                                                 onClick = {
                                                     nickname = ""
-                                                    viewModel.updateNickname("")   // 이건 모지
                                                 }
                                             ),
                                         imageVector = ImageVector.vectorResource(id = R.drawable.icon_clear_text),
@@ -199,56 +195,57 @@ fun SignupNicknameContentScreen(
                                 .height(1.dp)
                         )
                         Spacer(modifier = modifier.size(8.dp))
-                        uiState.nicknameErrorState?.let {
+                        if (uiState.nicknameErrorState != "정상") {
                             Text(
                                 modifier = modifier
                                     .clickable(
                                         enabled = false,
                                         onClick = {}
                                     ),
-                                text = it,
+                                text = uiState.nicknameErrorState,
                                 style = TellingmeTheme.typography.caption1Regular.copy(
                                     color = Error600
                                 )
                             )
                         }
-
                     }
                 }
             )
-        }
-
-        if (showTermsBottomSheet) {
-            BottomSheetDialog(
-                onDismissRequest = { showTermsBottomSheet = false },
-                properties = BottomSheetDialogProperties(
-                    navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),  /** 하단 시스템 내비게이션과 중첩되는 이슈 해결 **/
-                    dismissOnClickOutside = false,
-                    behaviorProperties = BottomSheetBehaviorProperties(isDraggable = true)
-                )
-            ) {
-                SignupTermsBottomSheet(
-                    onClickNext = {
-                        showTermsBottomSheet = false
-                        viewModel.processEvent(
-                            SignupContract.Event.NextButtonClickedInNickname(
-                                nickname = nickname
-                            )
-                        )
-                    }
-                )
-            }
         }
 
         PrimaryButton(
             modifier = modifier.fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-            enable = (uiState.nicknameErrorState == null),
+            enable = (uiState.nicknameErrorState == "정상"),
             onClick = {
-                showTermsBottomSheet = true
+                viewModel.verifyNickname(nickname)
+
+//                showTermsBottomSheet = true
             }
         )
+    }
+
+    if (showTermsBottomSheet) {
+        BottomSheetDialog(
+            onDismissRequest = { showTermsBottomSheet = false },
+            properties = BottomSheetDialogProperties(
+                navigationBarProperties = NavigationBarProperties(navigationBarContrastEnforced = false),  /** 하단 시스템 내비게이션과 중첩되는 이슈 해결 **/
+                dismissOnClickOutside = false,
+                behaviorProperties = BottomSheetBehaviorProperties(isDraggable = true)
+            )
+        ) {
+            SignupTermsBottomSheet(
+                onClickNext = {
+                    showTermsBottomSheet = false
+                    viewModel.processEvent(
+                        SignupContract.Event.NextButtonClickedInTerms(
+                            nickname = nickname
+                        )
+                    )
+                }
+            )
+        }
     }
 
     viewModel.effect.collectWithLifecycle { effect ->
@@ -256,6 +253,11 @@ fun SignupNicknameContentScreen(
             is SignupContract.Effect.MoveToBirthGender -> {
                 navController.navigate(AuthDestinations.Signup.SIGNUP_BIRTH_GENDER)
             }
+
+            is SignupContract.Effect.ShowTermsBottomSheet -> {
+                showTermsBottomSheet = true
+            }
+
             else -> {}
         }
     }
@@ -266,7 +268,6 @@ fun SignupTermsBottomSheet(
     onClickNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var termAll by remember { mutableStateOf(false) }
     var term1 by remember { mutableStateOf(false) }
     var term2 by remember { mutableStateOf(false) }
 
@@ -313,7 +314,8 @@ fun SignupTermsBottomSheet(
                 isSelected = term1,
                 onClick = {
                     term1 = !term1
-                }
+                },
+                url = "https://doana.notion.site/f42ec05972a545ce95231f8144705eae"
             )
             CheckBox(
                 text = "[필수] 개인정보 수집 및 이용 동의",
@@ -321,7 +323,8 @@ fun SignupTermsBottomSheet(
                 isSelected = term2,
                 onClick = {
                     term2 = !term2
-                }
+                },
+                url = "https://doana.notion.site/7cdab221ee6d436781f930442040d556?pvs=4"
             )
             Spacer(modifier = modifier.size(12.dp))
             PrimaryButton(

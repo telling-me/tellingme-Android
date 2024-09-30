@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
+import com.tellingus.tellingme.presentation.ui.common.component.dialog.PushAlertDialog
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations

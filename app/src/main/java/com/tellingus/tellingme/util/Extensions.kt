@@ -11,6 +11,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /** 생명주기에 따라 Flow를 수집할 수 있도록 하는 함수 **/
 @Composable
@@ -35,4 +37,8 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier {
         interactionSource = remember { MutableInteractionSource() }, // 상호작용 상태 관리
         onClick = onClick
     )
+}
+
+fun getToday(): String {
+    return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
 }

@@ -12,9 +12,6 @@ interface DataStoreRepository {
     suspend fun getBoolean(key: String): Flow<Boolean>
 
     // 아래 제거 필요
-    suspend fun setUserSocialId(socialId: String)
-    suspend fun getUserSocialId(): Flow<String>
-
     suspend fun setJwtTokens(
         accessToken: String,
         refreshToken: String
@@ -24,4 +21,9 @@ interface DataStoreRepository {
     suspend fun getRefreshToken(): Flow<String>
 
     suspend fun deleteTokens()
+}
+
+object DataStoreKey {
+    const val SOCIAL_ID = "socialId"
+
 }

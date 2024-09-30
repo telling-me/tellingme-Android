@@ -1,4 +1,4 @@
-package com.tellingus.tellingme.presentation.ui.common.component.bar
+package com.tellingus.tellingme.presentation.ui.common.component.toast
 
 import android.content.Context
 import android.widget.Toast
@@ -84,8 +84,7 @@ class TellingmeToast(context: Context) : Toast(context) {
                 0,
                 with(density) { 60.dp.toPx().toInt() }
             )
+            show()
         }
-
-        this.show()
     }
 }

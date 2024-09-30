@@ -3,9 +3,10 @@ package com.tellingus.tellingme.data.repositoryimpl
 import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
-import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
-import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
+import com.tellingus.tellingme.data.model.oauth.signout.WithdrawRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.AuthRepository
@@ -25,12 +26,12 @@ class AuthRepositoryImpl @Inject constructor(
         return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
     }
 
-    override suspend fun verifyNickname(nickname: String): ApiResult<BasicResponse> {
+    override suspend fun verifyNickname(nickname: String): ApiResult<NicknameResponse> {
         return service.verifyNickname(NicknameRequest(nickname = nickname))
     }
 
-    override suspend fun joinUser(joinRequestDto: JoinRequestDto): ApiResult<BasicResponse> {
-        return service.joinUser(joinRequestDto)
+    override suspend fun signupUser(signupRequest: SignupRequest): ApiResult<BasicResponse> {
+        return service.signupUser(signupRequest)
     }
 
     override suspend fun refreshAccessToken(
@@ -41,7 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOutUser(): ApiResult<BasicResponse> {
-        return service.signOutUser(withdrawDto = WithdrawDto())
+        return service.signOutUser(withdrawRequest = WithdrawRequest())
     }
 
 }

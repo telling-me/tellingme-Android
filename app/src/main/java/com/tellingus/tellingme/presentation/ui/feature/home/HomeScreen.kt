@@ -31,7 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
-import com.tellingus.tellingme.presentation.ui.common.component.bar.TellingmeToast
+import com.tellingus.tellingme.presentation.ui.common.component.toast.TellingmeToast
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
@@ -52,7 +52,6 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    var isShowToast by remember { mutableStateOf(true) }
 
     MainLayout(
         header = {
@@ -69,12 +68,6 @@ fun HomeScreen(
         viewModel.getNotice()
     }
 
-    if (isShowToast) {
-        TellingmeToast(context).showToast(
-            text = "토스트 메세지 문구입니다.",
-            icon = R.drawable.icon_warn
-        )
-    }
 }
 
 @Composable

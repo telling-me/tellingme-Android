@@ -2,12 +2,11 @@ package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
-import com.tellingus.tellingme.domain.usecase.JoinUserUseCase
+import com.tellingus.tellingme.domain.usecase.SignupUseCase
 import com.tellingus.tellingme.domain.usecase.VerifyNicknameUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,13 +16,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val verifyNicknameUseCase: VerifyNicknameUseCase,
-    private val joinUserUseCase: JoinUserUseCase,
+    private val signupUseCase: SignupUseCase,
 ): BaseViewModel<SignupContract.State, SignupContract.Event, SignupContract.Effect>(
     initialState = SignupContract.State()
 ) {
     fun initLoginInfo(socialId: String, socialLoginType: String) {
         updateState(currentState.copy(
-            joinRequestDto = currentState.joinRequestDto.copy(
+            signupRequest = currentState.signupRequest.copy(
                 socialId = socialId,
                 socialLoginType = socialLoginType
             )
@@ -32,8 +31,7 @@ class SignupViewModel @Inject constructor(
 
     override fun reduceState(event: SignupContract.Event) {
         when(event) {
-            is SignupContract.Event.NextButtonClickedInNickname -> {
-                updateNickname(nickname = event.nickname)
+            is SignupContract.Event.NextButtonClickedInTerms -> {
                 postEffect(SignupContract.Effect.MoveToBirthGender)
             }
             is SignupContract.Event.NextButtonClickedInBirthGender -> {
@@ -46,27 +44,27 @@ class SignupViewModel @Inject constructor(
             }
             is SignupContract.Event.NextButtonClickedInWorry -> {
                 updateWorry(worry = event.worry)
-                joinUser(currentState.joinRequestDto)
             }
         }
     }
 
-    private fun joinUser(joinRequestDto: JoinRequestDto) {
+    private fun signup(signupRequest: SignupRequest) {
         viewModelScope.launch {
-            joinUserUseCase(
-                joinRequestDto = joinRequestDto
+            signupUseCase(
+                signupRequest = signupRequest
             ).onSuccess {
                 Log.d("taag joinUser", it.toString())
-                postEffect(SignupContract.Effect.MoveToHome)
+                postEffect(SignupContract.Effect.CompleteSignup)
             }.onFailure { message, code ->
                 Log.d("taag joinUser", message)
             }
         }
     }
 
-    fun verifyNickname(nickname: String) {
+    fun verifyNicknameFormat(nickname: String) {
+        updateState(currentState.copy(isAvailableNickname = false))
         if (nickname.isEmpty()) {
-            updateState(currentState.copy(nicknameErrorState = " "))
+            updateState(currentState.copy(nicknameErrorState = ""))
         } else if (nickname.length < 2) {
             updateState(currentState.copy(nicknameErrorState = "닉네임은 2~8글자여야 합니다."))
         } else if (" " in nickname) {
@@ -74,7 +72,7 @@ class SignupViewModel @Inject constructor(
         } else if (!"^[가-힣]*$".toRegex().matches(nickname)) {
             updateState(currentState.copy(nicknameErrorState = "닉네임은 한글만 가능합니다. 영문과 숫자, 특수기호는 들어갈 수 없습니다."))
         } else {
-            updateState(currentState.copy(nicknameErrorState = null))
+            updateState(currentState.copy(nicknameErrorState = "정상"))
         }
     }
 
@@ -82,7 +80,7 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             updateState(
                 currentState.copy(
-                    joinRequestDto = currentState.joinRequestDto.copy(
+                    signupRequest = currentState.signupRequest.copy(
                         jobInfo = jobInfo
                     )
                 )
@@ -90,35 +88,34 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname(nickname: String) {
+    fun verifyNickname(nickname: String) {
         viewModelScope.launch {
-            updateState(currentState.copy(isLoading = true))
-
             verifyNicknameUseCase(
                 nickname = nickname
             ).onSuccess {
-                updateState(
-                    currentState.copy(
-                        isLoading = false,
-                        nicknameErrorState = it.message
+                if (it.data) {
+                    updateState(
+                        currentState.copy(
+                            isAvailableNickname = true,
+                            signupRequest = currentState.signupRequest.copy(
+                                nickname = nickname
+                            )
+                        )
                     )
-                )
-
-                if (it == null) {
+                    postEffect(SignupContract.Effect.ShowTermsBottomSheet)
+                } else {
+                    updateState(
+                        currentState.copy(
+                            isAvailableNickname = false,
+                            nicknameErrorState = it.message
+                        )
+                    )
                 }
             }.onFailure { message, code ->
 
             }.onNetworkError {
 
             }
-
-            updateState(
-                currentState.copy(
-                    joinRequestDto = currentState.joinRequestDto.copy(
-                        nickname = nickname
-                    )
-                )
-            )
         }
     }
 
@@ -126,7 +123,7 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             updateState(
                 currentState.copy(
-                    joinRequestDto = currentState.joinRequestDto.copy(
+                    signupRequest = currentState.signupRequest.copy(
                         birthDate = birth,
                         gender = gender
                     )
@@ -139,7 +136,7 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             updateState(
                 currentState.copy(
-                    joinRequestDto = currentState.joinRequestDto.copy(
+                    signupRequest = currentState.signupRequest.copy(
                         job = job
                     )
                 )
@@ -151,11 +148,12 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             updateState(
                 currentState.copy(
-                    joinRequestDto = currentState.joinRequestDto.copy(
+                    signupRequest = currentState.signupRequest.copy(
                         purpose = worry.toString()
                     )
                 )
             )
+            signup(currentState.signupRequest)
         }
     }
 }

@@ -4,11 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,11 +44,13 @@ fun PushAlertDialog(
     ) {
         Column(
             modifier = modifier
+                .padding(20.dp)
                 .background(
                     shape = RoundedCornerShape(20.dp),
                     color = Color.White
                 )
-                .padding(top = 30.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
+                .padding(top = 30.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 modifier = modifier.padding(bottom = 4.dp),
@@ -71,6 +75,7 @@ fun PushAlertDialog(
             )
 
             PrimaryButton(
+                modifier = modifier.fillMaxWidth(),
                 size = ButtonSize.LARGE,
                 text = "좋아요",
                 onClick = {
@@ -79,6 +84,7 @@ fun PushAlertDialog(
             )
             Spacer(modifier = Modifier.size(8.dp))
             SingleButton(
+                modifier = modifier.fillMaxWidth(),
                 size = ButtonSize.LARGE,
                 text = "괜찮아요",
                 onClick = {

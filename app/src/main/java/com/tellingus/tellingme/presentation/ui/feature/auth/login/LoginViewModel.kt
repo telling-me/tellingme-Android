@@ -11,6 +11,7 @@ import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
+import com.tellingus.tellingme.domain.repository.DataStoreKey.SOCIAL_ID
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
@@ -105,11 +106,11 @@ class LoginViewModel @Inject constructor(
                 when(code) {
                     404 -> {
                         // 최초 로그인이라면 로컬에 socialId 저장 후 추가정보 기입 화면으로 이동
-                        val socialId = message.split("${'"'}")[3]
+                        val socialId = message.split("${'"'}")[7]
                         Log.d("taag", "$message // socialId : $socialId")
 
                         // 소셜로그인 결과 404라면 추가정보 기입 화면으로 이동
-                        dataStoreRepository.setUserSocialId(socialId)
+                        dataStoreRepository.setString(SOCIAL_ID, socialId)
                         postEffect(LoginContract.Effect.MoveToSignup(socialId = socialId))
                     }
                     1000 -> {

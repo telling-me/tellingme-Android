@@ -66,22 +66,6 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun setUserSocialId(socialId: String) {
-        dataStore.edit {
-            it[USER_SOCIAL_ID] = socialId
-        }
-    }
-
-    override suspend fun getUserSocialId(): Flow<String> {
-        return dataStore.data
-            .catch {
-                emit(emptyPreferences())
-            }
-            .map {
-                it[USER_SOCIAL_ID] ?: ""
-            }
-    }
-
     override suspend fun setJwtTokens(accessToken: String, refreshToken: String) {
         dataStore.edit {
             it[ACCESS_TOKEN] = accessToken

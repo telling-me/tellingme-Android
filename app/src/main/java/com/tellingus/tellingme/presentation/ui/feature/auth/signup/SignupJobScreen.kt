@@ -1,36 +1,22 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import android.util.Log
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,12 +33,8 @@ import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayou
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.AuthDestinations
 import com.tellingus.tellingme.presentation.ui.theme.Base0
-import com.tellingus.tellingme.presentation.ui.theme.Error600
-import com.tellingus.tellingme.presentation.ui.theme.Gray200
-import com.tellingus.tellingme.presentation.ui.theme.Gray300
 import com.tellingus.tellingme.presentation.ui.theme.Gray500
 import com.tellingus.tellingme.presentation.ui.theme.Gray600
-import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
 
@@ -98,7 +80,7 @@ fun SignupJobContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var selectedJob by remember { mutableStateOf(uiState.joinRequestDto.job) }
+    var selectedJob by remember { mutableStateOf(uiState.signupRequest.job) }
 
     val jobList = listOf<Job>(
         Job(R.drawable.icon_bagpack, "중·고등학생"),
@@ -136,7 +118,7 @@ fun SignupJobContentScreen(
                         text = item.text,
                         icon = item.icon,
                         isSelected = index == selectedJob,
-                        contents = viewModel.currentState.joinRequestDto.jobInfo,
+                        contents = viewModel.currentState.signupRequest.jobInfo,
                         onClick = {
                             selectedJob = index
                             viewModel.updateJobInfo("")
@@ -167,9 +149,9 @@ fun SignupJobContentScreen(
             size = ButtonSize.LARGE,
             text = "다음",
             enable = if (selectedJob == 5) {
-                uiState.joinRequestDto.jobInfo.isNotEmpty()
+                uiState.signupRequest.jobInfo.isNotEmpty()
             } else {
-                selectedJob!=-1
+                selectedJob != -1
             },
             onClick = {
                 viewModel.processEvent(
