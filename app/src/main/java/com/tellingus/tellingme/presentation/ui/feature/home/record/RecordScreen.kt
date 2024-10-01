@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -25,6 +26,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -37,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -45,6 +48,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -53,11 +58,14 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
+import com.tellingus.tellingme.core.moddel.Emotion
+import com.tellingus.tellingme.core.moddel.emotionList
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.SingleButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
+import com.tellingus.tellingme.presentation.ui.common.component.dialog.DoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.component.dialog.ShowDoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.component.toast.TellingmeToast
@@ -86,7 +94,6 @@ fun RecordScreen(
     var showDialogState by remember { mutableStateOf(false) }
     var showToastMessage by remember { mutableStateOf(Pair(false, "")) }
     var showTodayQuestionChangeBottomSheet by remember { mutableStateOf(false) }
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     MainLayout(
         header = {
@@ -187,21 +194,6 @@ fun RecordScreen(
         }
     }
 }
-
-val emotionList = listOf<Emotion>(
-    Emotion(R.drawable.emotion_happy_large, "행복해요"),
-    Emotion(R.drawable.emotion_proud_large, "뿌듯해요"),
-    Emotion(R.drawable.emotion_meh_large, "그저 그래요"),
-    Emotion(R.drawable.emotion_tired_large, "피곤해요"),
-    Emotion(R.drawable.emotion_sad_large, "슬퍼요"),
-    Emotion(R.drawable.emotion_angry_large, "화나요"),
-    Emotion(R.drawable.emotion_excited_large, "설레요"),
-    Emotion(R.drawable.emotion_thrilled_large, "신나요"),
-    Emotion(R.drawable.emotion_relaxed_large, "편안해요"),
-    Emotion(R.drawable.emotion_lethargic_large, "무기력해요"),
-    Emotion(R.drawable.emotion_lonely_large, "외로워요"),
-    Emotion(R.drawable.emotion_complicated_large, "복잡해요"),
-)
 
 @Composable
 fun RecordScreenContent(
@@ -371,7 +363,6 @@ fun RecordScreenContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmotionBottomSheet(
     modifier: Modifier = Modifier,
@@ -380,6 +371,7 @@ fun EmotionBottomSheet(
     onClickConfirm: (Int) -> Unit,
 ) {
     var selectedEmotion by remember { mutableStateOf(-1) }
+    var showBuyEmotionDialog by remember { mutableStateOf(false) }
 
     BottomSheetDialog(
         onDismissRequest = onDismiss,
@@ -423,25 +415,59 @@ fun EmotionBottomSheet(
                     contentPadding = PaddingValues(vertical = 24.dp)
                 ) {
                     itemsIndexed(emotionList) {position, item ->
-                        Image(
-                            imageVector = ImageVector.vectorResource(item.icon),
-                            contentDescription = "emotion",
+                        Box(
                             modifier = modifier
-                                .clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
-                                    onClick = {
-                                        selectedEmotion = position
-                                    }
-                                )
                                 .alpha(
                                     if (selectedEmotion == -1 || position == selectedEmotion) {
                                         1f
                                     } else {
                                         0.5f
                                     }
-                                )
-                        )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                modifier = modifier
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null,
+                                        onClick = {
+                                            if (position < 6) {
+                                                selectedEmotion = position
+                                            } else {
+                                                showBuyEmotionDialog = true
+                                            }
+                                        }
+                                    ),
+                                imageVector = ImageVector.vectorResource(item.icon),
+                                contentDescription = "emotion"
+                            )
+                            if (position >= 6) {
+                                Row(
+                                    modifier = modifier
+                                        .background(
+                                            shape = RoundedCornerShape(100.dp),
+                                            color = Color.White
+                                        )
+                                        .padding(horizontal = 8.5.dp, vertical = 3.5.dp)
+                                        .align(Alignment.BottomCenter),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Image(
+                                        modifier = modifier.size(14.dp),
+                                        imageVector = ImageVector.vectorResource(R.drawable.icon_cheese),
+                                        contentDescription = null
+                                    )
+                                    Spacer(modifier = Modifier.size(4.dp))
+                                    Text(
+                                        text = "33",
+                                        style = TellingmeTheme.typography.caption2Bold.copy(
+                                            color = Gray600
+                                        )
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -457,11 +483,71 @@ fun EmotionBottomSheet(
                 PrimaryButton(
                     modifier = modifier.weight(1f),
                     size = ButtonSize.LARGE,
-                    text = "완료",
+                    text = "확인",
+                    enable = selectedEmotion != -1,
                     onClick =  {
                         onClickConfirm(selectedEmotion)
                     }
                 )
+            }
+        }
+    }
+
+    if (showBuyEmotionDialog) {
+        Dialog(
+            onDismissRequest = {
+                showBuyEmotionDialog = false
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+                usePlatformDefaultWidth = false
+            )
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .background(
+                        shape = RoundedCornerShape(20.dp),
+                        color = Base0
+                    )
+                    .padding(top = 30.dp, start = 16.dp, end = 16.dp, bottom = 20.dp)
+                    .wrapContentHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "치즈 33개로 구매하시겠어요?",
+                    style = TellingmeTheme.typography.body1Bold.copy(
+                        color = Gray600
+                    )
+                )
+                Spacer(modifier = Modifier.size(20.dp))
+                Image(
+                    modifier = modifier.size(120.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.icon_cheese_box),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.size(20.dp))
+                Row {
+                    PrimaryLightButton(
+                        modifier = modifier.weight(1f),
+                        size = ButtonSize.LARGE,
+                        text = "취소",
+                        onClick = {
+                            showBuyEmotionDialog = false
+                        }
+                    )
+                    Spacer(modifier = modifier.size(8.dp))
+                    PrimaryButton(
+                        modifier = modifier.weight(1f),
+                        size = ButtonSize.LARGE,
+                        text = "구매하기",
+                        onClick = {
+
+                        }
+                    )
+                }
             }
         }
     }
@@ -584,15 +670,4 @@ fun TodayQuestionChangeBottomSheet(
 
 enum class QuestionState {
     ORIGINAL, NEW
-}
-
-data class Emotion(
-    @DrawableRes val icon: Int,
-    val description: String
-)
-
-@Preview
-@Composable
-fun RecordScreenPreview() {
-//    RecordScreen {}
 }

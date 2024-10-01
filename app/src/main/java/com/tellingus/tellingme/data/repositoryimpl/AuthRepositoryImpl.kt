@@ -1,9 +1,9 @@
 package com.tellingus.tellingme.data.repositoryimpl
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
-import com.tellingus.tellingme.data.model.oauth.signout.WithdrawRequest
+import com.tellingus.tellingme.data.model.oauth.signout.SignoutRequest
 import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
@@ -21,9 +21,9 @@ class AuthRepositoryImpl @Inject constructor(
         oauthToken: String,
         loginType: String,
         isAuto: String,
-        oauthRequestDto: OauthRequestDto
+        oauthRequest: OauthRequest
     ): ApiResult<TokenResponse> {
-        return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
+        return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequest)
     }
 
     override suspend fun verifyNickname(nickname: String): ApiResult<NicknameResponse> {
@@ -42,7 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOutUser(): ApiResult<BasicResponse> {
-        return service.signOutUser(withdrawRequest = WithdrawRequest())
+        return service.signOutUser(signoutRequest = SignoutRequest())
     }
 
 }

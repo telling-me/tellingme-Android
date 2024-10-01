@@ -38,10 +38,8 @@ fun PrimaryButton(
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Primary400,
-                contentColor = Base0,
-                disabledContainerColor = Gray50,
-                disabledContentColor = Base0
+                containerColor = if (enable) Primary400 else Gray50,
+                contentColor = Base0
             ),
             contentPadding = when(size) {
                 ButtonSize.LARGE -> PaddingValues(
@@ -57,7 +55,6 @@ fun PrimaryButton(
                     horizontal = dimensionResource(R.dimen.button_padding_horizontal_small)
                 )
             },
-            enabled = enable
         ) {
             Text(
                 text = text,

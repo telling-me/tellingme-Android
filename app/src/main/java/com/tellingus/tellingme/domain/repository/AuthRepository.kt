@@ -1,7 +1,7 @@
 package com.tellingus.tellingme.domain.repository
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
 import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
@@ -12,7 +12,7 @@ interface AuthRepository {
         oauthToken: String,
         loginType: String,
         isAuto: String,
-        oauthRequestDto: OauthRequestDto
+        oauthRequest: OauthRequest
     ): ApiResult<TokenResponse>
 
     suspend fun verifyNickname(

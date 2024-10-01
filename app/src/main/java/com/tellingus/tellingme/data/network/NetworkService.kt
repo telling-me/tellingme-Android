@@ -5,9 +5,9 @@ import com.tellingus.tellingme.data.model.home.NoticeResponse
 import com.tellingus.tellingme.data.model.home.QuestionRequest
 import com.tellingus.tellingme.data.model.home.QuestionResponse
 import com.tellingus.tellingme.data.model.notice.LoadNoticeResponse
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
-import com.tellingus.tellingme.data.model.oauth.signout.WithdrawRequest
+import com.tellingus.tellingme.data.model.oauth.signout.SignoutRequest
 import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
@@ -29,7 +29,7 @@ interface NetworkService {
         @Header("oauthToken") oauthToken: String,
         @Path("loginType") loginType: String,
         @Path("isAuto") isAuto: String,
-        @Body oauthRequestDto: OauthRequestDto
+        @Body oauthRequest: OauthRequest
     ): ApiResult<TokenResponse>
 
     // 닉네임 유효성 검사 API
@@ -67,7 +67,7 @@ interface NetworkService {
     // 회원 탈퇴 API
     @POST("${END_POINT}/oauth/withdraw/app")
     suspend fun signOutUser(
-        @Body withdrawRequest: WithdrawRequest
+        @Body signoutRequest: SignoutRequest
     ): ApiResult<BasicResponse>
 
 }

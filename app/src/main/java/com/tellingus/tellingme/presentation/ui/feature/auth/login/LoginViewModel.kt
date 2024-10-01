@@ -7,7 +7,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
@@ -90,7 +90,7 @@ class LoginViewModel @Inject constructor(
                 oauthToken = oauthToken,
                 loginType = LoginType.KAKAO.name.lowercase(),
                 isAuto = IsAuto.MANUAL.name.lowercase(),
-                oauthRequestDto = OauthRequestDto()
+                oauthRequest = OauthRequest(socialId = "")
             ).onSuccess {
                 // 자동 로그인인 경우 바로 홈 화면으로 진입
                 updateState(currentState.copy(isLoading = false))

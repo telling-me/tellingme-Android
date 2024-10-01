@@ -1,5 +1,5 @@
 package com.tellingus.tellingme.data.model.oauth.signout
 
-data class WithdrawRequest(
+data class SignoutRequest(
     val authorizationCode: String = "app"
 )
