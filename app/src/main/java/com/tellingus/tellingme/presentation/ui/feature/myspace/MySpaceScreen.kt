@@ -11,6 +11,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -348,6 +349,8 @@ fun MySpaceScreen(
     }
 
     if (isShowCardViewDialog) {
+        val pagerState = rememberPagerState { 5 }
+
         Dialog(
             onDismissRequest = {
                 isShowCardViewDialog = false
@@ -358,49 +361,58 @@ fun MySpaceScreen(
                 usePlatformDefaultWidth = false
             )
         ) {
-            Box(
+            HorizontalPager(
                 modifier = modifier
-                    .clickable(
-                        onClick = { isShowCardViewDialog = false},
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    )
-            ) {
-                Column(
+                    .fillMaxWidth()
+                    .padding(top = 130.dp, bottom = 88.dp),
+                state = pagerState,
+                contentPadding = PaddingValues(horizontal = 25.5.dp),
+                pageSpacing = 14.dp
+            ) { index ->
+                Box(
                     modifier = modifier
-                        .padding(top = 130.dp, bottom = 88.dp, start = 25.dp, end = 25.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .clickable(
+                            onClick = { isShowCardViewDialog = false},
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        )
                 ) {
-                    CalendarCardView(
-                        modifier = modifier.weight(1f)
-                    )
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    Row(
-                        modifier = modifier
-                            .background(shape = RoundedCornerShape(100.dp), color = Gray500)
-                            .padding(vertical = 16.dp, horizontal = 9.5.dp)
-                            .clickable(
-                                onClick = {
-                                    isShowShareBottomSheet = true
-                                },
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null
-                            ),
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+//                        modifier = modifier
+//                            .padding(top = 130.dp, bottom = 88.dp, start = 25.dp, end = 25.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            modifier = modifier.padding(end = 4.dp),
-                            text = "공유하기",
-                            style = TellingmeTheme.typography.body2Bold.copy(
-                                color = Color.White,
-                                fontSize = 14.sp
+                        CalendarCardView(
+                            modifier = modifier.weight(1f)
+                        )
+                        Spacer(modifier = Modifier.size(16.dp))
+
+                        Row(
+                            modifier = modifier
+                                .background(shape = RoundedCornerShape(100.dp), color = Gray500)
+                                .padding(vertical = 16.dp, horizontal = 9.5.dp)
+                                .clickable(
+                                    onClick = {
+                                        isShowShareBottomSheet = true
+                                    },
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = modifier.padding(end = 4.dp),
+                                text = "공유하기",
+                                style = TellingmeTheme.typography.body2Bold.copy(
+                                    color = Color.White,
+                                    fontSize = 14.sp
+                                )
                             )
-                        )
-                        Image(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_share),
-                            contentDescription = null
-                        )
+                            Image(
+                                imageVector = ImageVector.vectorResource(R.drawable.icon_share),
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             }

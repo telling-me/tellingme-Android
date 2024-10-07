@@ -150,7 +150,8 @@ fun HomeScreenContent(
             val pagerState = rememberPagerState { cardList.size }
 
             HorizontalPager(
-                state = pagerState, modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.padding(top = 12.dp),
+                state = pagerState,
                 contentPadding = PaddingValues(end = 32.dp),
             ) { page ->
                 val item = cardList[page]

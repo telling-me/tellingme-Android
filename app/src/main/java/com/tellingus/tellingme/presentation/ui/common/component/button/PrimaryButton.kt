@@ -1,5 +1,8 @@
 package com.tellingus.tellingme.presentation.ui.common.component.button
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +14,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tellingus.tellingme.R
@@ -30,11 +36,21 @@ fun PrimaryButton(
     size: ButtonSize,
     text: String,
     onClick: () -> Unit,
-    enable: Boolean = true
+    enable: Boolean = true,
+    isScaleDown: Boolean = false
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val sizeScale by animateFloatAsState(if (isPressed) 0.96f else 1f, label = "")
+
     CompositionLocalProvider(LocalRippleTheme provides PrimaryButtonRippleTheme) {
         Button(
-            modifier = modifier,
+            modifier = modifier
+                .graphicsLayer(
+                    scaleX = if (isScaleDown) sizeScale else 1f,
+                    scaleY = if (isScaleDown) sizeScale else 1f
+                ),
+            interactionSource = interactionSource,
             shape = RoundedCornerShape(dimensionResource(R.dimen.button_radius)),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(

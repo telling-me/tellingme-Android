@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -204,7 +205,8 @@ fun RecordScreenContent(
     var isEmotionBottomSheetOpen by remember { mutableStateOf(false) }
 
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
     ) {
         Column(
             modifier = modifier
@@ -216,7 +218,6 @@ fun RecordScreenContent(
                 style = TellingmeTheme.typography.body1Regular.copy(
                     color = Gray700,
                 ),
-
             )
             Spacer(modifier = modifier.size(8.dp))
             Text(
@@ -397,7 +398,7 @@ fun EmotionBottomSheet(
             )
             Spacer(modifier = modifier.size(4.dp))
             Text(
-                text = "듀이 감정티콘을 선택해주세요",
+                text = if (selectedEmotion == -1) "듀이 감정티콘을 선택해주세요" else emotionList[selectedEmotion].description,
                 style = TellingmeTheme.typography.body2Regular.copy(
                     color = Gray600
                 ),

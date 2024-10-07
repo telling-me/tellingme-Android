@@ -51,6 +51,7 @@ fun LoginScreen(
                 PrimaryButton(
                     size = ButtonSize.LARGE,
                     text = "홈 화면으로 이동",
+                    isScaleDown = true,
                     onClick = {
                         viewModel.processEvent(LoginContract.Event.MoveToHomeButtonClicked)
                     }
