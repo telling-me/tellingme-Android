@@ -5,5 +5,5 @@ import com.tellingus.tellingme.data.network.adapter.ApiResult
 
 interface NoticeRepository {
 
-    suspend fun loadNotice(): ApiResult<List<LoadNoticeResponse>>
+    suspend fun loadNotice(): ApiResult<LoadNoticeResponse>
 }

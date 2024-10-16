@@ -38,7 +38,7 @@ class AlarmViewModel @Inject constructor(
     fun loadAlarmList() {
         viewModelScope.launch {
             loadNoticeUseCase().onSuccess { it ->
-                currentState.copy(isLoading = true, list = it)
+                currentState.copy(isLoading = true, list = it.data)
             }.onFailure { message, code ->
                 currentState.copy(isLoading = false)
                 val TAG: String = "로그"

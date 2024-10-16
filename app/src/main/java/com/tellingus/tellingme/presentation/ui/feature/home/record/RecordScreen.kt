@@ -15,56 +15,61 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.BottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 import com.tellingus.tellingme.R
+import com.tellingus.tellingme.core.moddel.Emotion
+import com.tellingus.tellingme.core.moddel.emotionList
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
-import com.tellingus.tellingme.presentation.ui.common.component.box.CheckBox
-import com.tellingus.tellingme.presentation.ui.common.component.box.SelectBox
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryLightButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.SingleButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.TellingmeIconButton
+import com.tellingus.tellingme.presentation.ui.common.component.dialog.DoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.component.dialog.ShowDoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
+import com.tellingus.tellingme.presentation.ui.common.component.toast.TellingmeToast
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.model.ToolTipType
 import com.tellingus.tellingme.presentation.ui.common.component.widget.ToolTip
@@ -77,20 +82,19 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray700
 import com.tellingus.tellingme.presentation.ui.theme.Gray800
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.tellingus.tellingme.util.collectWithLifecycle
 
 @Composable
 fun RecordScreen(
     modifier: Modifier = Modifier,
+    viewModel: RecordViewModel = hiltViewModel(),
     navController: NavController,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var showDialogState by remember { mutableStateOf(false) }
+    var showToastMessage by remember { mutableStateOf(Pair(false, "")) }
     var showTodayQuestionChangeBottomSheet by remember { mutableStateOf(false) }
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     MainLayout(
         header = {
@@ -118,14 +122,18 @@ fun RecordScreen(
                         SingleButton(
                             size = ButtonSize.LARGE,
                             text = "완료",
-                            onClick = { showDialogState = true }
+                            onClick = {
+                                viewModel.processEvent(RecordContract.Event.OnClickRecordButton)
+                            }
                         )
                     }
                 }
             )
         },
         content = {
-            RecordScreenContent(modifier)
+            RecordScreenContent(
+                viewModel = viewModel
+            )
         },
         isScrollable = false
     )
@@ -164,12 +172,36 @@ fun RecordScreen(
         )
     }
 
+    if (showToastMessage.first) {
+        TellingmeToast(context).showToast(text = showToastMessage.second, icon = R.drawable.icon_warn)
+        showToastMessage = Pair(false, "")
+    }
+    
+    viewModel.effect.collectWithLifecycle { effect ->
+        when(effect) {
+            is RecordContract.Effect.ShowRecordDialog -> {
+                showDialogState = true
+            }
+
+            is RecordContract.Effect.ShowToastMessage -> {
+                showToastMessage = Pair(true, effect.text)
+            }
+
+            is RecordContract.Effect.MoveToMoreScreen -> {
+
+            }
+            
+            else -> {}
+        }
+    }
 }
 
 @Composable
-fun RecordScreenContent(modifier: Modifier = Modifier) {
-    var recordText by remember { mutableStateOf("") }
-    var switchState by remember { mutableStateOf(true) }
+fun RecordScreenContent(
+    modifier: Modifier = Modifier,
+    viewModel: RecordViewModel
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var isEmotionBottomSheetOpen by remember { mutableStateOf(false) }
 
     Column(
@@ -183,8 +215,9 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = "지금까지 나의 인생을 두 단계로\n나눈다면 어느 시점에 구분선을 둘 건가요?",
-                style = TellingmeTheme.typography.head3Regular,
-                color = Gray700
+                style = TellingmeTheme.typography.body1Regular.copy(
+                    color = Gray700,
+                ),
             )
             Spacer(modifier = modifier.size(8.dp))
             Text(
@@ -217,11 +250,13 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                modifier = modifier.size(44.dp),
-                                painter = painterResource(R.drawable.emotion_circle),
+                                modifier = modifier.size(52.dp),
+                                imageVector = if (uiState.selectedEmotion == -1) {
+                                    ImageVector.vectorResource(R.drawable.emotion_circle)
+                                } else ImageVector.vectorResource(emotionList[uiState.selectedEmotion].icon),
                                 contentDescription = null
                             )
-                            Spacer(modifier = modifier.size(8.dp))
+                            Spacer(modifier = modifier.size(4.dp))
                             Text(
                                 modifier = modifier
                                     .defaultMinSize(minWidth = 63.dp)
@@ -230,22 +265,24 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(horizontal = 6.dp, vertical = 1.5.dp),
-                                text = "?",
+                                text = if (uiState.selectedEmotion == -1) "?" else emotionList[uiState.selectedEmotion].description,
                                 textAlign = TextAlign.Center,
                                 style = TellingmeTheme.typography.body2Bold,
                                 color = Gray600
                             )
                         }
                         Spacer(modifier = modifier.size(12.dp))
-                        ToolTip(
-                            modifier = modifier.padding(top = 4.dp),
-                            type = ToolTipType.BASIC,
-                            text = "감정을 선택해주세요!"
-                        )
+                        if (uiState.selectedEmotion == -1) {
+                            ToolTip(
+                                modifier = modifier.padding(top = 4.dp),
+                                type = ToolTipType.BASIC,
+                                text = "감정을 선택해주세요!"
+                            )
+                        }
                     }
                     Spacer(modifier = modifier.size(12.dp))
                     Text(
-                        text = "2023.08.26",
+                        text = uiState.today,
                         style = TellingmeTheme.typography.caption1Bold,
                         color = Gray300
                     )
@@ -253,10 +290,10 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
 
                     BasicTextField(
                         modifier = modifier.fillMaxWidth(),
-                        value = recordText,
+                        value = uiState.answer,
                         onValueChange = {
-                            if (it.length <= 500) {
-                                recordText = it
+                            if (it.length <= 300) {
+                                viewModel.updateAnswer(it)
                             }
                         },
                         textStyle = TellingmeTheme.typography.body2Regular.copy(
@@ -266,7 +303,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
                         ),
                         decorationBox = { innerTextField ->
                             Box {
-                                if (recordText.isBlank()) {
+                                if (uiState.answer.isBlank()) {
                                     Text(
                                         text = "여기를 눌러 작성해주세요!",
                                         style = TellingmeTheme.typography.body2Regular.copy(
@@ -296,8 +333,10 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
             Spacer(modifier = modifier.size(10.dp))
             Switch(
                 modifier = modifier.scale(0.8f),
-                checked = switchState,
-                onCheckedChange = { switchState = it },
+                checked = uiState.isOpen,
+                onCheckedChange = {
+                    viewModel.processEvent(RecordContract.Event.OnClickOpenSwitch)
+                },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = Base0,
                     checkedTrackColor = Primary400
@@ -306,7 +345,7 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = modifier.weight(1f))
             Text(
-                text = "${recordText.length} / 500",
+                text = "${uiState.answer.length} / 300",
                 style = TellingmeTheme.typography.caption1Bold,
                 color = Gray600
             )
@@ -317,34 +356,23 @@ fun RecordScreenContent(modifier: Modifier = Modifier) {
         EmotionBottomSheet(
             onDismiss = { isEmotionBottomSheetOpen = false },
             onClickCancel = { isEmotionBottomSheetOpen = false },
-            onClickConfirm = { isEmotionBottomSheetOpen = false }
+            onClickConfirm = {
+                viewModel.updateSelectedEmotion(it)
+                isEmotionBottomSheetOpen = false
+            }
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmotionBottomSheet(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     onClickCancel: () -> Unit,
-    onClickConfirm: () -> Unit,
+    onClickConfirm: (Int) -> Unit,
 ) {
-    val emotionList = listOf<Emotion>(
-        Emotion(R.drawable.emotion_happy_large, "행복해요"),
-        Emotion(R.drawable.emotion_proud_large, "뿌듯해요"),
-        Emotion(R.drawable.emotion_meh_large, "그저 그래요"),
-        Emotion(R.drawable.emotion_tired_large, "피곤해요"),
-        Emotion(R.drawable.emotion_sad_large, "슬퍼요"),
-        Emotion(R.drawable.emotion_angry_large, "화나요"),
-        Emotion(R.drawable.emotion_excited_large, "설레요"),
-        Emotion(R.drawable.emotion_thrilled_large, "신나요"),
-        Emotion(R.drawable.emotion_relaxed_large, "편안해요"),
-        Emotion(R.drawable.emotion_lethargic_large, "무기력해요"),
-        Emotion(R.drawable.emotion_lonely_large, "외로워요"),
-        Emotion(R.drawable.emotion_complicated_large, "복잡해요"),
-    )
     var selectedEmotion by remember { mutableStateOf(-1) }
+    var showBuyEmotionDialog by remember { mutableStateOf(false) }
 
     BottomSheetDialog(
         onDismissRequest = onDismiss,
@@ -364,14 +392,16 @@ fun EmotionBottomSheet(
         ) {
             Text(
                 text = "이 글 속 나의 감정을 떠올려 봐요",
-                style = TellingmeTheme.typography.head3Bold,
-                color = Gray600
+                style = TellingmeTheme.typography.body1Bold.copy(
+                    color = Gray600,
+                ),
             )
             Spacer(modifier = modifier.size(4.dp))
             Text(
-                text = "듀이 감정티콘을 선택해주세요",
-                style = TellingmeTheme.typography.body1Regular,
-                color = Gray600
+                text = if (selectedEmotion == -1) "듀이 감정티콘을 선택해주세요" else emotionList[selectedEmotion].description,
+                style = TellingmeTheme.typography.body2Regular.copy(
+                    color = Gray600
+                ),
             )
             Spacer(modifier = modifier.size(16.dp))
 
@@ -386,25 +416,59 @@ fun EmotionBottomSheet(
                     contentPadding = PaddingValues(vertical = 24.dp)
                 ) {
                     itemsIndexed(emotionList) {position, item ->
-                        Image(
-                            imageVector = ImageVector.vectorResource(item.icon),
-                            contentDescription = "emotion",
+                        Box(
                             modifier = modifier
-                                .clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
-                                    onClick = {
-                                        selectedEmotion = position
-                                    }
-                                )
                                 .alpha(
                                     if (selectedEmotion == -1 || position == selectedEmotion) {
                                         1f
                                     } else {
                                         0.5f
                                     }
-                                )
-                        )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                modifier = modifier
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null,
+                                        onClick = {
+                                            if (position < 6) {
+                                                selectedEmotion = position
+                                            } else {
+                                                showBuyEmotionDialog = true
+                                            }
+                                        }
+                                    ),
+                                imageVector = ImageVector.vectorResource(item.icon),
+                                contentDescription = "emotion"
+                            )
+                            if (position >= 6) {
+                                Row(
+                                    modifier = modifier
+                                        .background(
+                                            shape = RoundedCornerShape(100.dp),
+                                            color = Color.White
+                                        )
+                                        .padding(horizontal = 8.5.dp, vertical = 3.5.dp)
+                                        .align(Alignment.BottomCenter),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Image(
+                                        modifier = modifier.size(14.dp),
+                                        imageVector = ImageVector.vectorResource(R.drawable.icon_cheese),
+                                        contentDescription = null
+                                    )
+                                    Spacer(modifier = Modifier.size(4.dp))
+                                    Text(
+                                        text = "33",
+                                        style = TellingmeTheme.typography.caption2Bold.copy(
+                                            color = Gray600
+                                        )
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -420,9 +484,71 @@ fun EmotionBottomSheet(
                 PrimaryButton(
                     modifier = modifier.weight(1f),
                     size = ButtonSize.LARGE,
-                    text = "완료",
-                    onClick = onClickConfirm
+                    text = "확인",
+                    enable = selectedEmotion != -1,
+                    onClick =  {
+                        onClickConfirm(selectedEmotion)
+                    }
                 )
+            }
+        }
+    }
+
+    if (showBuyEmotionDialog) {
+        Dialog(
+            onDismissRequest = {
+                showBuyEmotionDialog = false
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+                usePlatformDefaultWidth = false
+            )
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .background(
+                        shape = RoundedCornerShape(20.dp),
+                        color = Base0
+                    )
+                    .padding(top = 30.dp, start = 16.dp, end = 16.dp, bottom = 20.dp)
+                    .wrapContentHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "치즈 33개로 구매하시겠어요?",
+                    style = TellingmeTheme.typography.body1Bold.copy(
+                        color = Gray600
+                    )
+                )
+                Spacer(modifier = Modifier.size(20.dp))
+                Image(
+                    modifier = modifier.size(120.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.icon_cheese_box),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.size(20.dp))
+                Row {
+                    PrimaryLightButton(
+                        modifier = modifier.weight(1f),
+                        size = ButtonSize.LARGE,
+                        text = "취소",
+                        onClick = {
+                            showBuyEmotionDialog = false
+                        }
+                    )
+                    Spacer(modifier = modifier.size(8.dp))
+                    PrimaryButton(
+                        modifier = modifier.weight(1f),
+                        size = ButtonSize.LARGE,
+                        text = "구매하기",
+                        onClick = {
+
+                        }
+                    )
+                }
             }
         }
     }
@@ -545,15 +671,4 @@ fun TodayQuestionChangeBottomSheet(
 
 enum class QuestionState {
     ORIGINAL, NEW
-}
-
-data class Emotion(
-    @DrawableRes val icon: Int,
-    val description: String
-)
-
-@Preview
-@Composable
-fun RecordScreenPreview() {
-//    RecordScreen {}
 }

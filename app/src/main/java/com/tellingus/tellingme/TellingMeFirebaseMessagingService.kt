@@ -98,8 +98,7 @@ class TellingMeFirebaseMessagingService : FirebaseMessagingService() {
     private fun sendMessageByNotification(remoteMessage: RemoteMessage) {
         val (uniId, pendingIntent) = setNotificationIntent()
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION) // 알림 소리
-        val notificationManager =
-            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager);
@@ -108,7 +107,6 @@ class TellingMeFirebaseMessagingService : FirebaseMessagingService() {
         // 알림에 대한 UI 정보와 작업을 지정
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.tellingme_logo) // 아이콘 설정
-            /** custom backend 스펙 맞춰야함 **/
             .setContentTitle(remoteMessage.notification?.title.toString()) // 제목
             .setContentText(remoteMessage.notification?.body.toString()) // 메시지 내용
             .setAutoCancel(true)

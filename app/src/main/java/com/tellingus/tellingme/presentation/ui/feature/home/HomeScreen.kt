@@ -16,8 +16,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
+import com.tellingus.tellingme.presentation.ui.common.component.toast.TellingmeToast
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
@@ -35,7 +41,6 @@ import com.tellingus.tellingme.presentation.ui.common.component.widget.ProfileWi
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonState
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.common.navigation.MyPageDestinations
-import com.tellingus.tellingme.presentation.ui.feature.auth.login.LoginViewModel
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 import com.tellingus.tellingme.presentation.ui.theme.Gray200
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
@@ -46,6 +51,8 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     MainLayout(
         header = {
             HomeScreenHeader(navController)
@@ -60,6 +67,7 @@ fun HomeScreen(
     LaunchedEffect(key1 = false) {
         viewModel.getNotice()
     }
+
 }
 
 @Composable
@@ -142,7 +150,8 @@ fun HomeScreenContent(
             val pagerState = rememberPagerState { cardList.size }
 
             HorizontalPager(
-                state = pagerState, modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.padding(top = 12.dp),
+                state = pagerState,
                 contentPadding = PaddingValues(end = 32.dp),
             ) { page ->
                 val item = cardList[page]

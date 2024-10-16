@@ -1,6 +1,5 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -114,8 +113,8 @@ fun SignupBirthGenderContentScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var birth by remember { mutableStateOf(uiState.joinRequestDto.birthDate) }
-    var gender by remember { mutableStateOf(uiState.joinRequestDto.gender) }
+    var birth by remember { mutableStateOf(uiState.signupRequest.birthDate) }
+    var gender by remember { mutableStateOf(uiState.signupRequest.gender) }
     var isFocused by remember { mutableStateOf(false) }
 
     Column(
@@ -204,7 +203,7 @@ fun SignupBirthGenderContentScreen(
                                     enabled = false,
                                     onClick = {}
                                 ),
-                            text = if (birth.length == 4 && birth.toInt() > 2024) "올바른 형식으로 다시 입력해주세요." else " ",
+                            text = if (birth.length == 4 && birth.toInt() > 2025) "올바른 형식으로 다시 입력해주세요." else " ",
                             style = TellingmeTheme.typography.caption1Regular.copy(
                                 color = Error600
                             )

@@ -8,7 +8,7 @@ import javax.inject.Inject
 class LoadNoticeUseCase @Inject constructor(
     private val noticeRepository: NoticeRepository
 ) {
-    suspend operator fun invoke(): ApiResult<List<LoadNoticeResponse>> {
+    suspend operator fun invoke(): ApiResult<LoadNoticeResponse> {
         return noticeRepository.loadNotice()
     }
 }

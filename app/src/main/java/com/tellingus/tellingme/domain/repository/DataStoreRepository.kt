@@ -1,14 +1,17 @@
 package com.tellingus.tellingme.domain.repository
 
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
-import com.tellingus.tellingme.data.network.adapter.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 
 interface DataStoreRepository {
-    suspend fun setUserSocialId(socialId: String)
-    suspend fun getUserSocialId(): Flow<String>
+    suspend fun setString(key: String, value: String)
+    suspend fun setInt(key: String, value: Int)
+    suspend fun setBoolean(key: String, value: Boolean)
+    suspend fun getString(key: String): Flow<String>
+    suspend fun getInt(key: String): Flow<Int>
+    suspend fun getBoolean(key: String): Flow<Boolean>
 
+    // 아래 제거 필요
     suspend fun setJwtTokens(
         accessToken: String,
         refreshToken: String
@@ -18,4 +21,9 @@ interface DataStoreRepository {
     suspend fun getRefreshToken(): Flow<String>
 
     suspend fun deleteTokens()
+}
+
+object DataStoreKey {
+    const val SOCIAL_ID = "socialId"
+
 }

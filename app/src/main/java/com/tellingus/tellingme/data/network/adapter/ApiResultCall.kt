@@ -23,15 +23,16 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                         )
                     } else {
                         val errorBody = BasicResponse(
-                                status = response.code(),
-                                message = response.errorBody()?.let {
-                                    response.errorBody()!!.string()
-                                } ?: "알 수 없는 오류가 발생했습니다.")
+                            code = response.code(),
+                            message = response.errorBody()?.let {
+                                response.errorBody()!!.string()
+                            } ?: "알 수 없는 오류가 발생했습니다."
+                        )
 
                         callback.onResponse(
                             this@ApiResultCall,
                             Response.success(
-                                ApiResult.Failure(errorBody.message, errorBody.status)
+                                ApiResult.Failure(errorBody.message, errorBody.code)
                             )
                         )
                     }

@@ -7,10 +7,11 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
+import com.tellingus.tellingme.domain.repository.DataStoreKey.SOCIAL_ID
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import com.tellingus.tellingme.domain.usecase.LoginUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
@@ -89,27 +90,30 @@ class LoginViewModel @Inject constructor(
                 oauthToken = oauthToken,
                 loginType = LoginType.KAKAO.name.lowercase(),
                 isAuto = IsAuto.MANUAL.name.lowercase(),
-                oauthRequestDto = OauthRequestDto()
+                oauthRequest = OauthRequest(socialId = "")
             ).onSuccess {
                 // 자동 로그인인 경우 바로 홈 화면으로 진입
                 updateState(currentState.copy(isLoading = false))
+                Log.d("taag", it.toString())
                 dataStoreRepository.setJwtTokens(
-                    accessToken = it.accessToken,
-                    refreshToken = it.refreshToken
+                    accessToken = it.data.accessToken,
+                    refreshToken = it.data.refreshToken
                 )
 
                 postEffect(LoginContract.Effect.MoveToHome)
             }
             .onFailure { message, code ->
                 updateState(currentState.copy(isLoading = false))
+                Log.d("taag", code.toString())
+                Log.d("taag", message)
                 when(code) {
                     404 -> {
                         // 최초 로그인이라면 로컬에 socialId 저장 후 추가정보 기입 화면으로 이동
-                        val socialId = message.split("${'"'}")[3]
+                        val socialId = message.split("${'"'}")[7]
                         Log.d("taag", "$message // socialId : $socialId")
 
                         // 소셜로그인 결과 404라면 추가정보 기입 화면으로 이동
-                        dataStoreRepository.setUserSocialId(socialId)
+                        dataStoreRepository.setString(SOCIAL_ID, socialId)
                         postEffect(LoginContract.Effect.MoveToSignup(socialId = socialId))
                     }
                     1000 -> {

@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.data.repositoryimpl
 
+import android.util.Log
 import com.tellingus.tellingme.data.model.notice.LoadNoticeResponse
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
@@ -11,7 +12,7 @@ import javax.inject.Singleton
 class NoticeRepositoryImpl @Inject constructor(
     private val service: NetworkService
 ) : NoticeRepository{
-    override suspend fun loadNotice(): ApiResult<List<LoadNoticeResponse>> {
+    override suspend fun loadNotice(): ApiResult<LoadNoticeResponse> {
         return service.loadNotice()
     }
 }

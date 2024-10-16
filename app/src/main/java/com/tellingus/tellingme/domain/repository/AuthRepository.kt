@@ -1,10 +1,10 @@
 package com.tellingus.tellingme.domain.repository
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
-import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
+import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
+import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 
 interface AuthRepository {
@@ -12,21 +12,21 @@ interface AuthRepository {
         oauthToken: String,
         loginType: String,
         isAuto: String,
-        oauthRequestDto: OauthRequestDto
-    ): ApiResult<TokenDto>
+        oauthRequest: OauthRequest
+    ): ApiResult<TokenResponse>
 
     suspend fun verifyNickname(
-        nicknameRequestDto: NicknameRequestDto
-    ): ApiResult<BasicResponse>
+        nickname: String
+    ): ApiResult<NicknameResponse>
 
-    suspend fun joinUser(
-        joinRequestDto: JoinRequestDto
+    suspend fun signupUser(
+        signupRequest: SignupRequest
     ): ApiResult<BasicResponse>
 
     suspend fun refreshAccessToken(
         accessToken: String,
         refreshToken: String
-    ): ApiResult<TokenDto>
+    ): ApiResult<TokenResponse>
 
     suspend fun signOutUser(): ApiResult<BasicResponse>
 }

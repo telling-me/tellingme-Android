@@ -1,11 +1,12 @@
 package com.tellingus.tellingme.data.repositoryimpl
 
 import com.tellingus.tellingme.data.model.common.BasicResponse
-import com.tellingus.tellingme.data.model.oauth.login.OauthRequestDto
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
-import com.tellingus.tellingme.data.model.oauth.signout.WithdrawDto
-import com.tellingus.tellingme.data.model.oauth.signup.JoinRequestDto
-import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequestDto
+import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
+import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
+import com.tellingus.tellingme.data.model.oauth.signout.SignoutRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
+import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.AuthRepository
@@ -20,28 +21,28 @@ class AuthRepositoryImpl @Inject constructor(
         oauthToken: String,
         loginType: String,
         isAuto: String,
-        oauthRequestDto: OauthRequestDto
-    ): ApiResult<TokenDto> {
-        return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequestDto)
+        oauthRequest: OauthRequest
+    ): ApiResult<TokenResponse> {
+        return service.loginFromKakao(oauthToken, loginType, isAuto, oauthRequest)
     }
 
-    override suspend fun verifyNickname(nicknameRequestDto: NicknameRequestDto): ApiResult<BasicResponse> {
-        return service.verifyNickname(nicknameRequestDto)
+    override suspend fun verifyNickname(nickname: String): ApiResult<NicknameResponse> {
+        return service.verifyNickname(NicknameRequest(nickname = nickname))
     }
 
-    override suspend fun joinUser(joinRequestDto: JoinRequestDto): ApiResult<BasicResponse> {
-        return service.joinUser(joinRequestDto)
+    override suspend fun signupUser(signupRequest: SignupRequest): ApiResult<BasicResponse> {
+        return service.signupUser(signupRequest)
     }
 
     override suspend fun refreshAccessToken(
         accessToken: String,
         refreshToken: String
-    ): ApiResult<TokenDto> {
+    ): ApiResult<TokenResponse> {
         return service.refreshAccessToken(accessToken, refreshToken)
     }
 
     override suspend fun signOutUser(): ApiResult<BasicResponse> {
-        return service.signOutUser(withdrawDto = WithdrawDto())
+        return service.signOutUser(signoutRequest = SignoutRequest())
     }
 
 }

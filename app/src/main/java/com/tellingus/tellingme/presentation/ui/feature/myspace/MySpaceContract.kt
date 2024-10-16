@@ -19,9 +19,15 @@ class MySpaceContract {
             val swipe: Long
         ): Event()
 
+        data class OnClickCalendarDate(
+            val year: String,
+            val month: String
+        ): Event()
     }
 
     sealed class Effect: UiEffect {
         object ScrollToToday: Effect()
+        object ShowAnswerListPagerDialog: Effect()
+        object ShowAnswerEmptyDialog: Effect()
     }
 }

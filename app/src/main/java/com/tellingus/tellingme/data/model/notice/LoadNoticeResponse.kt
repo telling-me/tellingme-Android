@@ -2,6 +2,12 @@ package com.tellingus.tellingme.data.model.notice
 
 // TODO: 홈 NoticeResponse 테스트 완료 후 NoticeResponse 로 이름 수정
 data class LoadNoticeResponse(
+    val code: Int,
+    val message: String,
+    val data: List<LoadNotice>
+)
+
+data class LoadNotice(
     val noticeId: Int,
     val title:String,
     val content: String,
@@ -10,5 +16,5 @@ data class LoadNoticeResponse(
     val link: String,
     val isInternal: Boolean,
     val answerId: Int,
-    val date: String,
+    val date: String
 )

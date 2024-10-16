@@ -1,5 +1,5 @@
 package com.tellingus.tellingme.data.model.oauth.signup
 
-data class NicknameRequestDto(
+data class NicknameRequest(
     val nickname: String
 )

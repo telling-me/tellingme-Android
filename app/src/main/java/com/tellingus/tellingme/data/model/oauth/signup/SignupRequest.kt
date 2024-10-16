@@ -1,6 +1,6 @@
 package com.tellingus.tellingme.data.model.oauth.signup
 
-data class JoinRequestDto(
+data class SignupRequest(
     val socialId: String = "",
     val socialLoginType: String = "",
     val nickname: String = "",

@@ -2,18 +2,14 @@ package com.tellingus.tellingme.data.repositoryimpl
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.tellingus.tellingme.data.model.oauth.login.JwtTokenBody
-import com.tellingus.tellingme.data.model.oauth.login.TokenDto
-import com.tellingus.tellingme.data.network.NetworkService
-import com.tellingus.tellingme.data.network.adapter.ApiResult
-import com.tellingus.tellingme.di.AuthNetworkService
 import com.tellingus.tellingme.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,19 +18,51 @@ import javax.inject.Singleton
 class DataStoreRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ): DataStoreRepository {
-    override suspend fun setUserSocialId(socialId: String) {
+    override suspend fun setString(key: String, value: String) {
         dataStore.edit {
-            it[USER_SOCIAL_ID] = socialId
+            it[stringPreferencesKey(key)] = value
         }
     }
 
-    override suspend fun getUserSocialId(): Flow<String> {
+    override suspend fun setInt(key: String, value: Int) {
+        dataStore.edit {
+            it[intPreferencesKey(key)] = value
+        }
+    }
+
+    override suspend fun setBoolean(key: String, value: Boolean) {
+        dataStore.edit {
+            it[booleanPreferencesKey(key)] = value
+        }
+    }
+
+    override suspend fun getString(key: String): Flow<String> {
         return dataStore.data
             .catch {
                 emit(emptyPreferences())
             }
             .map {
-                it[USER_SOCIAL_ID] ?: ""
+                it[stringPreferencesKey(key)] ?: ""
+            }
+    }
+
+    override suspend fun getInt(key: String): Flow<Int> {
+        return dataStore.data
+            .catch {
+                emit(emptyPreferences())
+            }
+            .map {
+                it[intPreferencesKey(key)] ?: -1
+            }
+    }
+
+    override suspend fun getBoolean(key: String): Flow<Boolean> {
+        return dataStore.data
+            .catch {
+                emit(emptyPreferences())
+            }
+            .map {
+                it[booleanPreferencesKey(key)] ?: false
             }
     }
 
