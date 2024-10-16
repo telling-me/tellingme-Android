@@ -4,6 +4,7 @@ import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.home.NoticeResponse
 import com.tellingus.tellingme.data.model.home.QuestionRequest
 import com.tellingus.tellingme.data.model.home.QuestionResponse
+import com.tellingus.tellingme.data.model.myspace.AnswerListResponse
 import com.tellingus.tellingme.data.model.notice.LoadNoticeResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
@@ -17,6 +18,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 const val END_POINT: String = "/api"
@@ -65,9 +67,16 @@ interface NetworkService {
     ): ApiResult<TokenResponse>
 
     // 회원 탈퇴 API
-    @POST("${END_POINT}/oauth/withdraw/app")
+    @POST("${END_POINT}/oauth/withdraw/rn")
     suspend fun signOutUser(
         @Body signoutRequest: SignoutRequest
     ): ApiResult<BasicResponse>
+
+    // 내 답변 리스트 조회 API
+    @GET("${END_POINT}/answer/list")
+    suspend fun getAnswerList(
+        @Query("year") year: String,
+        @Query("month") month: String
+    ): ApiResult<AnswerListResponse>
 
 }

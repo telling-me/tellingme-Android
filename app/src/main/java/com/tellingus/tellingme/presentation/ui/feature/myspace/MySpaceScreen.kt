@@ -1,7 +1,7 @@
 package com.tellingus.tellingme.presentation.ui.feature.myspace
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.widget.Space
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -19,18 +19,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,11 +58,8 @@ import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.button.FloatingButton
 import com.tellingus.tellingme.presentation.ui.common.component.button.PrimaryButton
 import com.tellingus.tellingme.presentation.ui.common.component.card.CalendarCardView
-import com.tellingus.tellingme.presentation.ui.common.component.dialog.DoubleButtonDialog
 import com.tellingus.tellingme.presentation.ui.common.model.ButtonSize
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
-import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupContract
-import com.tellingus.tellingme.presentation.ui.feature.auth.signup.SignupTermsBottomSheet
 import com.tellingus.tellingme.presentation.ui.theme.Background200
 import com.tellingus.tellingme.presentation.ui.theme.Base0
 import com.tellingus.tellingme.presentation.ui.theme.Error400
@@ -78,9 +69,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Gray600
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
 import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 import com.tellingus.tellingme.util.collectWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
-import java.util.Calendar
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("NewApi")
@@ -99,7 +88,8 @@ fun MySpaceScreen(
     var currentPage by remember { mutableIntStateOf(initialPage) }
 
     var isShowDatePicker by remember { mutableStateOf(false) }
-    var isShowCardViewDialog by remember { mutableStateOf(false) }
+    var isShowAnswerListPagerDialog by remember { mutableStateOf(false) }
+    var isShowEmptyDialog by remember { mutableStateOf(false) }
     var isShowShareBottomSheet by remember { mutableStateOf(false) }
 
 
@@ -242,7 +232,13 @@ fun MySpaceScreen(
                                         .fillMaxWidth()
                                         .clickable(
                                             onClick = {
-                                                isShowCardViewDialog = true
+//                                                isShowAnswerListPagerDialog = true
+                                                viewModel.processEvent(
+                                                    MySpaceContract.Event.OnClickCalendarDate(
+                                                        year = "2024",
+                                                        month = "10"
+                                                    )
+                                                )
                                             },
                                             interactionSource = remember { MutableInteractionSource() },
                                             indication = null
@@ -348,12 +344,12 @@ fun MySpaceScreen(
         }
     }
 
-    if (isShowCardViewDialog) {
+    if (isShowAnswerListPagerDialog) {
         val pagerState = rememberPagerState { 5 }
 
         Dialog(
             onDismissRequest = {
-                isShowCardViewDialog = false
+                isShowAnswerListPagerDialog = false
             },
             properties = DialogProperties(
                 dismissOnBackPress = true,
@@ -372,7 +368,7 @@ fun MySpaceScreen(
                 Box(
                     modifier = modifier
                         .clickable(
-                            onClick = { isShowCardViewDialog = false},
+                            onClick = { isShowAnswerListPagerDialog = false},
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         )
@@ -482,6 +478,50 @@ fun MySpaceScreen(
         }
     }
 
+    if (isShowEmptyDialog) {
+        Dialog(
+            onDismissRequest = {
+                isShowEmptyDialog = false
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true,
+                usePlatformDefaultWidth = false
+            )
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(top = 130.dp, bottom = 144.dp, start = 26.dp, end = 26.dp)
+                    .background(
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color.White
+                    )
+                    .clickable(
+                        onClick = { isShowEmptyDialog = false },
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    imageVector = ImageVector.vectorResource(R.drawable.image_answer_empty),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.size(24.dp))
+                Text(
+                    modifier = modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                    text = "이 날 작성한 답변이 없어요!",
+                    style = TellingmeTheme.typography.body2Regular.copy(
+                        color = Gray500,
+                        fontSize = 14.sp
+                    )
+                )
+            }
+        }
+    }
+
     viewModel.effect.collectWithLifecycle { effect ->
         when(effect) {
             is MySpaceContract.Effect.ScrollToToday -> {
@@ -489,6 +529,14 @@ fun MySpaceScreen(
                     page = (uiState.today.year - CALENDAR_RANGE.startYear) * 12 + uiState.today.monthValue - 1,
                     animationSpec = spring(stiffness = 1000f)
                 )
+            }
+
+            is MySpaceContract.Effect.ShowAnswerListPagerDialog -> {
+
+            }
+
+            is MySpaceContract.Effect.ShowAnswerEmptyDialog -> {
+                isShowEmptyDialog = true
             }
         }
     }

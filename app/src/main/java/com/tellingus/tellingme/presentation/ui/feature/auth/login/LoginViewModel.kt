@@ -94,6 +94,7 @@ class LoginViewModel @Inject constructor(
             ).onSuccess {
                 // 자동 로그인인 경우 바로 홈 화면으로 진입
                 updateState(currentState.copy(isLoading = false))
+                Log.d("taag", it.toString())
                 dataStoreRepository.setJwtTokens(
                     accessToken = it.data.accessToken,
                     refreshToken = it.data.refreshToken
@@ -103,6 +104,8 @@ class LoginViewModel @Inject constructor(
             }
             .onFailure { message, code ->
                 updateState(currentState.copy(isLoading = false))
+                Log.d("taag", code.toString())
+                Log.d("taag", message)
                 when(code) {
                     404 -> {
                         // 최초 로그인이라면 로컬에 socialId 저장 후 추가정보 기입 화면으로 이동
