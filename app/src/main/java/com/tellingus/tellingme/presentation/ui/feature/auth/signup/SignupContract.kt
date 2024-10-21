@@ -1,6 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
-import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignUpRequest
 import com.tellingus.tellingme.presentation.ui.common.base.UiEffect
 import com.tellingus.tellingme.presentation.ui.common.base.UiEvent
 import com.tellingus.tellingme.presentation.ui.common.base.UiState
@@ -9,7 +9,7 @@ class SignupContract {
     data class State(
         val isLoading: Boolean = false,
         val isAvailableNickname: Boolean = false,
-        val signupRequest: SignupRequest = SignupRequest(),
+        val signupRequest: SignUpRequest = SignUpRequest(),
         val nicknameErrorState: String = ""
     ): UiState
 

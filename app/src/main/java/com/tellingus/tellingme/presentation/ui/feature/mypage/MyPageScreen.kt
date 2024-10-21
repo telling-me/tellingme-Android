@@ -52,10 +52,16 @@ import com.tellingus.tellingme.util.AppUtils
 
 @Composable
 fun MyPageScreen(
-    navController: NavController, viewModel: MyPageViewModel = hiltViewModel()
+    navController: NavController,
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
     MainLayout(header = {
-        MyPageScreenHeader(navController)
+        MyPageScreenHeader(
+            navController = navController,
+            signOut = {
+                viewModel.signOutUser()
+            }
+        )
     }, content = {
         MyPageScreenContent(navController)/*
             Button(
@@ -70,7 +76,10 @@ fun MyPageScreen(
 }
 
 @Composable
-fun MyPageScreenHeader(navController: NavController) {
+fun MyPageScreenHeader(
+    navController: NavController,
+    signOut: () -> Unit
+) {
     BasicAppBar(modifier = Modifier
         .background(Background100)
         .height(48.dp)
@@ -82,6 +91,7 @@ fun MyPageScreenHeader(navController: NavController) {
             modifier = Modifier
                 .size(24.dp)
                 .clickable(onClick = {
+                    signOut()
 //                    navController.navigate(MyPageDestinations.설정)
 //                    [5-2. 설정] 이동
                 }),

@@ -8,10 +8,11 @@ import com.tellingus.tellingme.data.model.myspace.AnswerListResponse
 import com.tellingus.tellingme.data.model.notice.LoadNoticeResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
-import com.tellingus.tellingme.data.model.oauth.signout.SignoutRequest
-import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
+import com.tellingus.tellingme.data.model.oauth.signout.SignOutRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignUpRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
+import com.tellingus.tellingme.data.model.oauth.signup.SignUpResponse
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,9 +43,9 @@ interface NetworkService {
 
     // 추가 정보 기입 API
     @POST("${END_POINT}/oauth/join")
-    suspend fun signupUser(
-        @Body signupRequest: SignupRequest
-    ): ApiResult<BasicResponse>
+    suspend fun signUpUser(
+        @Body signupRequest: SignUpRequest
+    ): ApiResult<SignUpResponse>
 
     @GET("${END_POINT}/notice")
     suspend fun loadNotice(): ApiResult<LoadNoticeResponse>
@@ -69,7 +70,7 @@ interface NetworkService {
     // 회원 탈퇴 API
     @POST("${END_POINT}/oauth/withdraw/rn")
     suspend fun signOutUser(
-        @Body signoutRequest: SignoutRequest
+        @Body signoutRequest: SignOutRequest
     ): ApiResult<BasicResponse>
 
     // 내 답변 리스트 조회 API

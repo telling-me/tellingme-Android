@@ -75,22 +75,6 @@ fun SignupBirthGenderScreen(
                             navController.popBackStack()
                         }
                     )
-                },
-                rightSlot = {
-                    SingleBlackButton(
-                        modifier = modifier
-                            .padding(end = 10.dp),
-                        size = ButtonSize.MEDIUM,
-                        text = "건너뛰기",
-                        onClick = {
-                            viewModel.processEvent(
-                                SignupContract.Event.NextButtonClickedInBirthGender(
-                                    birth = "",
-                                    gender = ""
-                                )
-                            )
-                        }
-                    )
                 }
             )
         },
@@ -144,7 +128,6 @@ fun SignupBirthGenderContentScreen(
                 onValueChange = {
                     if (it.length <=4) {
                         birth = it
-
                     }
                 },
                 textStyle = TellingmeTheme.typography.body1Regular.copy(
@@ -242,14 +225,18 @@ fun SignupBirthGenderContentScreen(
                 .fillMaxWidth(),
             size = ButtonSize.LARGE,
             text = "다음",
-            enable = gender.isNotBlank() && birth.length==4 && birth.toInt()<2024,
+            enable = gender.isNotBlank() && birth.length==4 && birth.toInt() < 2024,
             onClick = {
-                viewModel.processEvent(
-                    SignupContract.Event.NextButtonClickedInBirthGender(
-                        birth = birth,
-                        gender = gender
+                if (gender.isNotBlank() && birth.length==4 && birth.toInt() < 2024) {
+                    viewModel.processEvent(
+                        SignupContract.Event.NextButtonClickedInBirthGender(
+                            birth = birth,
+                            gender = gender
+                        )
                     )
-                )
+                } else {
+
+                }
             }
         )
     }

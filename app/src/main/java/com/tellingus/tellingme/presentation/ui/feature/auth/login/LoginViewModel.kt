@@ -94,7 +94,6 @@ class LoginViewModel @Inject constructor(
             ).onSuccess {
                 // 자동 로그인인 경우 바로 홈 화면으로 진입
                 updateState(currentState.copy(isLoading = false))
-                Log.d("taag", it.toString())
                 dataStoreRepository.setJwtTokens(
                     accessToken = it.data.accessToken,
                     refreshToken = it.data.refreshToken
