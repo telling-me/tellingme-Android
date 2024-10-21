@@ -3,10 +3,11 @@ package com.tellingus.tellingme.data.repositoryimpl
 import com.tellingus.tellingme.data.model.common.BasicResponse
 import com.tellingus.tellingme.data.model.oauth.login.OauthRequest
 import com.tellingus.tellingme.data.model.oauth.login.TokenResponse
-import com.tellingus.tellingme.data.model.oauth.signout.SignoutRequest
-import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
+import com.tellingus.tellingme.data.model.oauth.signout.SignOutRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignUpRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameRequest
 import com.tellingus.tellingme.data.model.oauth.signup.NicknameResponse
+import com.tellingus.tellingme.data.model.oauth.signup.SignUpResponse
 import com.tellingus.tellingme.data.network.NetworkService
 import com.tellingus.tellingme.data.network.adapter.ApiResult
 import com.tellingus.tellingme.domain.repository.AuthRepository
@@ -30,8 +31,8 @@ class AuthRepositoryImpl @Inject constructor(
         return service.verifyNickname(NicknameRequest(nickname = nickname))
     }
 
-    override suspend fun signupUser(signupRequest: SignupRequest): ApiResult<BasicResponse> {
-        return service.signupUser(signupRequest)
+    override suspend fun signUpUser(signupRequest: SignUpRequest): ApiResult<SignUpResponse> {
+        return service.signUpUser(signupRequest)
     }
 
     override suspend fun refreshAccessToken(
@@ -42,7 +43,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOutUser(): ApiResult<BasicResponse> {
-        return service.signOutUser(signoutRequest = SignoutRequest())
+        return service.signOutUser(signoutRequest = SignOutRequest())
     }
 
 }

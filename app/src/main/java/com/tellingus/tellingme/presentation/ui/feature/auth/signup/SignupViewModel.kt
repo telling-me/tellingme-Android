@@ -2,11 +2,11 @@ package com.tellingus.tellingme.presentation.ui.feature.auth.signup
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tellingus.tellingme.data.model.oauth.signup.SignupRequest
+import com.tellingus.tellingme.data.model.oauth.signup.SignUpRequest
 import com.tellingus.tellingme.data.network.adapter.onFailure
 import com.tellingus.tellingme.data.network.adapter.onNetworkError
 import com.tellingus.tellingme.data.network.adapter.onSuccess
-import com.tellingus.tellingme.domain.usecase.SignupUseCase
+import com.tellingus.tellingme.domain.usecase.SignUpUseCase
 import com.tellingus.tellingme.domain.usecase.VerifyNicknameUseCase
 import com.tellingus.tellingme.presentation.ui.common.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val verifyNicknameUseCase: VerifyNicknameUseCase,
-    private val signupUseCase: SignupUseCase,
+    private val signupUseCase: SignUpUseCase,
 ): BaseViewModel<SignupContract.State, SignupContract.Event, SignupContract.Effect>(
     initialState = SignupContract.State()
 ) {
@@ -48,7 +48,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun signup(signupRequest: SignupRequest) {
+    private fun signup(signupRequest: SignUpRequest) {
         viewModelScope.launch {
             signupUseCase(
                 signupRequest = signupRequest

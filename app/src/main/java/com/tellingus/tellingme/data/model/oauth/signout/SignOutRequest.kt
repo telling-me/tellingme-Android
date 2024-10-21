@@ -1,5 +1,5 @@
 package com.tellingus.tellingme.data.model.oauth.signout
 
-data class SignoutRequest(
+data class SignOutRequest(
     val authorizationCode: String = "rn"
 )

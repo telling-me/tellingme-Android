@@ -150,7 +150,6 @@ fun SignupWorryContentScreen(
                                 selectedWorry.add(index)
                             }
                         }
-                        Log.d("taag", selectedWorry.joinToString())
                     }
                 )
                 Spacer(modifier = modifier.size(12.dp))
@@ -168,7 +167,9 @@ fun SignupWorryContentScreen(
             enable = selectedWorry.size != 0,
             onClick = {
                 viewModel.processEvent(
-                    SignupContract.Event.NextButtonClickedInWorry(worry = selectedWorry.toList())
+                    SignupContract.Event.NextButtonClickedInWorry(
+                        worry = selectedWorry.toList()
+                    )
                 )
             }
         )
