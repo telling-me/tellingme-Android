@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.feature.home.record.RecordScreen
+import com.tellingus.tellingme.presentation.ui.feature.home.tellercard.TellerCardScreen
 
 fun NavGraphBuilder.homeGraph(
     navController: NavController
@@ -22,6 +23,9 @@ fun NavGraphBuilder.homeGraph(
             RecordScreen(
                 navController = navController
             )
+        }
+        composable(route = HomeDestinations.TELLER_CARD) {
+            TellerCardScreen(navController = navController)
         }
 
     }

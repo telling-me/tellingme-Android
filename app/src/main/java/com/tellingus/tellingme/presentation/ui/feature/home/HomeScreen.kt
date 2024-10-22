@@ -16,10 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +27,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
-import com.tellingus.tellingme.presentation.ui.common.component.toast.TellingmeToast
 import com.tellingus.tellingme.presentation.ui.common.component.card.OpinionCard
 import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
@@ -122,7 +117,10 @@ fun HomeScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
-            ProfileWidget(nickname = "듀이듀이", description = "연속 1일째 기록")
+            ProfileWidget(
+                nickname = "듀이듀이",
+                description = "연속 1일째 기록",
+                modifier = Modifier.clickable { navController.navigate(HomeDestinations.TELLER_CARD) })
         }
         Box(modifier = Modifier.padding(top = 10.dp, start = 20.dp, end = 20.dp)) {
             LevelSection(level = 1, percent = 50)

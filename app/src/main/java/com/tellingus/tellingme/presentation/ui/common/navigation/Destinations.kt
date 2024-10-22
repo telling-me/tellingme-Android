@@ -28,6 +28,7 @@ object HomeDestinations {
 
     const val HOME = "home"
     const val RECORD = "record"
+    const val TELLER_CARD = "tellercard"
 }
 
 object MySpaceDestinations {
