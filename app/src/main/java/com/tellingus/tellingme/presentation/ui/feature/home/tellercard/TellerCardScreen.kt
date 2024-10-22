@@ -1,5 +1,6 @@
 package com.tellingus.tellingme.presentation.ui.feature.home.tellercard
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ fun TellerCardScreen(
 }
 
 
+
 @Composable
 fun TellerScreenContent() {
     Column {
@@ -39,29 +41,25 @@ fun TellerScreenContent() {
         Box(modifier = Modifier.padding(20.dp)) {
             LevelSection(level = 1, percent = 22)
         }
-        Box() {
+//        Box() {
             TellerBadgeList()
-        }
+//        }
     }
 }
 
 @Composable
 fun TellerScreenHeader(navController: NavController) {
-    BasicAppBar(
-        modifier = Modifier
-            .background(Background100)
-            .height(48.dp)
-            .padding(start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
-        leftSlot = {
-            Icon(
-                painter = painterResource(R.drawable.icon_caret_left),
-                contentDescription = "tellingme_logo",
-                modifier = Modifier.clickable(onClick = { navController.popBackStack() })
-            )
-        },
-        rightSlot = { CheeseBadge() }
-    )
+    BasicAppBar(modifier = Modifier
+        .background(Background100)
+        .height(48.dp)
+        .padding(start = 20.dp, end = 20.dp)
+        .fillMaxWidth(), leftSlot = {
+        Icon(
+            painter = painterResource(R.drawable.icon_caret_left),
+            contentDescription = "tellingme_logo",
+            modifier = Modifier.clickable(onClick = { navController.popBackStack() })
+        )
+    }, rightSlot = { CheeseBadge() })
 }
 
 
