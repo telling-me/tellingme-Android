@@ -12,18 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tellingus.tellingme.presentation.ui.theme.Primary400
+import com.tellingus.tellingme.presentation.ui.theme.TellingmeTheme
 
 @Composable
 fun MyTellerCard(modifier: Modifier = Modifier) {
 
-    Column(modifier = Modifier.padding(20.dp)) {
+    Column() {
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Row {
-                Text(text = "나의")
+                Text(text = "나의", style = TellingmeTheme.typography.head2Regular)
                 Spacer(modifier = Modifier.size(4.dp))
-                Text(text = "텔러 카드")
+                Text(text = "텔러 카드", style = TellingmeTheme.typography.head2Bold)
             }
-            Text(text = "꾸미기", color = Primary400)
+            Text(text = "꾸미기", color = Primary400, style = TellingmeTheme.typography.body1Bold)
         }
     }
 }
