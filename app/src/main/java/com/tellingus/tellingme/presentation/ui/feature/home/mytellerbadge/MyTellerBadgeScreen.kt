@@ -59,12 +59,8 @@ fun MyTellerBadgeScreenContent() {
         "전문 텔러" to "풍부한 지식"
     )
 
-    Column(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
-            .fillMaxHeight()
-    ) {
-        Row(modifier = Modifier.padding(top = 9.dp)) {
+    Column(modifier = Modifier.fillMaxHeight()) {
+        Row(modifier = Modifier.padding(top = 9.dp, start = 20.dp)) {
             Text(text = "내가 받은", style = TellingmeTheme.typography.head2Regular)
             Spacer(modifier = Modifier.size(4.dp))
             Text(text = "텔러 배지", style = TellingmeTheme.typography.head2Bold)
