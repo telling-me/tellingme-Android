@@ -38,6 +38,6 @@ fun CheeseBadge(modifier: Modifier = Modifier) {
             modifier = Modifier.size(26.dp)
         )
         Spacer(modifier = Modifier.size(8.dp))
-        Text(text = "111개", color = Gray600, style = TellingmeTheme.typography.caption1Regular)
+        Text(text = "111개", color = Gray600, style = TellingmeTheme.typography.body2Bold)
     }
 }

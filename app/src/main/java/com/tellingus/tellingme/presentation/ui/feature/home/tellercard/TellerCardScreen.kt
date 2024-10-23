@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,21 +20,24 @@ import androidx.navigation.compose.rememberNavController
 import com.tellingus.tellingme.R
 import com.tellingus.tellingme.presentation.ui.common.component.appbar.BasicAppBar
 import com.tellingus.tellingme.presentation.ui.common.component.badge.CheeseBadge
+import com.tellingus.tellingme.presentation.ui.common.component.chip.ActionChip
 import com.tellingus.tellingme.presentation.ui.common.component.layout.MainLayout
 import com.tellingus.tellingme.presentation.ui.common.component.widget.LevelSection
+import com.tellingus.tellingme.presentation.ui.common.navigation.HomeDestinations
 import com.tellingus.tellingme.presentation.ui.theme.Background100
 
 @Composable
 fun TellerCardScreen(
     navController: NavController,
 ) {
-    MainLayout(header = { TellerScreenHeader(navController) }, content = { TellerScreenContent() })
+    MainLayout(
+        header = { TellerScreenHeader(navController) },
+        content = { TellerScreenContent(navController) })
 }
 
 
-
 @Composable
-fun TellerScreenContent() {
+fun TellerScreenContent(navController: NavController) {
     Column {
         Box(modifier = Modifier.padding(20.dp)) {
             MyTellerCard()
@@ -41,9 +45,20 @@ fun TellerScreenContent() {
         Box(modifier = Modifier.padding(20.dp)) {
             LevelSection(level = 1, percent = 22)
         }
-//        Box() {
+        Column() {
             TellerBadgeList()
-//        }
+            Column(
+                modifier = Modifier
+                    .padding(top = 14.dp, bottom = 30.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ActionChip(
+                    text = "더보기",
+                    onClick = { navController.navigate(HomeDestinations.MY_TELLER_BADGE) }
+                )
+            }
+        }
     }
 }
 
