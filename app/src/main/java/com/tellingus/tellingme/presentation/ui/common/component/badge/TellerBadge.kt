@@ -34,7 +34,7 @@ fun TellerBadge(modifier: Modifier = Modifier, title: String = "", content: Stri
         Image(
             painter = painterResource(R.drawable.emotion_happy_medium),
             contentDescription = "",
-            modifier = Modifier.size(52.dp),
+            modifier = Modifier.size(100.dp),
         )
         Text(text = "${title}", style = TellingmeTheme.typography.caption1Regular)
         Text(text = "${content}", style = TellingmeTheme.typography.body2Bold)
