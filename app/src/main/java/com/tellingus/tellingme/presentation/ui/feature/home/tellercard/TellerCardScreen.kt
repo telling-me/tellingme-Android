@@ -30,8 +30,7 @@ import com.tellingus.tellingme.presentation.ui.theme.Background100
 fun TellerCardScreen(
     navController: NavController,
 ) {
-    MainLayout(
-        header = { TellerScreenHeader(navController) },
+    MainLayout(header = { TellerScreenHeader(navController) },
         content = { TellerScreenContent(navController) })
 }
 
@@ -42,10 +41,10 @@ fun TellerScreenContent(navController: NavController) {
         Box(modifier = Modifier.padding(20.dp)) {
             MyTellerCard()
         }
-        Box(modifier = Modifier.padding(20.dp)) {
+        Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp)) {
             LevelSection(level = 1, percent = 22)
         }
-        Column() {
+        Column(modifier = Modifier.padding(top = 40.dp)) {
             TellerBadgeList()
             Column(
                 modifier = Modifier
@@ -53,10 +52,8 @@ fun TellerScreenContent(navController: NavController) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ActionChip(
-                    text = "더보기",
-                    onClick = { navController.navigate(HomeDestinations.MY_TELLER_BADGE) }
-                )
+                ActionChip(text = "더보기",
+                    onClick = { navController.navigate(HomeDestinations.MY_TELLER_BADGE) })
             }
         }
     }
