@@ -39,7 +39,9 @@ fun ProfileCard(
     backgroundColor: Color = Profile100
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().wrapContentSize(),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentSize(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(backgroundColor),
         border = BorderStroke(2.dp, Base0),
@@ -91,7 +93,8 @@ fun ProfileCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "나도 날 잘 몰라요, 슈퍼 루키(예시)",
+//                    text = "나도 날 잘 몰라요, 슈퍼 루키(예시)",
+                    text = "${response.description}",
                     style = TellingmeTheme.typography.body1Bold,
                     color = Base0
                 )
@@ -117,7 +120,8 @@ fun ProfileCard(
             )
 
             Text(
-                text = "듀이듀이",
+//                text = "듀이듀이",
+                text = "${response.nickname}",
                 style = TellingmeTheme.typography.body1Bold,
                 color = Base0,
                 modifier = modifier.constrainAs(nickname) {
@@ -138,7 +142,8 @@ fun ProfileCard(
                     color = Gray50
                 )
                 Text(
-                    text = "LV.1",
+//                    text = "LV.1",
+                    text = "${response.level}",
                     style = TellingmeTheme.typography.caption1Bold,
                     color = Base0
                 )
@@ -156,7 +161,8 @@ fun ProfileCard(
                     color = Gray50
                 )
                 Text(
-                    text = "1일째",
+//                    text = "1일째",
+                    text = "${response.consecutiveWritingDate}",
                     style = TellingmeTheme.typography.caption1Bold,
                     color = Base0
                 )
@@ -169,10 +175,10 @@ fun ProfileCard(
 data class ProfileCardResponse(
     // 닉네임, 레벨, 뱃지, 프로필 아이콘 등등 ...
     val nickname: String = "",
-    val description : String = "", // 설명
+    val description: String = "", // 설명
     val level: String = "", // 레벨
-    val consecutiveWritingDate : String = "", // 연속작성일
-    val profileIcon : String = ""
+    val consecutiveWritingDate: String = "", // 연속작성일
+    val profileIcon: String = "",
 )
 
 @Preview(showBackground = true)
