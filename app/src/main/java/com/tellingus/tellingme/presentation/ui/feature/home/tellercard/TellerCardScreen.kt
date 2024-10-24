@@ -39,7 +39,7 @@ fun TellerCardScreen(
 fun TellerScreenContent(navController: NavController) {
     Column {
         Box(modifier = Modifier.padding(20.dp)) {
-            MyTellerCard()
+            MyTellerCard(navController = navController)
         }
         Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp)) {
             LevelSection(level = 1, percent = 22)
@@ -68,7 +68,7 @@ fun TellerScreenHeader(navController: NavController) {
         .fillMaxWidth(), leftSlot = {
         Icon(
             painter = painterResource(R.drawable.icon_caret_left),
-            contentDescription = "tellingme_logo",
+            contentDescription = "caret_left",
             modifier = Modifier.clickable(onClick = { navController.popBackStack() })
         )
     }, rightSlot = { CheeseBadge() })

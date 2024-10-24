@@ -29,6 +29,14 @@ val Gray800 = Color(0xFF2D3643)
 val Gray900 = Color(0xFF1C222B)
 
 val Profile100 = Color(0xFF1EDCC5)
+val Profile200 = Color(0xFFFC6CA0)
+val Profile300 = Color(0xFF7075FF)
+val Profile400 = Color(0xFF229DF6)
+val Profile500 = Color(0xFFFFC543)
+val Profile600 = Color(0xFF80E252)
+val Profile700 = Color(0xFFFFA216)
+val Profile800 = Color(0xFF8C56FF)
+
 val Sub100 = Color(0xFFFFE373)
 
 val Error50 = Color(0xFFFFF5F4)

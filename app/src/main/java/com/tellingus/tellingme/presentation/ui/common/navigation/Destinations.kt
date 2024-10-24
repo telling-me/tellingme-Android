@@ -30,6 +30,7 @@ object HomeDestinations {
     const val RECORD = "record"
     const val TELLER_CARD = "tellercard"
     const val MY_TELLER_BADGE = "mytellerbadge"
+    const val TELLER_CARD_TUNING = "tellercardtuning"
 }
 
 object MySpaceDestinations {
