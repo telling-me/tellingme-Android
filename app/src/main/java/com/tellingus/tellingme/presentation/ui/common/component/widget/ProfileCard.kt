@@ -168,7 +168,11 @@ fun ProfileCard(
 // ProfileCard를 구성하는 데이터는 아마 json으로 한 번에 내려받지 않을까 싶습니다.
 data class ProfileCardResponse(
     // 닉네임, 레벨, 뱃지, 프로필 아이콘 등등 ...
-    val nickname: String = ""
+    val nickname: String = "",
+    val description : String = "", // 설명
+    val level: String = "", // 레벨
+    val consecutiveWritingDate : String = "", // 연속작성일
+    val profileIcon : String = ""
 )
 
 @Preview(showBackground = true)
